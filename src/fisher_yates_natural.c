@@ -39,7 +39,7 @@ int set_random_with_bound_for_permutation_natural(perm_t p, const uint16_t rnd_b
 
 #define GTEQ16(b1,b2) ((uint16_t)((uint16_t)(b2) -(uint16_t)((b1)+(uint16_t)1)) >> 15 & (uint8_t)0x1)
 
-inline void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
+void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
 
     uint16_t *pi, *pj;
     uint16_t tmp;

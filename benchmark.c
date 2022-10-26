@@ -19,6 +19,8 @@ int64_t cpucycles(void)
 
 int main() {
 
+    printf("Start\n\n");
+
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
     uint16_t seed[SEED_BYTES / 2] = {0};
@@ -41,9 +43,12 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("\n");
-    verify_permutation(p[0]);
-    printf("Normal Fisher Yates  ....................................... %10lld ", cycles_tot);
+    printf("Verifying permutations... ");
+    for (int i = 0; i < N_PERMUTATION; ++i) {
+        verify_permutation(p[i]);
+    }
+    printf("Done\n");
+    printf("Original Fisher Yates ...................................... %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);
@@ -63,8 +68,11 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("\n");
-    verify_permutation(p[0]);
+    printf("Verifying permutations... ");
+    for (int i = 0; i < N_PERMUTATION; ++i) {
+        verify_permutation(p[i]);
+    }
+    printf("Done\n");
     printf("Natural Fisher Yates ....................................... %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
@@ -87,9 +95,12 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("\n");
-    verify_permutation_avx(&pu[0]);
-    printf("AVX Fisher Yates ............................................ %10lld ", cycles_tot);
+    printf("Verifying permutations... ");
+    for (int i = 0; i < N_PERMUTATION; ++i) {
+        verify_permutation_avx(&pu[i]);
+    }
+    printf("Done\n");
+    printf("AVX Original Fisher Yates .................................. %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);
@@ -109,9 +120,12 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("\n");
-    verify_permutation_avx(&pu[0]);
-    printf("AVX Fisher Yates Natural ................................... %10lld ", cycles_tot);
+    printf("Verifying permutations... ");
+    for (int i = 0; i < N_PERMUTATION; ++i) {
+        verify_permutation_avx(&pu[i]);
+    }
+    printf("Done\n");
+    printf("AVX Natural Fisher Yates ................................... %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);

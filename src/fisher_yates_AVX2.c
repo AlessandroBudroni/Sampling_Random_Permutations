@@ -20,17 +20,21 @@ static inline uint8_t isNotZero(uint16_t n){ // unsigned is safer for bit operat
 #define MASKAPPLY(mask, i, pj) (((mask) & (i)) | ((~(mask)) & (pj)))
 
 
-static inline void mask_avx2(__m256i *mask, const __m256i pi, const __m256i pj){ // unsigned is safer for bit operations
-    *mask = _mm256_sub_epi16 (pi, pj);
+static inline __m256i mask_avx2(const __m256i pi, const __m256i pj){ // unsigned is safer for bit operations
+
+    __m256i mask;
+    mask = _mm256_sub_epi16 (pi, pj);
 
     // ((mask | (~mask + 1))
-    *mask = _mm256_or_si256(*mask, _mm256_add_epi16( _mm256_xor_si256(*mask, _mm256_set1_epi16(-1LL)), _mm256_set1_epi16(1) ));
+    mask = _mm256_or_si256(mask, _mm256_add_epi16( _mm256_xor_si256(mask, _mm256_set1_epi16(-1LL)), _mm256_set1_epi16(1) ));
     // mask >> 15
-    *mask = _mm256_srai_epi16 (*mask, 15);
+    mask = _mm256_srai_epi16 (mask, 15);
     // mask & 1
-    *mask = _mm256_and_si256(*mask, _mm256_set1_epi16(1));
+    mask = _mm256_and_si256(mask, _mm256_set1_epi16(1));
     // mask -1
-    *mask = _mm256_sub_epi16 (*mask, _mm256_set1_epi16(1));
+    mask = _mm256_sub_epi16 (mask, _mm256_set1_epi16(1));
+
+    return mask;
 }
 
 static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
@@ -45,6 +49,7 @@ static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
         div = precomp_div[i]; //(PARAM_N1 -i -1) >> 4; // div 16
         split = precomp_split[i]; //i + 1 + ((PARAM_N1 -i -1) & 0xF);// i + 1 + (N1 -i -1 % 16)
 
+        // non AVX part
         pi = p->i[i];
         for (j = i + 1; j < split; ++j) {
             pj = &p->i[j];
@@ -52,10 +57,11 @@ static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
             *pj = MASKAPPLY(mask, i, *pj); //(mask & i) | (~mask & *pj);
         }
 
+        // AVX part
         imask = _mm256_set1_epi16((int16_t)i);
         avxpi = _mm256_set1_epi16((int16_t)pi);
         for (j = div; j < AVX256_X_BLOCK; ++j) {
-            mask_avx2(&avxmask, p->avx[j], avxpi);
+            avxmask = mask_avx2(p->avx[j], avxpi);
             p->avx[j] = _mm256_or_si256(_mm256_and_si256(avxmask, imask),  _mm256_and_si256(~avxmask, p->avx[j]));
         }
     }
@@ -136,6 +142,5 @@ int verify_permutation_avx(permAVX_t *p) {
             return EXIT_FAILURE;
         }
     }
-    printf("Verification success\n");
     return EXIT_SUCCESS;
 }

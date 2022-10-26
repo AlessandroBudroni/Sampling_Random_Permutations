@@ -105,6 +105,5 @@ int verify_permutation(const perm_t p) {
             return EXIT_FAILURE;
         }
     }
-    printf("Verification success\n");
     return EXIT_SUCCESS;
 }
