@@ -32,8 +32,8 @@ void bench_original_FY(int n_permutations){
     start = (double)clock();
 
     for (int i = 0; i < n_permutations; ++i) {
+        seed[0] = i;
         perm_set_random(p[i], (uint8_t *) seed);
-        seed[0] = i % 256;
     }
 
     end = (double)clock();
@@ -67,8 +67,8 @@ void bench_ternary_FY(int n_permutations){
     start = (double)clock();
 
     for (int i = 0; i < n_permutations; ++i) {
+        seed[0] = i;
         perm_set_random_ternary(p[i], (uint8_t *) seed);
-        seed[0] = i % 256;
     }
 
     end = (double)clock();
@@ -102,8 +102,8 @@ void bench_natural_FY(int n_permutations){
     start = (double)clock();
 
     for (int i = 0; i < n_permutations; ++i) {
+        seed[0] = i;
         perm_set_random_natural(p[i], (uint8_t *) seed);
-        seed[0] = i % 256;
     }
 
     end = (double)clock();
@@ -137,8 +137,8 @@ void bench_original_FY_AVX(int n_permutations){
     start = (double)clock();
 
     for (int i = 0; i < n_permutations; ++i) {
+        seed[0] = i;
         perm_set_random_avx(&pu[i], (uint8_t *) seed);
-        seed[0] = i % 256;
     }
 
     end = (double)clock();
@@ -173,8 +173,8 @@ void bench_natural_FY_AVX(int n_permutations){
     start = (double)clock();
 
     for (int i = 0; i < n_permutations; ++i) {
+        seed[0] = i;
         perm_set_random_natural_avx(&pu[i], (uint8_t *) seed);
-        seed[0] = i % 256;
     }
 
     end = (double)clock();
