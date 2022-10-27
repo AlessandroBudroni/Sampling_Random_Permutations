@@ -15,11 +15,9 @@ int64_t cpucycles(void)
     return ((int64_t)lo) | (((int64_t)hi) << 32);
 }
 
-#define N_PERMUTATION 1000
+#define N_PERMUTATIONS 1000
 
-int main() {
-
-    printf("Start\n");
+void bench_original_FY(int n_permutations){
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -28,12 +26,12 @@ int main() {
 
     /* NORMAL Fisher Yates */
 
-    perm_t p[N_PERMUTATION];
+    perm_t p[n_permutations];
 
     cycles1 = cpucycles();
     start = (double)clock();
 
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         perm_set_random(p[i], (uint8_t *) seed);
         seed[0] = i % 256;
     }
@@ -44,7 +42,7 @@ int main() {
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
     printf("\nVerifying permutations... ");
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         verify_permutation(p[i]);
     }
     printf("Done\n");
@@ -52,13 +50,23 @@ int main() {
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);
+}
 
+void bench_ternary_FY(int n_permutations){
+
+    perm_t p[n_permutations];
+
+    unsigned long long cycles_tot, cycles1, cycles2;
+    double start, end;
+    uint16_t seed[SEED_BYTES / 2] = {0};
+    double time_taken;
+    
     /* TERNARY Fisher Yates */
 
     cycles1 = cpucycles();
     start = (double)clock();
 
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         perm_set_random_ternary(p[i], (uint8_t *) seed);
         seed[0] = i % 256;
     }
@@ -69,7 +77,7 @@ int main() {
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
     printf("\nVerifying permutations... ");
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         verify_permutation(p[i]);
     }
     printf("Done\n");
@@ -77,13 +85,23 @@ int main() {
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);
+}
+
+void bench_natural_FY(int n_permutations){
+
+    perm_t p[n_permutations];
+
+    unsigned long long cycles_tot, cycles1, cycles2;
+    double start, end;
+    uint16_t seed[SEED_BYTES / 2] = {0};
+    double time_taken;
 
     /* NATURAL Fisher Yates */
 
     cycles1 = cpucycles();
     start = (double)clock();
 
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         perm_set_random_natural(p[i], (uint8_t *) seed);
         seed[0] = i % 256;
     }
@@ -94,7 +112,7 @@ int main() {
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
     printf("\nVerifying permutations... ");
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         verify_permutation(p[i]);
     }
     printf("Done\n");
@@ -102,15 +120,23 @@ int main() {
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);
+}
+
+void bench_original_FY_AVX(int n_permutations){
+    
+    unsigned long long cycles_tot, cycles1, cycles2;
+    double start, end;
+    uint16_t seed[SEED_BYTES / 2] = {0};
+    double time_taken;
 
     /* AVX Fisher Yates */
 
-    permAVX_t pu[N_PERMUTATION];
+    permAVX_t pu[n_permutations];
 
     cycles1 = cpucycles();
     start = (double)clock();
 
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         perm_set_random_avx(&pu[i], (uint8_t *) seed);
         seed[0] = i % 256;
     }
@@ -121,7 +147,7 @@ int main() {
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
     printf("\nVerifying permutations... ");
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         verify_permutation_avx(&pu[i]);
     }
     printf("Done\n");
@@ -130,12 +156,23 @@ int main() {
     printf("\n");
     printf("Time taken %lf\n", time_taken);
 
+}
+
+void bench_natural_FY_AVX(int n_permutations){
+
+    unsigned long long cycles_tot, cycles1, cycles2;
+    double start, end;
+    uint16_t seed[SEED_BYTES / 2] = {0};
+    double time_taken;
+
     /* AVX Fisher Yates Natural*/
 
+    permAVX_t pu[n_permutations];
+    
     cycles1 = cpucycles();
     start = (double)clock();
 
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         perm_set_random_natural_avx(&pu[i], (uint8_t *) seed);
         seed[0] = i % 256;
     }
@@ -146,7 +183,7 @@ int main() {
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
     printf("\nVerifying permutations... ");
-    for (int i = 0; i < N_PERMUTATION; ++i) {
+    for (int i = 0; i < n_permutations; ++i) {
         verify_permutation_avx(&pu[i]);
     }
     printf("Done\n");
@@ -155,8 +192,20 @@ int main() {
     printf("\n");
     printf("Time taken %lf\n", time_taken);
 
+}
 
+int main() {
 
+    printf("Start\n");
+
+    bench_original_FY(N_PERMUTATIONS);
+    bench_ternary_FY(N_PERMUTATIONS);
+    bench_natural_FY(N_PERMUTATIONS);
+    bench_original_FY_AVX(N_PERMUTATIONS);
+    bench_natural_FY_AVX(N_PERMUTATIONS);
+
+    printf("\nDone\n");
+    
     return 0;
 }
 
