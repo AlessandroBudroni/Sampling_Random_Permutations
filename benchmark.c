@@ -19,7 +19,7 @@ int64_t cpucycles(void)
 
 int main() {
 
-    printf("Start\n\n");
+    printf("Start\n");
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -43,7 +43,7 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("Verifying permutations... ");
+    printf("\nVerifying permutations... ");
     for (int i = 0; i < N_PERMUTATION; ++i) {
         verify_permutation(p[i]);
     }
@@ -68,7 +68,7 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("Verifying permutations... ");
+    printf("\nVerifying permutations... ");
     for (int i = 0; i < N_PERMUTATION; ++i) {
         verify_permutation(p[i]);
     }
@@ -93,7 +93,7 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("Verifying permutations... ");
+    printf("\nVerifying permutations... ");
     for (int i = 0; i < N_PERMUTATION; ++i) {
         verify_permutation(p[i]);
     }
@@ -120,7 +120,7 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("Verifying permutations... ");
+    printf("\nVerifying permutations... ");
     for (int i = 0; i < N_PERMUTATION; ++i) {
         verify_permutation_avx(&pu[i]);
     }
@@ -145,7 +145,7 @@ int main() {
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
-    printf("Verifying permutations... ");
+    printf("\nVerifying permutations... ");
     for (int i = 0; i < N_PERMUTATION; ++i) {
         verify_permutation_avx(&pu[i]);
     }
