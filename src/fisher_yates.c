@@ -30,6 +30,16 @@ void fisher_yates_shuffle_n2(perm_t p) {
     }
 }
 
+void fisher_yates_shuffle_ternary(perm_t p) {
+    uint16_t pi;
+    for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
+        pi = p[i];
+        for (int16_t j = i + 1; j < PARAM_N1; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
+            p[j] = p[j] == pi ? i : p[j];
+        }
+    }
+}
+
 /**
  * Sample random data for Fisher Yates permutation
  * @param rsource prng struct
@@ -78,13 +88,37 @@ void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]) {
     expanded_seed[SEED_BYTES] = DOMAIN_SEPARATOR_PERM;
     expanded_seed[SEED_BYTES + 1] = 0;
 
-//    sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
+    sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
 
     while (set_random_with_bound_for_permutation(p, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
-//        sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
+        sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_shuffle_n2(p);
+}
+
+/**
+ * Apply fisher yates to sample permutation. This function should be called after
+ * set_random_with_bound_for_permutation(). Uses ternary operator from Sendrier's paper
+ * @param p permutation with random data already filled in
+ * @param size of permutation
+ * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
+ */
+void perm_set_random_ternary(perm_t p, uint8_t seed[SEED_BYTES]) {
+    uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
+    uint8_t expanded_seed[SEED_BYTES + 2];
+
+    memcpy(expanded_seed, seed, SEED_BYTES);
+    expanded_seed[SEED_BYTES] = DOMAIN_SEPARATOR_PERM;
+    expanded_seed[SEED_BYTES + 1] = 0;
+
+    sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
+
+    while (set_random_with_bound_for_permutation(p, rnd_buff) != EXIT_SUCCESS) {
+        expanded_seed[SEED_BYTES + 1] += 1;
+        sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
+    }
+    fisher_yates_shuffle_ternary(p);
 }
 
 int verify_permutation(const perm_t p) {
