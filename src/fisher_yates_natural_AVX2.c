@@ -69,7 +69,7 @@ static inline __m256i mask_avx2_natural(const __m256i pi, const __m256i pj, cons
     return mask;
 }
 
-void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t p_rand) {
+void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
 
     uint16_t div, rem_en, rem_st, j;
     uint16_t *pi, tmp, ppi;
@@ -79,8 +79,8 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t p_rand) {
 
     for (uint16_t i = 0; i < PARAM_N1; i++) {
         pi = &p_out->i[i];
-        *pi = p_rand.i[i];
-        ppi = *pi +1;
+        *pi = p_rand->i[i];
+        ppi = p_rand->i[i] +1;
 
         div = div_nat[i];
         rem_st = rem_str[i];
@@ -92,21 +92,21 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t p_rand) {
         avxpi = _mm256_set1_epi16((int16_t)ppi);// pi+1
         avxsum = _mm256_setzero_si256();
         for (j = 0; j < div; j++) {
-            avxmask = mask_avx2_natural(avxpi, p_rand.avx[j], avxone);
+            avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(avxpi, p_rand->avx[j]));
             // alternatives to the above
-//            avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(avxpi, p_rand.avx[j]));
+//            avxmask = mask_avx2_natural(avxpi, p_rand.avx[j], avxone);
 //            avxmask =_mm256_and_si256(_mm256_srai_epi16(_mm256_sub_epi16(p_rand.avx[j], avxpi), 15), avxone);
             avxsum = _mm256_add_epi16(avxsum, avxmask);
-            p_rand.avx[j] = _mm256_sub_epi16(p_rand.avx[j], _mm256_xor_si256(avxmask, avxone));
+            p_rand->avx[j] = _mm256_sub_epi16(p_rand->avx[j], _mm256_xor_si256(avxmask, avxone));
         }
 
         // non avx part
         for (j = rem_st; j < rem_en; j++) {
-            mask = GTEQ16(ppi, p_rand.i[j]);
+            mask = GTEQ16(ppi, p_rand->i[j]);
             tmp += mask;
-            p_rand.i[j] -= mask ^ (uint8_t)0x1;
+            *pi -= mask ^ (uint8_t)0x1;
         }
-        *pi += tmp + hsum_256_16_avx(avxsum);
+        p_out->i[i] += tmp + hsum_256_16_avx(avxsum);
     }
 }
 
@@ -130,5 +130,5 @@ void perm_set_random_natural_avx(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_natural_avx(p_out, p_rand);
+    fisher_yates_shuffle_natural_avx(p_out, &p_rand);
 }

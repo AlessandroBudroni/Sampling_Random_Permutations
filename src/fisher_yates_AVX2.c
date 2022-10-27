@@ -61,7 +61,9 @@ static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
         imask = _mm256_set1_epi16((int16_t)i);
         avxpi = _mm256_set1_epi16((int16_t)pi);
         for (j = div; j < AVX256_X_BLOCK; ++j) {
-            avxmask = mask_avx2(p->avx[j], avxpi);
+//            avxmask = mask_avx2(p->avx[j], avxpi);
+            // alternative to the above
+            avxmask = _mm256_cmpeq_epi16(p->avx[j], avxpi);
             p->avx[j] = _mm256_or_si256(_mm256_and_si256(avxmask, imask),  _mm256_and_si256(~avxmask, p->avx[j]));
         }
     }
