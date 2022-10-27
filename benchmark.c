@@ -198,9 +198,9 @@ int main() {
 
     printf("Start\n");
 
-//    bench_original_FY(N_PERMUTATIONS);
-//    bench_ternary_FY(N_PERMUTATIONS);
-//    bench_natural_FY(N_PERMUTATIONS);
+    bench_original_FY(N_PERMUTATIONS);
+    bench_ternary_FY(N_PERMUTATIONS);
+    bench_natural_FY(N_PERMUTATIONS);
     bench_original_FY_AVX(N_PERMUTATIONS);
     bench_natural_FY_AVX(N_PERMUTATIONS);
 
