@@ -37,7 +37,7 @@ int set_random_with_bound_for_permutation_natural_avx(permAVX_t p, const uint16_
     return EXIT_SUCCESS;
 }
 
-#define GTEQ16(b1,b2) ((uint16_t)((uint16_t)(b2) -(uint16_t)(b1) -(uint16_t)1) >> 15 & (uint8_t)0x1)
+#define GT16(b1,b2) ((uint16_t)((uint16_t)(b2) -(uint16_t)(b1)) >> 15 & (uint8_t)0x1)
 
 // sum horizontally 16 int16_t packed in __m256i
 int16_t hsum_256_16_avx(__m256i v) {
@@ -74,13 +74,14 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
     uint16_t div, rem_en, rem_st, j;
     uint16_t *pi, tmp, ppi;
     uint8_t mask;
-    __m256i avxpi, avxmask, avxone, avxsum;
-    avxone = _mm256_set1_epi16(1);
+    __m256i avxpi, avxmask, avxsum;
+    __m256i avxone = _mm256_set1_epi16(1);
 
     for (uint16_t i = 0; i < PARAM_N1; i++) {
         pi = &p_out->i[i];
         *pi = p_rand->i[i];
-        ppi = p_rand->i[i] +1;
+        ppi = *pi +1;
+        avxpi = _mm256_set1_epi16((int16_t)ppi);// pi+1
 
         div = div_nat[i];
         rem_st = rem_str[i];
@@ -89,7 +90,6 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
         tmp = 0;
 
         // avx part
-        avxpi = _mm256_set1_epi16((int16_t)ppi);// pi+1
         avxsum = _mm256_setzero_si256();
         for (j = 0; j < div; j++) {
             avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(avxpi, p_rand->avx[j]));
@@ -102,7 +102,7 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
 
         // non avx part
         for (j = rem_st; j < rem_en; j++) {
-            mask = GTEQ16(ppi, p_rand->i[j]);
+            mask = GT16(ppi, p_rand->i[j]);
             tmp += mask;
             *pi -= mask ^ (uint8_t)0x1;
         }
