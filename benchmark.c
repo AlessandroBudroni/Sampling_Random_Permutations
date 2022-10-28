@@ -28,16 +28,16 @@ void bench_original_FY(int n_permutations){
 
     perm_t p[n_permutations];
 
-    cycles1 = cpucycles();
     start = (double)clock();
+    cycles1 = cpucycles();
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
         perm_set_random(p[i], (uint8_t *) seed);
     }
 
-    end = (double)clock();
     cycles2 = cpucycles();
+    end = (double)clock();
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
@@ -63,16 +63,16 @@ void bench_ternary_FY(int n_permutations){
     
     /* TERNARY Fisher Yates */
 
-    cycles1 = cpucycles();
     start = (double)clock();
+    cycles1 = cpucycles();
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
         perm_set_random_ternary(p[i], (uint8_t *) seed);
     }
 
-    end = (double)clock();
     cycles2 = cpucycles();
+    end = (double)clock();
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
@@ -98,16 +98,16 @@ void bench_natural_FY(int n_permutations){
 
     /* NATURAL Fisher Yates */
 
-    cycles1 = cpucycles();
     start = (double)clock();
+    cycles1 = cpucycles();
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
         perm_set_random_natural(p[i], (uint8_t *) seed);
     }
 
-    end = (double)clock();
     cycles2 = cpucycles();
+    end = (double)clock();
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
@@ -133,16 +133,16 @@ void bench_original_FY_AVX(int n_permutations){
 
     permAVX_t pu[n_permutations];
 
-    cycles1 = cpucycles();
     start = (double)clock();
+    cycles1 = cpucycles();
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
         perm_set_random_avx(&pu[i], (uint8_t *) seed);
     }
 
-    end = (double)clock();
     cycles2 = cpucycles();
+    end = (double)clock();
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
@@ -168,17 +168,17 @@ void bench_natural_FY_AVX(int n_permutations){
     /* AVX Fisher Yates Natural*/
 
     permAVX_t pu[n_permutations];
-    
-    cycles1 = cpucycles();
+
     start = (double)clock();
+    cycles1 = cpucycles();
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
         perm_set_random_natural_avx(&pu[i], (uint8_t *) seed);
     }
 
-    end = (double)clock();
     cycles2 = cpucycles();
+    end = (double)clock();
     cycles_tot = cycles2 - cycles1;
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
 
@@ -198,9 +198,9 @@ int main() {
 
     printf("Start\n");
 
-    bench_original_FY(N_PERMUTATIONS);
-    bench_ternary_FY(N_PERMUTATIONS);
-    bench_natural_FY(N_PERMUTATIONS);
+//    bench_original_FY(N_PERMUTATIONS);
+//    bench_ternary_FY(N_PERMUTATIONS);
+//    bench_natural_FY(N_PERMUTATIONS);
     bench_original_FY_AVX(N_PERMUTATIONS);
     bench_natural_FY_AVX(N_PERMUTATIONS);
 

@@ -94,7 +94,8 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
         for (j = 0; j < div; j++) {
             avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(avxpi, p_rand->avx[j]));
             // alternatives to the above
-//            avxmask = mask_avx2_natural(avxpi, p_rand.avx[j], avxone);
+//            avxmask = _mm256_add_epi16(avxone,_mm256_cmpgt_epi16(p_rand->avx[j], avxpi));
+//            avxmask = mask_avx2_natural(avxpi, p_rand->avx[j], avxone);
 //            avxmask =_mm256_and_si256(_mm256_srai_epi16(_mm256_sub_epi16(p_rand.avx[j], avxpi), 15), avxone);
             avxsum = _mm256_add_epi16(avxsum, avxmask);
             p_rand->avx[j] = _mm256_sub_epi16(p_rand->avx[j], _mm256_xor_si256(avxmask, avxone));
