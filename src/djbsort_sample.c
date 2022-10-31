@@ -33,11 +33,6 @@ int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
     return EXIT_SUCCESS;
 }
 
-#include "djbsort_sample.h"
-#include "../djbsort/djbsort.h"
-#include "../fips202/fips202.h"
-#include <stdint.h>
-#include <string.h>
 
 int djbsort_with_given_random_input_avx(perm_t p, uint32_t buffer[PARAM_N1]) {
 
@@ -104,7 +99,7 @@ void perm_set_random_djbsort_avx(perm_t p, uint8_t seed[SEED_BYTES]) {
     expanded_seed[SEED_BYTES + 1] = 0;
     shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
 
-    while (djbsort_with_given_random_input(p, rnd_buff) != EXIT_SUCCESS) {
+    while (djbsort_with_given_random_input_avx(p, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
         shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
