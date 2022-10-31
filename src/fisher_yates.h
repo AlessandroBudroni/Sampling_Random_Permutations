@@ -6,21 +6,7 @@
 #define PLAYAVX2_FISHER_YATES_H
 
 #include <stdint.h>
-
-#ifdef OTHER
-#define SEED_BYTES 16
-#define PARAM_N1            1238
-#define PARAM_N1_HALF       (PARAM_N1/2)
-#define CHUNK_RND_BYTES_LENGTH 5000
-#define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
-#define DOMAIN_SEPARATOR_PERM 0x03
-#endif
-
-#define SEED_BYTES 16
-#define PARAM_N1            2048
-#define CHUNK_RND_BYTES_LENGTH 5000
-#define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
-#define DOMAIN_SEPARATOR_PERM 0x03
+#include "utils.h"
 
 typedef uint16_t perm_t[PARAM_N1];
 
@@ -28,6 +14,7 @@ int set_random_with_bound_for_permutation(perm_t p, const uint16_t rnd_buff[CHUN
 void sample_random_chunk( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], uint8_t expanded_seed[SEED_BYTES + 2]);
 void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]);
 void perm_set_random_ternary(perm_t p, uint8_t seed[SEED_BYTES]);
+void perm_set_random_non_ct(perm_t p, uint8_t seed[SEED_BYTES]);
 
 int verify_permutation(const perm_t p);
 
