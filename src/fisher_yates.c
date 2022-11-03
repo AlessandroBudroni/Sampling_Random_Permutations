@@ -30,7 +30,7 @@ void fisher_yates_shuffle_n2(perm_t p) {
     }
 }
 
-void fisher_yates_shuffle_ternary(perm_t p) {
+void fisher_yates_shuffle_sendrier(perm_t p) {
     uint16_t pi;
     for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
         pi = p[i];
@@ -146,7 +146,7 @@ void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]) {
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random_ternary(perm_t p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_sendrier(perm_t p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -160,12 +160,12 @@ void perm_set_random_ternary(perm_t p, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_ternary(p);
+    fisher_yates_shuffle_sendrier(p);
 }
 
 /**
  * Apply fisher yates to sample permutation. This function should be called after
- * set_random_with_bound_for_permutation(). Uses ternary operator from Sendrier's paper
+ * set_random_with_bound_for_permutation().
  * @param p permutation with random data already filled in
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling

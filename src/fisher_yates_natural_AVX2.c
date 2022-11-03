@@ -5,6 +5,7 @@
 #include "fisher_yates.h"
 #include "fisher_yates_natural_AVX2.h"
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -15,7 +16,7 @@
  * @param size size of permutation array.
  * @return EXIT_FAILURE in case of rejection (sampled data not sufficient), EXIT_SUCCESS in case of success
  */
-int set_random_with_bound_for_permutation_natural_avx(permAVX_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
+int set_random_with_bound_for_permutation_natural_avx(permAVX_t *p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
     int size = PARAM_N1;
     uint16_t rnd;
@@ -32,7 +33,7 @@ int set_random_with_bound_for_permutation_natural_avx(permAVX_t p, const uint16_
             }
             rnd = rnd_buff[index++];
         } while (rnd >= max);
-        p.i[i] = (rnd % bound);
+        p->i[i] = (rnd % bound);
     }
     return EXIT_SUCCESS;
 }
@@ -94,8 +95,7 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
         for (j = 0; j < div; j++) {
             avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(avxpi, p_rand->avx[j]));
             // alternatives to the above
-//            avxmask = _mm256_add_epi16(avxone,_mm256_cmpgt_epi16(p_rand->avx[j], avxpi));
-//            avxmask = mask_avx2_natural(avxpi, p_rand->avx[j], avxone);
+//            avxmask = mask_avx2_natural(avxpi, p_rand.avx[j], avxone);
 //            avxmask =_mm256_and_si256(_mm256_srai_epi16(_mm256_sub_epi16(p_rand.avx[j], avxpi), 15), avxone);
             avxsum = _mm256_add_epi16(avxsum, avxmask);
             p_rand->avx[j] = _mm256_sub_epi16(p_rand->avx[j], _mm256_xor_si256(avxmask, avxone));
@@ -105,9 +105,9 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
         for (j = rem_st; j < rem_en; j++) {
             mask = GT16(ppi, p_rand->i[j]);
             tmp += mask;
-            *pi -= mask ^ (uint8_t)0x1;
+            p_rand->i[j] -= mask ^ (uint8_t)0x1;
         }
-        p_out->i[i] += tmp + hsum_256_16_avx(avxsum);
+        *pi += tmp + hsum_256_16_avx(avxsum);
     }
 }
 
@@ -127,7 +127,7 @@ void perm_set_random_natural_avx(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {
     expanded_seed[SEED_BYTES + 1] = 0;
     sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
 
-    while (set_random_with_bound_for_permutation_natural_avx(p_rand, rnd_buff) != EXIT_SUCCESS) {
+    while (set_random_with_bound_for_permutation_natural_avx(&p_rand, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }

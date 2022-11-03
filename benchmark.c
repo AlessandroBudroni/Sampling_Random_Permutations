@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "src/fisher_yates.h"
-#include "src/fisher_yates_AVX2.h"
+#include "src/sendrier_AVX2.h"
 #include "src/fisher_yates_natural.h"
 #include "src/fisher_yates_natural_AVX2.h"
 #include "src/djbsort_sample.h"
@@ -18,7 +18,7 @@ int64_t cpucycles(void)
 
 #define N_PERMUTATIONS 1000
 
-void bench_fisher_yates_original_FY(int n_permutations){
+void bench_fisher_yates_sendrier_FY(int n_permutations){
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -174,7 +174,7 @@ void bench_fisher_yates_ternary_FY(int n_permutations){
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
-        perm_set_random_ternary(p[i], (uint8_t *) seed);
+        perm_set_random_sendrier(p[i], (uint8_t *) seed);
     }
 
     cycles2 = cpucycles();
@@ -228,7 +228,7 @@ void bench_fisher_yates_natural_FY(int n_permutations){
     printf("Time taken %lf\n", time_taken);
 }
 
-void bench_fisher_yates_original_FY_AVX(int n_permutations){
+void bench_fisher_yates_sendrier_FY_AVX(int n_permutations){
     
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -304,11 +304,11 @@ int main() {
 
     printf("Start\n");
 
-    bench_fisher_yates_original_FY(N_PERMUTATIONS);
+    bench_fisher_yates_sendrier_FY(N_PERMUTATIONS);
     bench_fisher_yates_non_ct(N_PERMUTATIONS);
     bench_fisher_yates_ternary_FY(N_PERMUTATIONS);
     bench_fisher_yates_natural_FY(N_PERMUTATIONS);
-    bench_fisher_yates_original_FY_AVX(N_PERMUTATIONS);
+    bench_fisher_yates_sendrier_FY_AVX(N_PERMUTATIONS);
     bench_fisher_yates_natural_FY_AVX(N_PERMUTATIONS);
     bench_djbsort(N_PERMUTATIONS);
     bench_djbsort_AVX(N_PERMUTATIONS);

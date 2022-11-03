@@ -13,7 +13,7 @@ typedef uint16_t perm_t[PARAM_N1];
 int set_random_with_bound_for_permutation(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]);
 void sample_random_chunk( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], uint8_t expanded_seed[SEED_BYTES + 2]);
 void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]);
-void perm_set_random_ternary(perm_t p, uint8_t seed[SEED_BYTES]);
+void perm_set_random_sendrier(perm_t p, uint8_t seed[SEED_BYTES]);
 void perm_set_random_non_ct(perm_t p, uint8_t seed[SEED_BYTES]);
 
 int verify_permutation(const perm_t p);

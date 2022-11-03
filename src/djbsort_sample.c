@@ -7,6 +7,7 @@
 #include "../fips202/fips202.h"
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
 

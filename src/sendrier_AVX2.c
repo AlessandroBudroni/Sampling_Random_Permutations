@@ -2,18 +2,13 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "fisher_yates_AVX2.h"
+#include "sendrier_AVX2.h"
 #include "../fips202/fips202.h"
 
 #include <immintrin.h>
 #include <stdint.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-static inline uint8_t isNotZero(uint16_t n){ // unsigned is safer for bit operations
-    return ((n | (~n + 1)) >> 31) & 0x1;
-}
 
 #define ISNOTZERO(n) ((((n) | (~(n) + 1)) >> 31) & 0x1)
 

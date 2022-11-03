@@ -5,7 +5,7 @@
 #ifndef PLAYAVX2_FISHER_YATES_NATURAL_AVX_H
 #define PLAYAVX2_FISHER_YATES_NATURAL_AVX_H
 
-#include "fisher_yates_AVX2.h"
+#include "sendrier_AVX2.h"
 
 void perm_set_random_natural_avx(permAVX_t *p_out, uint8_t seed[SEED_BYTES]);
 
