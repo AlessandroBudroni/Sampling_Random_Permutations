@@ -72,42 +72,35 @@ static inline __m256i mask_avx2_natural(const __m256i pi, const __m256i pj, cons
 
 void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
 
-    uint16_t div, rem_en, rem_st, j;
-    uint16_t *pi, tmp, ppi;
-    uint8_t mask;
-    __m256i avxpi, avxmask, avxsum;
+    uint16_t *pi, *pj, tmp;
+    uint16_t mask;
+    __m256i avxpi, *avxpj, avxmask, avxsum;
     __m256i avxone = _mm256_set1_epi16(1);
 
-    for (uint16_t i = 0; i < PARAM_N1; i++) {
+    for (int i = 0; i < PARAM_N1; i++) {
         pi = &p_out->i[i];
         *pi = p_rand->i[i];
-        ppi = *pi +1;
-        avxpi = _mm256_set1_epi16((int16_t)ppi);// pi+1
-
-        div = div_nat[i];
-        rem_st = rem_str[i];
-        rem_en = rem_end[i];
+        avxpi = _mm256_set1_epi16((int16_t)*pi);
 
         tmp = 0;
 
         // avx part
         avxsum = _mm256_setzero_si256();
-        for (j = 0; j < div; j++) {
-            avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(avxpi, p_rand->avx[j]));
-            // alternatives to the above
-//            avxmask = mask_avx2_natural(avxpi, p_rand.avx[j], avxone);
-//            avxmask =_mm256_and_si256(_mm256_srai_epi16(_mm256_sub_epi16(p_rand.avx[j], avxpi), 15), avxone);
+        for (int j = 0; j < div_nat[i]; j++) {
+            avxpj = &p_rand->avx[j];
+            avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(*avxpj, avxpi));
             avxsum = _mm256_add_epi16(avxsum, avxmask);
-            p_rand->avx[j] = _mm256_sub_epi16(p_rand->avx[j], _mm256_xor_si256(avxmask, avxone));
+            *avxpj = _mm256_sub_epi16(*avxpj, avxmask);
         }
 
         // non avx part
-        for (j = rem_st; j < rem_en; j++) {
-            mask = GT16(ppi, p_rand->i[j]);
+        for (int j = rem_str[i]; j < rem_end[i]; j++) {
+            pj = &p_rand->i[j];
+            mask = GT16(*pj, *pi);
             tmp += mask;
-            p_rand->i[j] -= mask ^ (uint8_t)0x1;
+            *pj -= mask;
         }
-        *pi += tmp + hsum_256_16_avx(avxsum);
+        *pi += i - (tmp +hsum_256_16_avx(avxsum));
     }
 }
 

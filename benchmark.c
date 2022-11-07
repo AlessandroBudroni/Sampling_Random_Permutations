@@ -47,7 +47,7 @@ void bench_fisher_yates_sendrier_FY(int n_permutations){
         verify_permutation(p[i]);
     }
     printf("Done\n");
-    printf("Original Fisher Yates ...................................... %10lld ", cycles_tot);
+    printf("Sendrier Fisher Yates ...................................... %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n", time_taken);
@@ -229,7 +229,7 @@ void bench_fisher_yates_natural_FY(int n_permutations){
 }
 
 void bench_fisher_yates_sendrier_FY_AVX(int n_permutations){
-    
+
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
     uint16_t seed[SEED_BYTES / 2] = {0};
@@ -304,9 +304,9 @@ int main() {
 
     printf("Start\n");
 
-    bench_fisher_yates_sendrier_FY(N_PERMUTATIONS);
     bench_fisher_yates_non_ct(N_PERMUTATIONS);
     bench_fisher_yates_ternary_FY(N_PERMUTATIONS);
+    bench_fisher_yates_sendrier_FY(N_PERMUTATIONS);
     bench_fisher_yates_natural_FY(N_PERMUTATIONS);
     bench_fisher_yates_sendrier_FY_AVX(N_PERMUTATIONS);
     bench_fisher_yates_natural_FY_AVX(N_PERMUTATIONS);

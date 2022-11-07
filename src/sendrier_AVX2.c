@@ -33,20 +33,17 @@ static inline __m256i mask_avx2(const __m256i pi, const __m256i pj){ // unsigned
 }
 
 static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
-    uint16_t mask, div, split;
+    uint16_t mask;
     uint16_t pi, *pj;
 
     __m256i avxmask;
     __m256i avxpi, imask;
-    uint16_t j;
 
     for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
-        div = precomp_div[i]; //(PARAM_N1 -i -1) >> 4; // div 16
-        split = precomp_split[i]; //i + 1 + ((PARAM_N1 -i -1) & 0xF);// i + 1 + (N1 -i -1 % 16)
 
         // non AVX part
         pi = p->i[i];
-        for (j = i + 1; j < split; ++j) {
+        for (int16_t j = i + 1; j < precomp_split[i]; ++j) {
             pj = &p->i[j];
             mask = ISNOTZERO(*pj - pi) - 1;
             *pj = MASKAPPLY(mask, i, *pj); //(mask & i) | (~mask & *pj);
@@ -55,7 +52,7 @@ static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
         // AVX part
         imask = _mm256_set1_epi16((int16_t)i);
         avxpi = _mm256_set1_epi16((int16_t)pi);
-        for (j = div; j < AVX256_X_BLOCK; ++j) {
+        for (int16_t j = precomp_div[i]; j < AVX256_X_BLOCK; ++j) {
 //            avxmask = mask_avx2(p->avx[j], avxpi);
             // alternative to the above
             avxmask = _mm256_cmpeq_epi16(p->avx[j], avxpi);

@@ -42,21 +42,20 @@ int set_random_with_bound_for_permutation_natural(perm_t p, const uint16_t rnd_b
 
 void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
 
-    uint16_t *pi, *pj, pii;
+    uint16_t *pi, *pj;
     uint16_t tmp;
-    uint8_t mask;
+    uint16_t mask;
     for (uint16_t i = 0; i < PARAM_N1; i++) {
         pi = &p_out[i];
         *pi = p_rand[i];
         tmp = 0;
-        pii = *pi + 1;
         for (uint16_t j = 0; j < i; j++) {
             pj = &p_rand[j];
-            mask = GT16(pii, *pj); // if (pii > *pj) mask = 1; else mask = 0;
+            mask = GT16(*pj, *pi);
             tmp += mask;
-            *pj -= mask ^ (uint8_t)0x1;
+            *pj -= mask;
         }
-        *pi += tmp;
+        *pi += i-tmp;
     }
 }
 
