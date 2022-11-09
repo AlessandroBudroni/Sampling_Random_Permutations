@@ -122,7 +122,7 @@ void sample_random_chunk( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], uint8_t expa
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_sendrier_ct(perm_t p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -137,6 +137,7 @@ void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]) {
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_shuffle_n2(p);
+    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
 /**
@@ -146,7 +147,7 @@ void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]) {
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random_sendrier(perm_t p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_sendrier_ternary(perm_t p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -161,6 +162,7 @@ void perm_set_random_sendrier(perm_t p, uint8_t seed[SEED_BYTES]) {
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_shuffle_sendrier(p);
+    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
 /**
@@ -187,6 +189,7 @@ void perm_set_random_non_ct(perm_t p, uint8_t seed[SEED_BYTES]) {
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_non_constant_time(p, rand);
+    memset(rand, 0, sizeof (perm_t));
 }
 
 int verify_permutation(const perm_t p) {

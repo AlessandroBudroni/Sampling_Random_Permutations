@@ -7,7 +7,6 @@
 #include "../fips202/fips202.h"
 #include <stdint.h>
 #include <string.h>
-#include <stdio.h>
 
 int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
 
@@ -82,6 +81,7 @@ void perm_set_random_djbsort(perm_t p, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
+    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
 /**
@@ -104,5 +104,6 @@ void perm_set_random_djbsort_avx(perm_t p, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
+    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 

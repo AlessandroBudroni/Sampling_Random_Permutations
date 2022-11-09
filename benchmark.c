@@ -34,7 +34,7 @@ void bench_fisher_yates_sendrier_FY(int n_permutations){
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
-        perm_set_random(p[i], (uint8_t *) seed);
+        perm_set_random_sendrier_ct(p[i], (uint8_t *) seed);
     }
 
     cycles2 = cpucycles();
@@ -174,7 +174,7 @@ void bench_fisher_yates_ternary_FY(int n_permutations){
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
-        perm_set_random_sendrier(p[i], (uint8_t *) seed);
+        perm_set_random_sendrier_ternary(p[i], (uint8_t *) seed);
     }
 
     cycles2 = cpucycles();
@@ -273,14 +273,14 @@ void bench_fisher_yates_natural_FY_AVX(int n_permutations){
 
     /* AVX Fisher Yates Natural*/
 
-    permAVX_t pu[n_permutations];
+    perm_t pu[n_permutations];
 
     start = (double)clock();
     cycles1 = cpucycles();
 
     for (int i = 0; i < n_permutations; ++i) {
         seed[0] = i;
-        perm_set_random_natural_avx(&pu[i], (uint8_t *) seed);
+        perm_set_random_natural_avx(pu[i], (uint8_t *) seed);
     }
 
     cycles2 = cpucycles();
@@ -290,7 +290,7 @@ void bench_fisher_yates_natural_FY_AVX(int n_permutations){
 
     printf("\nVerifying permutations... ");
     for (int i = 0; i < n_permutations; ++i) {
-        verify_permutation_avx(&pu[i]);
+        verify_permutation(pu[i]);
     }
     printf("Done\n");
     printf("AVX Natural Fisher Yates ................................... %10lld ", cycles_tot);

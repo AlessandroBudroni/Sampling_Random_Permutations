@@ -48,14 +48,14 @@ void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
     for (uint16_t i = 0; i < PARAM_N1; i++) {
         pi = &p_out[i];
         *pi = p_rand[i];
-        tmp = 0;
+        tmp = i;
         for (uint16_t j = 0; j < i; j++) {
             pj = &p_rand[j];
             mask = GT16(*pj, *pi);
-            tmp += mask;
+            tmp -= mask;
             *pj -= mask;
         }
-        *pi += i-tmp;
+        *pi += tmp;
     }
 }
 

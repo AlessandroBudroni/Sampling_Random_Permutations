@@ -70,7 +70,7 @@ static inline __m256i mask_avx2_natural(const __m256i pi, const __m256i pj, cons
     return mask;
 }
 
-void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
+void fisher_yates_shuffle_natural_avx(perm_t p_out, permAVX_t *p_rand) {
 
     uint16_t *pi, *pj, tmp;
     uint16_t mask;
@@ -78,11 +78,9 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
     __m256i avxone = _mm256_set1_epi16(1);
 
     for (int i = 0; i < PARAM_N1; i++) {
-        pi = &p_out->i[i];
+        pi = &p_out[i];
         *pi = p_rand->i[i];
         avxpi = _mm256_set1_epi16((int16_t)*pi);
-
-        tmp = 0;
 
         // avx part
         avxsum = _mm256_setzero_si256();
@@ -94,13 +92,14 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
         }
 
         // non avx part
+        tmp = i-hsum_256_16_avx(avxsum);
         for (int j = rem_str[i]; j < rem_end[i]; j++) {
             pj = &p_rand->i[j];
             mask = GT16(*pj, *pi);
-            tmp += mask;
+            tmp -= mask;
             *pj -= mask;
         }
-        *pi += i - (tmp +hsum_256_16_avx(avxsum));
+        *pi += tmp;
     }
 }
 
@@ -111,7 +110,7 @@ void fisher_yates_shuffle_natural_avx(permAVX_t *p_out, permAVX_t *p_rand) {
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random_natural_avx(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_natural_avx(perm_t p_out, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
     permAVX_t p_rand = {0};

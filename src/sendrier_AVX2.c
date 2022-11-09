@@ -116,6 +116,8 @@ void perm_set_random_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
         sample_random_chunk_avx((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_shuffle_avx_n2(p);
+
+    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
 int verify_permutation_avx(permAVX_t *p) {
