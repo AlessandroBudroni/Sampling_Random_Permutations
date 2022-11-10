@@ -101,7 +101,7 @@ static void sample_random_chunk_avx( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], u
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 

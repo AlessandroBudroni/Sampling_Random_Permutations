@@ -2,26 +2,40 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include <immintrin.h>
-#include <stdio.h>
 #include "utils.h"
+#include <time.h>
+#include <stdio.h>
 
-int test_addition_modulo(){
+/* warm up cpu to avoid cpu throttling */
+double warm_up(){
 
-    __m128i q =  _mm_set_epi16(30, 30, 30, 30, 30, 30, 30, 30);
-    __m128i qm1 =  _mm_set_epi16(29, 29, 29, 29, 29, 29, 29, 29);
-    __m128i a = _mm_set_epi16(10, 27,  8, 9, 26,  3, 15,  28);
-    __m128i b = _mm_set_epi16(20, 22, 18, 9, 10, 13,  5, 14);
-    __m128i dst = _mm_add_epi16(a, b);
-    __m128i mask = _mm_cmpgt_epi16(dst, qm1);
-    __m128i qmask = _mm_and_si128(q, mask);
+    double time_taken, start, end;
 
-    dst = _mm_sub_epi16(dst, qmask);
+    start = (double) clock();
+    volatile int k = 2, m = 3;
+    for (int i = 0; i < N_ITERATIONS*N_PERMUTATIONS; ++i) {
+        k *= k;
+        k = k % 0X800;
+        k = k+1;
+        for (int j = 0; j < N_ITERATIONS*N_PERMUTATIONS; ++j) {
+            m *= k;
+            m = m % 0X400;
+            m += 1;
+        }
+    }
+    end = (double) clock();
 
-    /* Display the elements of the result vector */
-    uint16_t *res = (uint16_t*)&dst;
-    printf("%d %d %d %d %d %d %d %d\n",
-           res[7], res[6], res[5], res[4], res[3], res[2], res[1], res[0]);
+    if(k == m || m == 0){
+        return 0;
+    }
+    time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
+    return time_taken;
+}
 
-    return 0;
+/* Access system counter for benchmarking */
+int64_t cpucycles(void)
+{
+    unsigned int hi, lo;
+    __asm__ volatile ("rdtsc\n\t" : "=a" (lo), "=d"(hi));
+    return ((int64_t)lo) | (((int64_t)hi) << 32);
 }

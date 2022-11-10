@@ -5,6 +5,8 @@
 #ifndef PLAYAVX2_UTILS_H
 #define PLAYAVX2_UTILS_H
 
+#include <stdint.h>
+
 #ifdef OTHER
 #define SEED_BYTES 16
 #define PARAM_N1            1238
@@ -23,6 +25,11 @@
 #define	EXIT_FAILURE	1
 #define	EXIT_SUCCESS	0
 
-int test_addition_modulo();
+// TESTING
+#define N_PERMUTATIONS 2000
+#define N_ITERATIONS 10
+
+int64_t cpucycles(void);
+double warm_up();
 
 #endif //PLAYAVX2_UTILS_H

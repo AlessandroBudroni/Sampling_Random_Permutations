@@ -16,7 +16,7 @@ typedef union {
     uint16_t i[PARAM_N1];
 } permAVX_t;
 
-void perm_set_random_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]);
+void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]);
 
 int verify_permutation_avx(permAVX_t *p);
 
