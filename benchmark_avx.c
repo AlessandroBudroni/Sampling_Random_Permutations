@@ -1,11 +1,12 @@
 
 #include <stdio.h>
 
-#include "src/utils.h"
-#include "src/fisher_yates.h"
-#include "src/sendrier_AVX2.h"
-#include "src/fisher_yates_natural_AVX2.h"
-#include "src/djbsort_sample_avx.h"
+#include "include/utils.h"
+#include "include/definitions.h"
+#include "include/fisher_yates.h"
+#include "include/sendrier_AVX2.h"
+#include "include/fisher_yates_AVX2.h"
+#include "include/djbsort_sample_avx.h"
 #include <time.h>
 
 void bench_djbsort_AVX(int n_permutations){

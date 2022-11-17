@@ -5,7 +5,7 @@
 
 #include "../djbsort/djbsort.h"
 #include "../fips202/fips202.h"
-#include "djbsort_sample_avx.h"
+#include "../include/djbsort_sample_avx.h"
 #include <stdint.h>
 #include <string.h>
 

@@ -2,8 +2,8 @@
 // Created by Alessandro Budroni on 10/10/2022.
 //
 
-#include "fisher_yates.h"
-#include "fisher_yates_natural_AVX2.h"
+#include "../include/fisher_yates.h"
+#include "../include/fisher_yates_AVX2.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

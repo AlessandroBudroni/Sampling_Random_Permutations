@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "sendrier_AVX2.h"
+#include "../include/sendrier_AVX2.h"
 #include "../fips202/fips202.h"
 
 #include <immintrin.h>
@@ -32,7 +32,7 @@ static inline __m256i mask_avx2(const __m256i pi, const __m256i pj){ // unsigned
     return mask;
 }
 
-static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
+static void fisher_yates_shuffle_avx_1(permAVX_t *p) {
     uint16_t mask;
     uint16_t pi, *pj;
 
@@ -61,13 +61,50 @@ static void fisher_yates_shuffle_avx_n2(permAVX_t *p) {
     }
 }
 
-/**
- * Sample random data for Fisher Yates permutation
- * @param rsource prng struct
- * @param p permutation array
- * @param size size of permutation array.
- * @return EXIT_FAILURE in case of rejection (sampled data not sufficient), EXIT_SUCCESS in case of success
- */
+static int16_t hxor_256_16_avx(__m256i v) {
+
+    __m128i *pblck128 = (__m128i*)&v;
+    pblck128[0] = _mm_xor_si128(pblck128[0], pblck128[1]);
+
+    int64_t *pblck64 = (int64_t*)pblck128;
+    pblck64[0] ^= pblck64[1];
+
+    int32_t *pblck32 = (int32_t*)pblck64;
+    pblck32[0] ^= pblck32[1];
+
+    int16_t *pblck16 = (int16_t*)pblck32;
+    pblck16[0] ^= (int16_t)pblck16[1];
+
+    return pblck16[0];
+}
+
+static void fisher_yates_shuffle_avx_2(permAVX_t *p) {
+    uint16_t mask;
+    uint16_t *pi;
+
+    __m256i avxmask;
+    __m256i avxpi;
+
+    for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
+
+        // non AVX part
+        pi = &p->i[i];
+        mask = 0;
+        for (int16_t j = i + 1; j < PARAM_N1; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
+            mask ^= 1-ISNOTZERO(p->i[j] - *pi);
+        }
+
+        // AVX part
+        avxpi = _mm256_set1_epi16((int16_t)*pi);
+        for (int16_t j = precomp_div[i]; j < AVX256_X_BLOCK; ++j) {
+            avxmask = _mm256_and_si256(avxmask,_mm256_cmpeq_epi16(p->avx[j], avxpi));
+        }
+        mask ^= hxor_256_16_avx(avxmask);
+        *pi = MASKAPPLY(-mask, i, *pi);
+    }
+}
+
+
 static int set_random_with_bound_for_permutation_avx(permAVX_t *p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
     int size = PARAM_N1;
@@ -94,13 +131,6 @@ static void sample_random_chunk_avx( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], u
     shake128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
 }
 
-/**
- * Apply fisher yates to sample permutation. This function should be called after
- * set_random_with_bound_for_permutation()
- * @param p permutation with random data already filled in
- * @param size of permutation
- * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
- */
 void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
@@ -115,7 +145,7 @@ void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk_avx((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_avx_n2(p);
+    fisher_yates_shuffle_avx_2(p);
 
     memset(rnd_buff, 0, sizeof(rnd_buff));
 }

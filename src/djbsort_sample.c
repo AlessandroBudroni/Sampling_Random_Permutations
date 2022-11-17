@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include "djbsort_sample.h"
+#include "../include/djbsort_sample.h"
 #include "../djbsort/djbsort.h"
 #include "../fips202/fips202.h"
 #include <stdint.h>

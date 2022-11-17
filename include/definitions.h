@@ -1,9 +1,9 @@
 //
-// Created by Alessandro Budroni on 07/09/2022.
+// Created by Alessandro Budroni on 15/11/2022.
 //
 
-#ifndef PLAYAVX2_UTILS_H
-#define PLAYAVX2_UTILS_H
+#ifndef RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_H
+#define RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_H
 
 #include <stdint.h>
 
@@ -29,7 +29,6 @@
 #define N_PERMUTATIONS 2000
 #define N_ITERATIONS 10
 
-int64_t cpucycles(void);
-double warm_up();
+typedef uint16_t perm_t[PARAM_N1];
 
-#endif //PLAYAVX2_UTILS_H
+#endif //RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_H

@@ -2,9 +2,9 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "utils.h"
+#include "../include/utils.h"
+#include "../include/definitions.h"
 #include <time.h>
-#include <stdio.h>
 
 /* warm up cpu to avoid cpu throttling */
 double warm_up(){
@@ -25,7 +25,7 @@ double warm_up(){
     }
     end = (double) clock();
 
-    if(k == m || m == 0){
+    if(k == m && m == 0){
         return 0;
     }
     time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
