@@ -4,22 +4,23 @@
 
 #include <stdint.h>
 #include <string.h>
-#include "../include/definitions.h"
-#include "../include/utils.h"
-#include "../include/fisher_yates.h"
+#include "../src/definitions.h"
+#include "../src/utils.h"
+#include "../src/fisher_yates.h"
+
+#define ISNOTZERO(n) ((((n) | (~(n) + 1)) >> 15) & (uint8_t)0x1)
 
 void fisher_yates_shuffle_bike(perm_t pout, const perm_t pin) {
-
     for (size_t i = PARAM_N1; i-- > 0;) {
         uint32_t l = pin[i];
 
         // Loop over (the end of) the output array to determine if l is a duplicate
-        uint32_t is_dup = 0;
+        uint32_t is_not_dup = 1;
         for (size_t j = i + 1; j < PARAM_N1; ++j) {
-            is_dup ^= secure_cmp32(l, pout[j]);
+            is_not_dup &= ISNOTZERO(l - pout[j]);
         }
-        uint32_t mask =- is_dup;
-        pout[i] = (mask & i) ^ (~mask & l);
+        uint32_t mask = -is_not_dup;
+        pout[i] = (~mask & i) ^ (mask & l);
     }
 }
 

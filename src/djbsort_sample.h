@@ -6,10 +6,8 @@
 #define SECURE_FISHER_YATES_DJBSORT_SAMPLE_H
 
 #include "utils.h"
-
-#include "utils.h"
 #include "fisher_yates.h"
 
-void perm_set_random_djbsort_avx(perm_t p, uint8_t seed[SEED_BYTES]);
+void perm_set_random_djbsort(perm_t p, uint8_t seed[SEED_BYTES]);
 
 #endif //SECURE_FISHER_YATES_DJBSORT_SAMPLE_H

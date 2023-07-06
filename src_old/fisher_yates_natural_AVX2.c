@@ -2,8 +2,7 @@
 // Created by Alessandro Budroni on 10/10/2022.
 //
 
-#include "../include/fisher_yates.h"
-#include "../include/fisher_yates_AVX2.h"
+#include "src/fisher_yates.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>

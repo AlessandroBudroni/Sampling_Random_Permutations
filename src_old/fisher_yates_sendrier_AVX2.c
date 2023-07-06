@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "../include/sendrier_AVX2.h"
+#include "../include/fisher_yates_sendrier_AVX2.h"
 #include "../fips202/fips202.h"
 
 #include <immintrin.h>
@@ -145,7 +145,7 @@ void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk_avx((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_avx_2(p);
+    fisher_yates_shuffle_avx_1(p);
 
     memset(rnd_buff, 0, sizeof(rnd_buff));
 }

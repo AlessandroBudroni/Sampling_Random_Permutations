@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include <immintrin.h>
-#include "fisher_yates.h"
+#include "../src/fisher_yates.h"
 
 #define AVX256_X_BLOCK      ((PARAM_N1)/16)
 

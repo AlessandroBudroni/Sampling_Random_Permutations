@@ -2,13 +2,13 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include "../include/djbsort_sample.h"
+#include "djbsort_sample.h"
 #include "../djbsort/djbsort.h"
 #include "../fips202/fips202.h"
 #include <stdint.h>
 #include <string.h>
 
-int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
+static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
 
     // Use 21 bits for randomness
     for (int i = 0; i < PARAM_N1; i++) {
