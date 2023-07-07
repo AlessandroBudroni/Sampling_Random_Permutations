@@ -14,6 +14,8 @@
 //#define ISNOTZERO(n) ((((n) | (~(n) + 1)) >> 15) & (uint8_t)0x1)
 // Return either a or b according to the mask
 #define MASKAPPLY(mask, a, b) ((a) ^ (mask & (a ^ b))) //(((mask) & (a)) | ((~(mask)) & (b)))
+// constant time "greater than"
+#define GT16(b1,b2) ((uint16_t)((uint16_t)(b2) -(uint16_t)(b1)) >> 15 & (uint8_t)0x1)
 
 
 void sample_random_chunk( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], uint8_t expanded_seed[SEED_BYTES + 2]);

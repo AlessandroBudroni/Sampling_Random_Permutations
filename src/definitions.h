@@ -17,7 +17,7 @@
 #endif
 
 #define SEED_BYTES          16
-#define PARAM_N1            128
+#define PARAM_N1            1024
 #define CHUNK_RND_BYTES_LENGTH 5000
 #define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
 #define DOMAIN_SEPARATOR_PERM 0x03
@@ -27,7 +27,7 @@
 
 // TESTING
 #define N_PERMUTATIONS 200
-#define N_ITERATIONS 100
+#define N_ITERATIONS 10
 
 typedef uint16_t perm_t[PARAM_N1];
 
