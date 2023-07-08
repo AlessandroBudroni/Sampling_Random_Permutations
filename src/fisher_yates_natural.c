@@ -9,7 +9,7 @@
 
 static int set_random_with_bound_for_permutation_natural(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
-    int size = PARAM_N1;
+    int size = PARAM_N;
     uint16_t rnd;
     int32_t index = 0;
     uint32_t max;
@@ -34,7 +34,7 @@ static void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
     uint16_t pi, *pj;
     uint16_t tmp;
     uint16_t mask;
-    for (uint16_t i = 0; i < PARAM_N1; i++) {
+    for (uint16_t i = 0; i < PARAM_N; i++) {
         pi = p_rand[i];
         tmp = i;
         for (uint16_t j = 0; j < i; j++) {

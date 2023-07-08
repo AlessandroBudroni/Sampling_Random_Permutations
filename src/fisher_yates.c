@@ -10,10 +10,10 @@
 
 static void fisher_yates_non_constant_time(perm_t p, const perm_t r) {
     uint16_t tmp;
-    for (int i = 0; i < PARAM_N1; ++i) {
+    for (int i = 0; i < PARAM_N; ++i) {
         p[i] = i;
     }
-    for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
+    for (int16_t i = PARAM_N - 1; i >= 0; --i) {
         tmp = p[i];
         p[i] = p[r[i]];
         p[r[i]] = tmp;
@@ -22,7 +22,7 @@ static void fisher_yates_non_constant_time(perm_t p, const perm_t r) {
 
 static int set_random_with_bound_for_permutation_non_ct(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
-    int size = PARAM_N1;
+    int size = PARAM_N;
     uint16_t rnd;
     int32_t index = 0;
     uint32_t max;

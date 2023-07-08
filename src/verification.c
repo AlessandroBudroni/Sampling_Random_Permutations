@@ -7,17 +7,17 @@
 
 int verify_permutation(const perm_t p) {
 
-    uint16_t verification[PARAM_N1] = {0};
+    uint16_t verification[PARAM_N] = {0};
 
-    for (int i = 0; i < PARAM_N1; ++i) {
-        if (p[i] > PARAM_N1){
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (p[i] > PARAM_N){
             printf("Verification failure with index %d and value %d\n", i, p[i]);
             return EXIT_FAILURE;
         }
         verification[p[i]]++;
     }
 
-    for (int i = 0; i < PARAM_N1; ++i) {
+    for (int i = 0; i < PARAM_N; ++i) {
         if (verification[i] != 1) {
             printf("Verification failure at %d rep %d\n", i, p[i]);
             return EXIT_FAILURE;

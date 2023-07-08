@@ -8,7 +8,7 @@
 #include "src/verification.h"
 #include <time.h>
 
-static void bench_fisher_yates_non_ct(int n_permutations){
+static void bench_fisher_yates_non_ct(){
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -17,7 +17,7 @@ static void bench_fisher_yates_non_ct(int n_permutations){
 
     // Fisher Yates non-constant time
 
-    perm_t p[n_permutations];
+    perm_t p[N_PERMUTATIONS];
 
     cycles_tot = 0;
     time_taken = 0;
@@ -26,7 +26,7 @@ static void bench_fisher_yates_non_ct(int n_permutations){
         start = (double) clock();
         cycles1 = cpucycles();
 
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
             perm_set_random_fisher_yates_non_ct(p[i], (uint8_t *) seed);
         }
@@ -35,7 +35,7 @@ static void bench_fisher_yates_non_ct(int n_permutations){
         end = (double)clock();
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             verify_permutation(p[i]);
         }
     }
@@ -46,7 +46,7 @@ static void bench_fisher_yates_non_ct(int n_permutations){
     printf("Time taken %lf\n\n", time_taken);
 }
 
-static void bench_djbsort(int n_permutations){
+static void bench_djbsort(){
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -55,7 +55,7 @@ static void bench_djbsort(int n_permutations){
 
     // Djbsort
 
-    perm_t p[n_permutations];
+    perm_t p[N_PERMUTATIONS];
 
     cycles_tot = 0;
     time_taken = 0;
@@ -63,7 +63,7 @@ static void bench_djbsort(int n_permutations){
     for (int j = 0; j <N_ITERATIONS; ++j) {
         start = (double) clock();
         cycles1 = cpucycles();
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
             perm_set_random_djbsort(p[i], (uint8_t *) seed);
         }
@@ -72,7 +72,7 @@ static void bench_djbsort(int n_permutations){
         end = (double)clock();
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             verify_permutation(p[i]);
         }
     }
@@ -83,7 +83,7 @@ static void bench_djbsort(int n_permutations){
     printf("Time taken %lf\n\n", time_taken);
 }
 
-static void bench_fisher_yates_sendrier(int n_permutations){
+static void bench_fisher_yates_sendrier(){
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -92,7 +92,7 @@ static void bench_fisher_yates_sendrier(int n_permutations){
 
     // Sendrier Fisher Yates
 
-    perm_t p[n_permutations];
+    perm_t p[N_PERMUTATIONS];
 
     cycles_tot = 0;
     time_taken = 0;
@@ -101,7 +101,7 @@ static void bench_fisher_yates_sendrier(int n_permutations){
         start = (double) clock();
         cycles1 = cpucycles();
 
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
             perm_set_random_sendrier(p[i], (uint8_t *) seed);
         }
@@ -110,7 +110,7 @@ static void bench_fisher_yates_sendrier(int n_permutations){
         end = (double)clock();
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             verify_permutation(p[i]);
         }
     }
@@ -121,9 +121,9 @@ static void bench_fisher_yates_sendrier(int n_permutations){
     printf("Time taken %lf\n\n", time_taken);
 }
 
-void bench_fisher_yates_ternary(int n_permutations){
+void bench_fisher_yates_ternary(){
 
-    perm_t p[n_permutations];
+    perm_t p[N_PERMUTATIONS];
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -139,7 +139,7 @@ void bench_fisher_yates_ternary(int n_permutations){
         start = (double) clock();
         cycles1 = cpucycles();
 
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
             perm_set_random_sendrier_ternary_operator(p[i], (uint8_t *) seed);
         }
@@ -147,7 +147,7 @@ void bench_fisher_yates_ternary(int n_permutations){
         end = (double)clock();
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             verify_permutation(p[i]);
         }
     }
@@ -158,9 +158,9 @@ void bench_fisher_yates_ternary(int n_permutations){
     printf("Time taken %lf\n\n", time_taken);
 }
 
-void bench_fisher_yates_natural_FY(int n_permutations){
+void bench_fisher_yates_natural_FY(){
 
-    perm_t p[n_permutations];
+    perm_t p[N_PERMUTATIONS];
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -176,7 +176,7 @@ void bench_fisher_yates_natural_FY(int n_permutations){
         start = (double) clock();
         cycles1 = cpucycles();
 
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
             perm_set_random_natural(p[i], (uint8_t *) seed);
         }
@@ -184,7 +184,7 @@ void bench_fisher_yates_natural_FY(int n_permutations){
         end = (double)clock();
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             verify_permutation(p[i]);
         }
     }
@@ -195,46 +195,6 @@ void bench_fisher_yates_natural_FY(int n_permutations){
     printf("Time taken %lf\n\n", time_taken);
 }
 
-/*
-void bench_fisher_yates_bike(int n_permutations){
-
-    perm_t p[n_permutations];
-
-    unsigned long long cycles_tot, cycles1, cycles2;
-    double start, end;
-    uint16_t seed[SEED_BYTES / 2] = {0};
-    double time_taken;
-
-    // BIKE Fisher Yates
-
-    cycles_tot = 0;
-    time_taken = 0;
-
-    for (int j = 0; j <N_ITERATIONS; ++j) {
-        start = (double) clock();
-        cycles1 = cpucycles();
-
-        for (int i = 0; i < n_permutations; ++i) {
-            seed[0] = i;
-            perm_set_random_bike(p[i], (uint8_t *) seed);
-        }
-        cycles2 = cpucycles();
-        end = (double)clock();
-        time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
-        cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
-            verify_permutation(p[i]);
-        }
-    }
-
-    printf("Sendrier Fisher BIKE ........................................ %10lld ", cycles_tot);
-    printf("cycles");
-    printf("\n");
-    printf("Time taken %lf\n\n", time_taken);
-}
-
-*/
-
 int main() {
 
     printf("\nWarming up... ");fflush(stdout);
@@ -243,15 +203,13 @@ int main() {
     printf("Time taken %lf\n\n", time_taken);
 
 
-    printf("Start benchmark. Sample %d permutations of length %d, repeat %d times\n\n", N_PERMUTATIONS, PARAM_N1, N_ITERATIONS);fflush(stdout);
+    printf("Start benchmark. Sample %d permutations of length %d, repeat %d times\n\n", N_PERMUTATIONS, PARAM_N, N_ITERATIONS);fflush(stdout);
 
-    bench_djbsort(N_PERMUTATIONS);
-    bench_fisher_yates_ternary(N_PERMUTATIONS);
-    bench_fisher_yates_natural_FY(N_PERMUTATIONS);
-    bench_fisher_yates_sendrier(N_PERMUTATIONS);
-    bench_fisher_yates_non_ct(N_PERMUTATIONS);
-//    bench_fisher_yates_bike(N_PERMUTATIONS);
-
+    bench_djbsort();
+    bench_fisher_yates_ternary();
+    bench_fisher_yates_natural_FY();
+    bench_fisher_yates_sendrier();
+    bench_fisher_yates_non_ct();
 
     printf("\nDone\n");
     

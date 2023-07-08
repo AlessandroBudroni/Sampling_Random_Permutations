@@ -2,18 +2,14 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "../include/fisher_yates_sendrier_AVX2.h"
-#include "../fips202/fips202.h"
+#include "../../fips202/fips202.h"
+#include "fisher_yates_sendrier_AVX2.h"
+#include "../common.h"
 
 #include <immintrin.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-
-#define ISNOTZERO(n) ((((n) | (~(n) + 1)) >> 31) & 0x1)
-
-#define MASKAPPLY(mask, i, pj) (((mask) & (i)) | ((~(mask)) & (pj)))
-
 
 static inline __m256i mask_avx2(const __m256i pi, const __m256i pj){ // unsigned is safer for bit operations
 
@@ -32,36 +28,8 @@ static inline __m256i mask_avx2(const __m256i pi, const __m256i pj){ // unsigned
     return mask;
 }
 
-static void fisher_yates_shuffle_avx_1(permAVX_t *p) {
-    uint16_t mask;
-    uint16_t pi, *pj;
-
-    __m256i avxmask;
-    __m256i avxpi, imask;
-
-    for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
-
-        // non AVX part
-        pi = p->i[i];
-        for (int16_t j = i + 1; j < precomp_split[i]; ++j) {
-            pj = &p->i[j];
-            mask = ISNOTZERO(*pj - pi) - 1;
-            *pj = MASKAPPLY(mask, i, *pj); //(mask & i) | (~mask & *pj);
-        }
-
-        // AVX part
-        imask = _mm256_set1_epi16((int16_t)i);
-        avxpi = _mm256_set1_epi16((int16_t)pi);
-        for (int16_t j = precomp_div[i]; j < AVX256_X_BLOCK; ++j) {
-//            avxmask = mask_avx2(p->avx[j], avxpi);
-            // alternative to the above
-            avxmask = _mm256_cmpeq_epi16(p->avx[j], avxpi);
-            p->avx[j] = _mm256_or_si256(_mm256_and_si256(avxmask, imask),  _mm256_and_si256(~avxmask, p->avx[j]));
-        }
-    }
-}
-
-static int16_t hxor_256_16_avx(__m256i v) {
+// xor horizontally 16 int16_t packed in __m256i
+static int16_t hxor_256_16_avx2(__m256i v) {
 
     __m128i *pblck128 = (__m128i*)&v;
     pblck128[0] = _mm_xor_si128(pblck128[0], pblck128[1]);
@@ -78,36 +46,35 @@ static int16_t hxor_256_16_avx(__m256i v) {
     return pblck16[0];
 }
 
-static void fisher_yates_shuffle_avx_2(permAVX_t *p) {
+static void fisher_yates_shuffle_sendrier_avx2(permAVX_t *p) {
     uint16_t mask;
-    uint16_t *pi;
+    uint16_t pi, *pj;
 
     __m256i avxmask;
-    __m256i avxpi;
+    __m256i avxpi, imask;
 
-    for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
+    for (int i = PARAM_N - 1; i >= 0; --i) {
 
         // non AVX part
-        pi = &p->i[i];
         mask = 0;
-        for (int16_t j = i + 1; j < PARAM_N1; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
-            mask ^= 1-ISNOTZERO(p->i[j] - *pi);
+        pi = p->i[i];
+        for (int j = i + 1; j < precomp_split[i]; ++j) {
+            mask |= ISZERO(p->i[j] - pi);
         }
 
         // AVX part
-        avxpi = _mm256_set1_epi16((int16_t)*pi);
+        avxpi = _mm256_set1_epi16((int16_t)pi);
         for (int16_t j = precomp_div[i]; j < AVX256_X_BLOCK; ++j) {
-            avxmask = _mm256_and_si256(avxmask,_mm256_cmpeq_epi16(p->avx[j], avxpi));
+            avxmask = CHECK WHETHER THEY ARE EQUAL OR NOT ((p->avx[j], avxpi));
         }
-        mask ^= hxor_256_16_avx(avxmask);
-        *pi = MASKAPPLY(-mask, i, *pi);
+        mask ^= MAKE HORIZONTAL |avxmask;
+        pi = MASKAPPLY(-mask, i, pi);
     }
 }
 
-
 static int set_random_with_bound_for_permutation_avx(permAVX_t *p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
-    int size = PARAM_N1;
+    int size = PARAM_N;
     uint16_t rnd;
     int32_t index = 0;
     uint32_t max;
@@ -131,7 +98,7 @@ static void sample_random_chunk_avx( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], u
     shake128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
 }
 
-void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_sendrier_avx2(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -145,24 +112,24 @@ void perm_set_random_sendrier_avx(permAVX_t *p, uint8_t seed[SEED_BYTES]) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk_avx((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_avx_1(p);
+    fisher_yates_shuffle_sendrier_avx2(p);
 
     memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
-int verify_permutation_avx(permAVX_t *p) {
+int verify_permutation_avx2(permAVX_t *p) {
 
-    uint16_t verification[PARAM_N1] = {0};
+    uint16_t verification[PARAM_N] = {0};
 
-    for (int i = 0; i < PARAM_N1; ++i) {
-        if (p->i[i] > PARAM_N1){
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (p->i[i] > PARAM_N){
             printf("Verification failure with index %d and value %d\n", i, p->i[i]);
             return EXIT_FAILURE;
         }
         verification[p->i[i]]++;
     }
 
-    for (int i = 0; i < PARAM_N1; ++i) {
+    for (int i = 0; i < PARAM_N; ++i) {
         if (verification[i] != 1) {
             printf("Verification failure at %d rep %d\n", i, p->i[i]);
             return EXIT_FAILURE;

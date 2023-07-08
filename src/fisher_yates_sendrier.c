@@ -13,9 +13,9 @@
 //void fisher_yates_shuffle_sendrier(perm_t p) {
 //    uint16_t mask;
 //    uint16_t pi, *pj;
-//    for (int16_t i = PARAM_N1 - 1; i >= 0; --i) {
+//    for (int16_t i = PARAM_N - 1; i >= 0; --i) {
 //        pi = p[i];
-//        for (int16_t j = i + 1; j < PARAM_N1; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
+//        for (int16_t j = i + 1; j < PARAM_N; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
 //            pj = &p[j];
 //            mask = ISNOTZERO(*pj - pi) - 1;
 //            *pj = MASKAPPLY(mask, i, *pj); //(mask & i) | (~mask & *pj);
@@ -25,9 +25,9 @@
 
 static void fisher_yates_shuffle_sendrier_ternary(perm_t p) {
     uint16_t pi;
-    for (int i = PARAM_N1 - 1; i >= 0; --i) {
+    for (int i = PARAM_N - 1; i >= 0; --i) {
         pi = p[i];
-        for (int j = i + 1; j < PARAM_N1; ++j) {
+        for (int j = i + 1; j < PARAM_N; ++j) {
             p[j] = p[j] == pi ? i : p[j];
         }
     }
@@ -36,10 +36,10 @@ static void fisher_yates_shuffle_sendrier_ternary(perm_t p) {
 static void fisher_yates_shuffle_sendrier(perm_t p) {
     uint16_t mask;
     uint16_t *pi;
-    for (int i = PARAM_N1 - 1; i >= 0; --i) {
+    for (int i = PARAM_N - 1; i >= 0; --i) {
         pi = &p[i];
         mask = 0;
-        for (int j = i + 1; j < PARAM_N1; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
+        for (int j = i + 1; j < PARAM_N; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
             mask |= ISZERO(p[j] - *pi);
         }
         *pi = MASKAPPLY(-mask, i, *pi);
@@ -48,7 +48,7 @@ static void fisher_yates_shuffle_sendrier(perm_t p) {
 
 static int set_bounded_random_for_sendrier_shuffle(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
-    int size = PARAM_N1;
+    int size = PARAM_N;
     uint16_t rnd;
     int32_t index = 0;
     uint32_t max;
