@@ -3,8 +3,8 @@
 //
 
 #include "djbsort_sample.h"
-#include "../djbsort/djbsort.h"
-#include "../fips202/fips202.h"
+#include "../../djbsort/djbsort.h"
+#include "../../fips202/fips202.h"
 #include <stdint.h>
 #include <string.h>
 

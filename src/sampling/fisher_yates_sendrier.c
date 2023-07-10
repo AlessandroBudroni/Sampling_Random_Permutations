@@ -3,7 +3,7 @@
 //
 
 #include "fisher_yates_sendrier.h"
-#include "common.h"
+#include "../common.h"
 
 #include <stdint.h>
 #include <stdlib.h>

@@ -1,12 +1,14 @@
 
 #include <stdio.h>
 
-#include "src/utils.h"
-#include "src/definitions.h"
-#include "src/fisher_yates.h"
-#include "src/AVX2/djbsort_sample_AVX2.h"
-#include "src/AVX2/fisher_yates_natural_AVX2.h"
-#include "src/verification.h"
+#include "../src/utils.h"
+#include "../src/definitions.h"
+#include "../src/sampling/fisher_yates.h"
+#include "../src/sampling/AVX2/djbsort_sample_AVX2.h"
+#include "../src/sampling/AVX2/fisher_yates_natural_AVX2.h"
+#include "../src/sampling/AVX2/fisher_yates_sendrier_AVX2.h"
+#include "../src/verification.h"
+#include "../src/verification_AVX2.h"
 #include <time.h>
 
 static void bench_fisher_yates_non_ct(){
@@ -116,15 +118,15 @@ void bench_fisher_yates_natural_AVX2(){
         }
     }
 
-    printf("AVX Natural Fisher Yates ................................... %10lld ", cycles_tot);
+    printf("AVX2 Fisher Yates Natural ................................... %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
 
 }
 
-/*
-void bench_fisher_yates_sendrier_FY_AVX(int n_permutations){
+
+void bench_fisher_yates_sendrier_AVX2(){
 
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
@@ -133,7 +135,7 @@ void bench_fisher_yates_sendrier_FY_AVX(int n_permutations){
 
     // AVX Fisher Yates
 
-    permAVX_t pu[n_permutations];
+    permAVX_t pu[N_PERMUTATIONS];
 
     cycles_tot = 0;
     time_taken = 0;
@@ -142,27 +144,25 @@ void bench_fisher_yates_sendrier_FY_AVX(int n_permutations){
         start = (double) clock();
         cycles1 = cpucycles();
 
-        for (int i = 0; i < n_permutations; ++i) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
-            perm_set_random_sendrier_avx(&pu[i], (uint8_t *) seed);
+            perm_set_random_sendrier_avx2(&pu[i], (uint8_t *) seed);
         }
         cycles2 = cpucycles();
         end = (double)clock();
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
-        for (int i = 0; i < n_permutations; ++i) {
-            verify_permutation_avx(&pu[i]);
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
+            verify_permutation_avx2(&pu[i]);
         }
     }
 
-    printf("AVX Sendrier Fisher Yates .................................. %10lld ", cycles_tot);
+    printf("AVX2 Fisher Yates Sendrier .................................. %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
 
 }
-
-*/
 
 
 int main() {
@@ -179,6 +179,7 @@ int main() {
 
     bench_fisher_yates_non_ct();
     bench_fisher_yates_natural_AVX2();
+    bench_fisher_yates_sendrier_AVX2();
     bench_djbsort_AVX2();
 
     printf("\nDone\n");

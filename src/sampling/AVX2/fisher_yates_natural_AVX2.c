@@ -3,7 +3,7 @@
 //
 
 #include "fisher_yates_natural_AVX2.h"
-#include "../common.h"
+#include "../../common.h"
 #include <string.h>
 
 /**
@@ -67,7 +67,7 @@ static inline __m256i mask_natural_avx2(const __m256i pi, const __m256i pj, cons
     return mask;
 }
 
-void fisher_yates_shuffle_natural_avx(perm_t p_out, permAVX_t *p_rand) {
+void fisher_yates_shuffle_natural_avx2(perm_t p_out, permAVX_t *p_rand) {
 
     uint16_t *pi, *pj, tmp;
     uint16_t mask;
@@ -121,5 +121,5 @@ void perm_set_random_fisher_yates_natural_avx2(perm_t p_out, uint8_t seed[SEED_B
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_natural_avx(p_out, &p_rand);
+    fisher_yates_shuffle_natural_avx2(p_out, &p_rand);
 }

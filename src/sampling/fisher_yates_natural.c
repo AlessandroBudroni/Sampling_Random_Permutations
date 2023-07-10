@@ -3,7 +3,7 @@
 //
 
 #include "fisher_yates_natural.h"
-#include "common.h"
+#include "../common.h"
 #include <stdlib.h>
 #include <string.h>
 

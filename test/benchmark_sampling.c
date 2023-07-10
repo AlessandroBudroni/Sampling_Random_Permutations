@@ -1,11 +1,11 @@
 
 #include <stdio.h>
 
-#include "src/utils.h"
-#include "src/fisher_yates.h"
-#include "src/fisher_yates_sendrier.h"
-#include "src/djbsort_sample.h"
-#include "src/verification.h"
+#include "../src/utils.h"
+#include "../src/sampling/fisher_yates.h"
+#include "../src/sampling/fisher_yates_sendrier.h"
+#include "../src/sampling/djbsort_sample.h"
+#include "../src/verification.h"
 #include <time.h>
 
 static void bench_fisher_yates_non_ct(){

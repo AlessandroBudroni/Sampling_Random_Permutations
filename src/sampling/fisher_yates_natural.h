@@ -5,7 +5,7 @@
 #ifndef RANDOM_PERMUTATION_SAMPLING_FISHER_YATES_NATURAL_H
 #define RANDOM_PERMUTATION_SAMPLING_FISHER_YATES_NATURAL_H
 
-#include "definitions.h"
+#include "../definitions.h"
 
 void perm_set_random_natural(perm_t p_out, uint8_t seed[SEED_BYTES]);
 

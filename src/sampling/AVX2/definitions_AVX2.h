@@ -6,7 +6,7 @@
 #define RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_AVX2_H
 
 #include <immintrin.h>
-#include "../definitions.h"
+#include "../../definitions.h"
 
 #define AVX256_X_BLOCK      ((PARAM_N)/16)
 
