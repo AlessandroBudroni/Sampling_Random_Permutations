@@ -2,32 +2,32 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include "../include/djbsort_sample.h"
-#include "../djbsort/djbsort.h"
-#include "../fips202/fips202.h"
+#include "djbsort_sample.h"
+#include "../../djbsort/djbsort.h"
+#include "../../fips202/fips202.h"
 #include <stdint.h>
 #include <string.h>
 
-int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
+static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
 
     // Use 21 bits for randomness
-    for (int i = 0; i < PARAM_N1; i++) {
+    for (int i = 0; i < PARAM_N; i++) {
         buffer[i] <<= 11;
         buffer[i] |= i;
     }
 
     // sort
-    uint32_sort(buffer, PARAM_N1);
+    uint32_sort(buffer, PARAM_N);
 
     // check that no double random values were produced
-    for (int i = 1; i < PARAM_N1; i++) {
+    for (int i = 1; i < PARAM_N; i++) {
         if ((buffer[i - 1] >> 11) == (buffer[i] >> 11)) {
             return EXIT_FAILURE;
         }
     }
 
     // extract permutation from buffer
-    for (int i = 0; i < PARAM_N1; i++) {
+    for (int i = 0; i < PARAM_N; i++) {
         p[i] = (uint16_t)(buffer[i] & 0x7FF);
     }
     return EXIT_SUCCESS;
@@ -41,7 +41,7 @@ int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N1]) {
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
 void perm_set_random_djbsort(perm_t p, uint8_t seed[SEED_BYTES]) {
-    uint32_t rnd_buff[PARAM_N1];
+    uint32_t rnd_buff[PARAM_N];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
     memcpy(expanded_seed, seed, SEED_BYTES);

@@ -7,17 +7,8 @@
 
 #include <stdint.h>
 
-#ifdef OTHER
-#define SEED_BYTES 16
-#define PARAM_N1            1238
-#define PARAM_N1_HALF       (PARAM_N1/2)
-#define CHUNK_RND_BYTES_LENGTH 5000
-#define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
-#define DOMAIN_SEPARATOR_PERM 0x03
-#endif
-
 #define SEED_BYTES          16
-#define PARAM_N1            2048
+#define PARAM_N            1024   // permutation length
 #define CHUNK_RND_BYTES_LENGTH 5000
 #define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
 #define DOMAIN_SEPARATOR_PERM 0x03
@@ -26,9 +17,9 @@
 #define	EXIT_SUCCESS	0
 
 // TESTING
-#define N_PERMUTATIONS 2000
+#define N_PERMUTATIONS 200
 #define N_ITERATIONS 10
 
-typedef uint16_t perm_t[PARAM_N1];
+typedef uint16_t perm_t[PARAM_N];
 
 #endif //RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_H

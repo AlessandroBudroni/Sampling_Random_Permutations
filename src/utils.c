@@ -2,8 +2,8 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "../include/utils.h"
-#include "../include/definitions.h"
+#include "utils.h"
+#include "definitions.h"
 #include <time.h>
 
 /* warm up cpu to avoid cpu throttling */
@@ -13,11 +13,11 @@ double warm_up(){
 
     start = (double) clock();
     volatile int k = 2, m = 3;
-    for (int i = 0; i < N_ITERATIONS*N_PERMUTATIONS; ++i) {
+    for (int i = 0; i < 10000; ++i) {
         k *= k;
         k = k % 0X800;
         k = k+1;
-        for (int j = 0; j < N_ITERATIONS*N_PERMUTATIONS; ++j) {
+        for (int j = 0; j < 10000; ++j) {
             m *= k;
             m = m % 0X400;
             m += 1;

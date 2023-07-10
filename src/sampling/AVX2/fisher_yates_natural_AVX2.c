@@ -2,11 +2,8 @@
 // Created by Alessandro Budroni on 10/10/2022.
 //
 
-#include "../include/fisher_yates.h"
-#include "../include/fisher_yates_AVX2.h"
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "fisher_yates_natural_AVX2.h"
+#include "../../common.h"
 #include <string.h>
 
 /**
@@ -16,9 +13,9 @@
  * @param size size of permutation array.
  * @return EXIT_FAILURE in case of rejection (sampled data not sufficient), EXIT_SUCCESS in case of success
  */
-int set_random_with_bound_for_permutation_natural_avx(permAVX_t *p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
+int set_random_with_bound_for_permutation_natural_avx2(permAVX_t *p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
-    int size = PARAM_N1;
+    int size = PARAM_N;
     uint16_t rnd;
     int32_t index = 0;
     uint32_t max;
@@ -58,7 +55,7 @@ int16_t hsum_256_16_avx(__m256i v) {
     return pblck16[0];
 }
 
-static inline __m256i mask_avx2_natural(const __m256i pi, const __m256i pj, const __m256i avxone){ // unsigned is safer for bit operations
+static inline __m256i mask_natural_avx2(const __m256i pi, const __m256i pj, const __m256i avxone){ // unsigned is safer for bit operations
     __m256i mask;
     // mask = pj - pi - 1 (the -1 is done before the loop)
     mask = _mm256_sub_epi16(pj, pi);
@@ -70,14 +67,14 @@ static inline __m256i mask_avx2_natural(const __m256i pi, const __m256i pj, cons
     return mask;
 }
 
-void fisher_yates_shuffle_natural_avx(perm_t p_out, permAVX_t *p_rand) {
+void fisher_yates_shuffle_natural_avx2(perm_t p_out, permAVX_t *p_rand) {
 
     uint16_t *pi, *pj, tmp;
     uint16_t mask;
     __m256i avxpi, *avxpj, avxmask, avxsum;
     __m256i avxone = _mm256_set1_epi16(1);
 
-    for (int i = 0; i < PARAM_N1; i++) {
+    for (int i = 0; i < PARAM_N; i++) {
         pi = &p_out[i];
         *pi = p_rand->i[i];
         avxpi = _mm256_set1_epi16((int16_t)*pi);
@@ -111,7 +108,7 @@ void fisher_yates_shuffle_natural_avx(perm_t p_out, permAVX_t *p_rand) {
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random_natural_avx(perm_t p_out, uint8_t seed[SEED_BYTES]) {
+void perm_set_random_fisher_yates_natural_avx2(perm_t p_out, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
     permAVX_t p_rand = {0};
@@ -120,9 +117,9 @@ void perm_set_random_natural_avx(perm_t p_out, uint8_t seed[SEED_BYTES]) {
     expanded_seed[SEED_BYTES + 1] = 0;
     sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
 
-    while (set_random_with_bound_for_permutation_natural_avx(&p_rand, rnd_buff) != EXIT_SUCCESS) {
+    while (set_random_with_bound_for_permutation_natural_avx2(&p_rand, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
-    fisher_yates_shuffle_natural_avx(p_out, &p_rand);
+    fisher_yates_shuffle_natural_avx2(p_out, &p_rand);
 }
