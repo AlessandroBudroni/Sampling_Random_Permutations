@@ -39,10 +39,10 @@ static void fisher_yates_shuffle_sendrier(perm_t p) {
     for (int i = PARAM_N - 1; i >= 0; --i) {
         pi = &p[i];
         mask = 0;
-        for (int j = i + 1; j < PARAM_N; ++j) {  //p[j] = p[j] == p[i] ? i : p[j];
+        for (int j = i + 1; j < PARAM_N; ++j) {
             mask |= ISZERO(p[j] - *pi);
         }
-        *pi = MASKAPPLY(-mask, i, *pi);
+        *pi = MASKAPPLY(mask-1, i, *pi);
     }
 }
 

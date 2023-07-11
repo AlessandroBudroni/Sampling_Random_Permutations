@@ -47,5 +47,3 @@ target_sources(Benchmark_AVX PRIVATE djbsort/djbsort_avx.c)
 target_sources(Benchmark_AVX PRIVATE src/sampling/AVX2/djbsort_sample_AVX2.c)
 target_sources(Benchmark_AVX PRIVATE src/utils.c)
 set_target_properties(Benchmark_AVX PROPERTIES COMPILE_FLAGS "-mavx2" )
-
-add_executable(test temptest.c)

@@ -9,7 +9,7 @@
 #include "definitions.h"
 
 // Return 1 if n = 0, 0 otherwise - for uint16_t
-#define ISZERO(n) (((1) & ((n - 1))) >> (16))
+#define ISZERO(n) ((n == 0) ? 1 : 0) //(1 & ((n - 1) >> 16))
 // Return 1 if n ≠ 0, 0 otherwise - for uint16_t
 //#define ISNOTZERO(n) ((((n) | (~(n) + 1)) >> 15) & (uint8_t)0x1)
 // Return either a or b according to the mask

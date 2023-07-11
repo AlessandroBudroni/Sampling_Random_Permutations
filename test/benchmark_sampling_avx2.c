@@ -43,7 +43,7 @@ static void bench_fisher_yates_non_ct(){
         }
     }
 
-    printf("Fisher Yates non-constant time ..............................%10lld ", cycles_tot);
+    printf("Fisher Yates non-constant time ...............................%10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -81,7 +81,7 @@ static void bench_djbsort_AVX2(){
         }
     }
 
-    printf("Djbsort AVX ................................................ %10lld ", cycles_tot);
+    printf("AVX2 Djbsort ................................................ %10lld ", cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
