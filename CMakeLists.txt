@@ -23,27 +23,13 @@ log(CMAKE_C_FLAGS)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Benchmark test/benchmark_sampling.c)
-target_sources(Benchmark PRIVATE fips202/fips202.c)
-target_sources(Benchmark PRIVATE src/sampling/fisher_yates.c)
-target_sources(Benchmark PRIVATE src/sampling/fisher_yates_sendrier.c)
-target_sources(Benchmark PRIVATE src/sampling/fisher_yates_natural.c)
-target_sources(Benchmark PRIVATE src/common.c)
-target_sources(Benchmark PRIVATE src/verification.c)
-target_sources(Benchmark PRIVATE djbsort/djbsort.c)
-target_sources(Benchmark PRIVATE src/sampling/djbsort_sample.c)
-target_sources(Benchmark PRIVATE src/utils.c)
+# Benchmark for non-AVX2 permutation sampling
+add_executable(benchmark_sampling test/benchmark_sampling.c)
+target_sources(benchmark_sampling PRIVATE fips202/fips202.c djbsort/djbsort.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c src/verification.c src/sampling/djbsort_sample.c src/sampling/djbsort_sample.c src/utils.c)
 
-add_executable(Benchmark_AVX test/benchmark_sampling_avx2.c)
-target_sources(Benchmark_AVX PRIVATE fips202/fips202.c)
-target_sources(Benchmark_AVX PRIVATE src/sampling/fisher_yates.c)
-target_sources(Benchmark_AVX PRIVATE src/sampling/AVX2/fisher_yates_sendrier_AVX2.c)
-target_sources(Benchmark_AVX PRIVATE src/sampling/AVX2/fisher_yates_natural_AVX2.c)
-target_sources(Benchmark_AVX PRIVATE src/common.c)
-target_sources(Benchmark_AVX PRIVATE src/verification.c)
-target_sources(Benchmark_AVX PRIVATE src/verification_AVX2.c)
-target_sources(Benchmark_AVX PRIVATE djbsort/djbsort.c)
-target_sources(Benchmark_AVX PRIVATE djbsort/djbsort_avx.c)
-target_sources(Benchmark_AVX PRIVATE src/sampling/AVX2/djbsort_sample_AVX2.c)
-target_sources(Benchmark_AVX PRIVATE src/utils.c)
-set_target_properties(Benchmark_AVX PROPERTIES COMPILE_FLAGS "-mavx2" )
+# Benchmark for AVX2 permutation sampling
+add_executable(benchmark_sampling_AVX test/benchmark_sampling_avx2.c)
+target_sources(benchmark_sampling_AVX PRIVATE fips202/fips202.c djbsort/djbsort.c djbsort/djbsort_avx.c src/utils.c src/common.c src/verification.c src/verification_AVX2.c src/sampling/fisher_yates.c src/sampling/AVX2/fisher_yates_sendrier_AVX2.c src/sampling/AVX2/fisher_yates_natural_AVX2.c src/sampling/AVX2/djbsort_sample_AVX2.c)
+set_target_properties(benchmark_sampling_AVX PROPERTIES COMPILE_FLAGS "-mavx2" )
+
+
