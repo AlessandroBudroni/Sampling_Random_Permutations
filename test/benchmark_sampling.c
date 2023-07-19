@@ -1,11 +1,11 @@
 
 #include <stdio.h>
 
-#include "../src/utils.h"
+#include "test_utils.h"
 #include "../src/sampling/fisher_yates.h"
 #include "../src/sampling/fisher_yates_sendrier.h"
 #include "../src/sampling/djbsort_sample.h"
-#include "../src/verification.h"
+#include "test_permutation_utils.h"
 #include <time.h>
 
 static void bench_fisher_yates_non_ct(){
@@ -36,7 +36,7 @@ static void bench_fisher_yates_non_ct(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(p[i]);
+            validate_permutation(p[i]);
         }
     }
 
@@ -73,7 +73,7 @@ static void bench_djbsort(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(p[i]);
+            validate_permutation(p[i]);
         }
     }
 
@@ -111,7 +111,7 @@ static void bench_fisher_yates_sendrier(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(p[i]);
+            validate_permutation(p[i]);
         }
     }
 
@@ -148,7 +148,7 @@ void bench_fisher_yates_natural_FY(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(p[i]);
+            validate_permutation(p[i]);
         }
     }
 

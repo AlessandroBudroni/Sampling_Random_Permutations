@@ -2,12 +2,13 @@
 // Created by Alessandro Budroni on 08/07/2023.
 //
 
-#include "sampling/AVX2/definitions_AVX2.h"
-#include "verification_AVX2.h"
+#include "../src/sampling/AVX2/definitions_AVX2.h"
+#include "test_permutation_utils_AVX2.h"
 
 #include <stdio.h>
 
-int verify_permutation_avx2(permAVX_t *p) {
+// return EXIT_SUCCESS if the permutation is valid, EXIT_FAILURE otherwise
+int validate_permutation_avx2(permAVX_t *p) {
 
     uint16_t verification[PARAM_N] = {0};
 
@@ -29,4 +30,14 @@ int verify_permutation_avx2(permAVX_t *p) {
     }
 
     return EXIT_SUCCESS;
+}
+
+// return EXIT_SUCCESS if the permutation is not trivial, EXIT_FAILURE otherwise
+int test_non_triviality_avx2(const permAVX_t p){
+
+    int sum = 1;
+    for (int i = 0; i < PARAM_N; ++i) {
+        sum &= (p.i[i] == i);
+    }
+    return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

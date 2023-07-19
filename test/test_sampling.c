@@ -7,26 +7,8 @@
 #include "../src/sampling/AVX2/djbsort_sample_AVX2.h"
 #include "../src/sampling/AVX2/fisher_yates_natural_AVX2.h"
 #include "../src/sampling/AVX2/fisher_yates_sendrier_AVX2.h"
-#include "../src/verification_AVX2.h"
-#include "../src/verification.h"
-
-static int test_non_triviality(const perm_t p){
-
-    int sum = 1;
-    for (int i = 0; i < PARAM_N; ++i) {
-        sum &= (p[i] == i);
-    }
-    return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
-
-static int test_non_triviality_avx2(const permAVX_t p){
-
-    int sum = 1;
-    for (int i = 0; i < PARAM_N; ++i) {
-        sum &= (p.i[i] == i);
-    }
-    return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+#include "test_permutation_utils_AVX2.h"
+#include "test_permutation_utils.h"
 
 static int test_fisher_yates_non_ct(){
 
@@ -41,7 +23,7 @@ static int test_fisher_yates_non_ct(){
             perm_set_random_fisher_yates_non_ct(p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation(p[i])!= EXIT_SUCCESS){
+            if(validate_permutation(p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }
@@ -69,7 +51,7 @@ static int test_djbsort(){
             perm_set_random_djbsort(p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation(p[i])!= EXIT_SUCCESS){
+            if(validate_permutation(p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }
@@ -97,7 +79,7 @@ static int test_fisher_yates_sendrier(){
             perm_set_random_sendrier(p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation(p[i])!= EXIT_SUCCESS){
+            if(validate_permutation(p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }
@@ -126,7 +108,7 @@ static int test_fisher_yates_natural_FY(){
             perm_set_random_natural(p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation(p[i])!= EXIT_SUCCESS){
+            if(validate_permutation(p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }
@@ -156,7 +138,7 @@ static int test_djbsort_AVX2(){
         }
 
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation(p[i])!= EXIT_SUCCESS){
+            if(validate_permutation(p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }
@@ -185,7 +167,7 @@ static int test_fisher_yates_natural_AVX2(){
             perm_set_random_fisher_yates_natural_avx2(p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation(p[i])!= EXIT_SUCCESS){
+            if(validate_permutation(p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }
@@ -215,7 +197,7 @@ static int test_fisher_yates_sendrier_AVX2(){
             perm_set_random_sendrier_avx2(&p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            if(verify_permutation_avx2(&p[i])!= EXIT_SUCCESS){
+            if(validate_permutation_avx2(&p[i]) != EXIT_SUCCESS){
                 printf("FAILED\n");
                 return EXIT_FAILURE;
             }

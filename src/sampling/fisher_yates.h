@@ -6,7 +6,7 @@
 #define PLAYAVX2_FISHER_YATES_H
 
 #include <stdint.h>
-#include "../utils.h"
+#include "../../test/test_utils.h"
 #include "../definitions.h"
 #include "../common.h"
 
