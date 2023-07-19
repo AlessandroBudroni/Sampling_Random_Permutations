@@ -6,7 +6,6 @@
 #include "../../../djbsort/djbsort.h"
 #include "../../../fips202/fips202.h"
 #include "djbsort_sample_AVX2.h"
-#include <stdint.h>
 #include <string.h>
 
 static int djbsort_with_given_random_input_avx2(perm_t p, uint32_t buffer[1024]) {

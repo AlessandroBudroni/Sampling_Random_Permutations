@@ -34,6 +34,5 @@ set_target_properties(benchmark_sampling_AVX PROPERTIES COMPILE_FLAGS "-mavx2" )
 
 # Test for non-AVX2 permutation sampling
 add_executable(test_sampling test/test_sampling.c)
-target_sources(test_sampling PRIVATE fips202/fips202.c djbsort/djbsort.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c src/verification.c src/sampling/djbsort_sample.c src/sampling/djbsort_sample.c src/utils.c)
-
-
+target_sources(test_sampling PRIVATE fips202/fips202.c djbsort/djbsort.c djbsort/djbsort_avx.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c src/verification.c src/sampling/djbsort_sample.c src/sampling/djbsort_sample.c src/utils.c src/sampling/AVX2/fisher_yates_sendrier_AVX2.c src/sampling/AVX2/fisher_yates_natural_AVX2.c src/sampling/AVX2/djbsort_sample_AVX2.c src/verification_AVX2.c)
+set_target_properties(test_sampling PROPERTIES COMPILE_FLAGS "-mavx2" )
