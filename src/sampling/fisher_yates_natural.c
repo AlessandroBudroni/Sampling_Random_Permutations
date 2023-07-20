@@ -31,10 +31,10 @@ static int set_random_with_bound_for_permutation_natural(perm_t p, const uint16_
 
 static void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
 
-    for (uint16_t i = 0; i < PARAM_N; i++) {
+    for (int i = 0; i < PARAM_N; i++) {
         uint16_t pi = p_rand[i];
-        uint16_t tmp = i;
-        for (uint16_t j = 0; j < i; j++) {
+        int tmp = i;
+        for (int j = 0; j < i; j++) {
             uint16_t mask = GT16(p_rand[j], pi);
             tmp -= mask;
             p_rand[j] -= mask;

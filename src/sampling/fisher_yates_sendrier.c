@@ -13,7 +13,7 @@ static void fisher_yates_shuffle_sendrier(perm_t p) {
     for (int i = PARAM_N - 1; i >= 0; --i) {
         uint16_t pi = p[i];
         for (int j = i + 1; j < PARAM_N; ++j) { // p[j] = (p[j] == p[i]) ? i : p[j];
-            uint16_t mask = ISZERO(p[j] - pi);
+            int mask = ISZERO(p[j] - pi);
             p[j] = MASKAPPLY(mask-1, i, p[j]);
         }
     }
