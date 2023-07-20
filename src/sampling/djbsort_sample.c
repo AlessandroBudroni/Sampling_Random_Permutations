@@ -12,7 +12,7 @@ static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
 
     // Use 21 bits for randomness
     for (int i = 0; i < PARAM_N; i++) {
-        buffer[i] <<= 11;
+        buffer[i] <<= BITS_PARAM_N;
         buffer[i] |= i;
     }
 
@@ -21,14 +21,14 @@ static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
 
     // check that no double random values were produced
     for (int i = 1; i < PARAM_N; i++) {
-        if ((buffer[i - 1] >> 11) == (buffer[i] >> 11)) {
+        if ((buffer[i - 1] >> BITS_PARAM_N) == (buffer[i] >> BITS_PARAM_N)) {
             return EXIT_FAILURE;
         }
     }
 
     // extract permutation from buffer
     for (int i = 0; i < PARAM_N; i++) {
-        p[i] = (uint16_t)(buffer[i] & 0x7FF);
+        p[i] = (uint16_t)(buffer[i] & BITS_PARAM_N_MASK);
     }
     return EXIT_SUCCESS;
 }

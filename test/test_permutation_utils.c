@@ -2,10 +2,11 @@
 // Created by Alessandro Budroni on 06/07/2023.
 //
 
-#include "verification.h"
+#include "test_permutation_utils.h"
 #include <stdio.h>
 
-int verify_permutation(const perm_t p) {
+// return EXIT_SUCCESS if the permutation is valid, EXIT_FAILURE otherwise
+int validate_permutation(const perm_t p) {
 
     uint16_t verification[PARAM_N] = {0};
 
@@ -26,4 +27,14 @@ int verify_permutation(const perm_t p) {
         }
     }
     return EXIT_SUCCESS;
+}
+
+// return EXIT_SUCCESS if the permutation is not trivial, EXIT_FAILURE otherwise
+int test_non_triviality(const perm_t p){
+
+    int sum = 1;
+    for (int i = 0; i < PARAM_N; ++i) {
+        sum &= (p[i] == i);
+    }
+    return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

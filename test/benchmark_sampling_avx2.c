@@ -1,14 +1,14 @@
 
 #include <stdio.h>
 
-#include "../src/utils.h"
+#include "test_utils.h"
 #include "../src/definitions.h"
 #include "../src/sampling/fisher_yates.h"
 #include "../src/sampling/AVX2/djbsort_sample_AVX2.h"
 #include "../src/sampling/AVX2/fisher_yates_natural_AVX2.h"
 #include "../src/sampling/AVX2/fisher_yates_sendrier_AVX2.h"
-#include "../src/verification.h"
-#include "../src/verification_AVX2.h"
+#include "test_permutation_utils.h"
+#include "test_permutation_utils_AVX2.h"
 #include <time.h>
 
 static void bench_fisher_yates_non_ct(){
@@ -39,7 +39,7 @@ static void bench_fisher_yates_non_ct(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(p[i]);
+            validate_permutation(p[i]);
         }
     }
 
@@ -77,7 +77,7 @@ static void bench_djbsort_AVX2(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(p[i]);
+            validate_permutation(p[i]);
         }
     }
 
@@ -114,7 +114,7 @@ void bench_fisher_yates_natural_AVX2(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation(pu[i]);
+            validate_permutation(pu[i]);
         }
     }
 
@@ -153,7 +153,7 @@ void bench_fisher_yates_sendrier_AVX2(){
         time_taken += (end - start) / ((double) CLOCKS_PER_SEC);
         cycles_tot+= cycles2 - cycles1;
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
-            verify_permutation_avx2(&pu[i]);
+            validate_permutation_avx2(&pu[i]);
         }
     }
 

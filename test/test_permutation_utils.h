@@ -7,6 +7,7 @@
 
 #endif //RANDOM_PERMUTATION_SAMPLING_VERIFICATION_H
 
-#include "definitions.h"
+#include "../src/definitions.h"
 
-int verify_permutation(const perm_t p);
+int validate_permutation(const perm_t p);
+int test_non_triviality(const perm_t p);

@@ -2,8 +2,8 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "utils.h"
-#include "definitions.h"
+#include "test_utils.h"
+#include "../src/definitions.h"
 #include <time.h>
 
 /* warm up cpu to avoid cpu throttling */
