@@ -7,7 +7,7 @@
 
 #include "../definitions.h"
 
-void perm_invert_substitution_non_ct(perm_t out, const perm_t in);
-void perm_invert_substitution(perm_t out, const perm_t in);
+void perm_invert_standard_non_ct(perm_t out, const perm_t in);
+void perm_invere_standard(perm_t out, const perm_t in);
 
 #endif //RANDOM_PERMUTATION_SAMPLING_INVERSION_SUBSTITUTION_H

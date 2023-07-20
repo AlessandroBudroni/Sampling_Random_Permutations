@@ -40,5 +40,8 @@ set_target_properties(test_sampling PROPERTIES COMPILE_FLAGS "-mavx2" )
 
 # Test inversion and composition
 add_executable(test_invcomp test/test_inversion_composition.c)
-target_sources(test_invcomp PRIVATE fips202/fips202.c djbsort/djbsort.c djbsort/djbsort_avx.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c test/test_permutation_utils.c src/sampling/djbsort_sample.c src/sampling/djbsort_sample.c test/test_utils.c src/sampling/AVX2/fisher_yates_sendrier_AVX2.c src/sampling/AVX2/fisher_yates_natural_AVX2.c src/sampling/AVX2/djbsort_sample_AVX2.c test/test_permutation_utils_AVX2.c src/composition/composition_substitution.c src/inversion/inversion_substitution.c)
-set_target_properties(test_invcomp PROPERTIES COMPILE_FLAGS "-mavx2" )
+target_sources(test_invcomp PRIVATE fips202/fips202.c djbsort/djbsort.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c test/test_permutation_utils.c src/sampling/djbsort_sample.c test/test_utils.c  src/composition/standard_composition.c src/inversion/inversion_substitution.c src/composition/djbsort_composition.c src/inversion/djbsort_inversion.c)
+
+# Test compatibility
+add_executable(test_compatibility test/test_compatibility.c)
+target_sources(test_compatibility PRIVATE fips202/fips202.c djbsort/djbsort.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c test/test_permutation_utils.c src/sampling/djbsort_sample.c test/test_utils.c  src/composition/standard_composition.c src/inversion/inversion_substitution.c src/composition/djbsort_composition.c src/inversion/djbsort_inversion.c)

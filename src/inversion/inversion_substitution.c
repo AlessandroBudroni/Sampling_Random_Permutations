@@ -5,14 +5,14 @@
 #include "inversion_substitution.h"
 #include "../common.h"
 
-void perm_invert_substitution_non_ct(perm_t out, const perm_t in) {
+void perm_invert_standard_non_ct(perm_t out, const perm_t in) {
 
     for (int i = 0; i < PARAM_N; ++i) {
         out[in[i]] = i;
     }
 }
 
-void perm_invert_substitution(perm_t out, const perm_t in) {
+void perm_invere_standard(perm_t out, const perm_t in) {
 
     uint16_t mask, tmp;
     for (int i = 0; i < PARAM_N; ++i) {
