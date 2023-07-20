@@ -19,7 +19,7 @@
 #define	EXIT_SUCCESS	0
 
 // TESTING
-#define N_PERMUTATIONS 3
+#define N_PERMUTATIONS 100
 #define N_ITERATIONS 10
 
 typedef uint16_t perm_t[PARAM_N];
