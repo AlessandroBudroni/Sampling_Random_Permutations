@@ -11,3 +11,4 @@
 
 int validate_permutation(const perm_t p);
 int test_non_triviality(const perm_t p);
+int test_equality(const perm_t p1, const perm_t p2);

@@ -19,27 +19,6 @@ static void fisher_yates_shuffle_sendrier(perm_t p) {
     }
 }
 
-static int set_bounded_random_for_sendrier_shuffle(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
-
-    uint16_t rnd;
-    int32_t index = 0;
-    uint32_t max;
-    int bound;
-
-    for (int i = PARAM_N -1; i >= 0; i--) {
-        bound = PARAM_N - i;
-        max = ((0x10000 / bound ) * bound);// (2^16 / bound) * bound
-        do {
-            if (index >= CHUNK_RND_U16_LENGTH -1){
-                return EXIT_FAILURE;
-            }
-            rnd = rnd_buff[index++];
-        } while (rnd >= max);
-        p[i] = i + (rnd % bound);
-    }
-    return EXIT_SUCCESS;
-}
-
 void perm_set_random_sendrier(perm_t p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
@@ -50,7 +29,7 @@ void perm_set_random_sendrier(perm_t p, uint8_t seed[SEED_BYTES]) {
 
     sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
 
-    while (set_bounded_random_for_sendrier_shuffle(p, rnd_buff) != EXIT_SUCCESS) {
+    while (set_random_with_bound_for_fisher_yates(p, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }

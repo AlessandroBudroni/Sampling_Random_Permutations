@@ -38,3 +38,14 @@ int test_non_triviality(const perm_t p){
     }
     return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
+
+// return EXIT_SUCCESS if the permutations are equal, EXIT_FAILURE otherwise
+int test_equality(const perm_t p1, const perm_t p2) {
+
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (p1[i] != p2[i]){
+            return EXIT_FAILURE;
+        }
+    }
+    return EXIT_SUCCESS;
+}
