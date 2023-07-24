@@ -164,7 +164,7 @@ static int test_fisher_yates_natural_AVX2(){
 
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
-            perm_set_random_fisher_yates_natural_avx2(p[i], (uint8_t *) seed);
+            perm_set_random_natural_avx2(p[i], (uint8_t *) seed);
         }
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
             if(validate_permutation(p[i]) != EXIT_SUCCESS){
