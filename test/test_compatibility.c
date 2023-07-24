@@ -6,8 +6,10 @@
 
 #include "../src/sampling/fisher_yates.h"
 #include "../src/sampling/fisher_yates_sendrier.h"
+#include "../src/sampling/fisher_yates_natural.h"
 #include "../src/sampling/djbsort_sample.h"
 #include "../src/sampling/AVX2/fisher_yates_sendrier_AVX2.h"
+#include "../src/sampling/AVX2/fisher_yates_natural_AVX2.h"
 #include "../src/sampling/AVX2/djbsort_sample_AVX2.h"
 #include "../src/composition/standard_composition.h"
 #include "../src/composition/djbsort_composition.h"
@@ -122,7 +124,7 @@ static int test_sampling_compatibility_fisher_yates_vs_sendrier() {
     return EXIT_SUCCESS;
 }
 
-static int test_sampling_compatibility_fisher_yates_vs_sendrier_AVX() {
+static int test_sampling_compatibility_fisher_yates_vs_sendrier_AVX2() {
 
     // Test that Sendrier and Sendrier AVX2 give the same permutation for a given input
     uint16_t seed[SEED_BYTES / 2] = {0};
@@ -154,7 +156,7 @@ static int test_sampling_compatibility_fisher_yates_vs_sendrier_AVX() {
     return EXIT_SUCCESS;
 }
 
-static int test_sampling_compatibility_djbsort_vs_djbsort_AVX() {
+static int test_sampling_compatibility_djbsort_vs_djbsort_AVX2() {
 
     // Test that djbsort and djbsort AVX2 give the same permutation for a given input
     uint16_t seed[SEED_BYTES / 2] = {0};
@@ -186,6 +188,38 @@ static int test_sampling_compatibility_djbsort_vs_djbsort_AVX() {
     return EXIT_SUCCESS;
 }
 
+static int test_sampling_compatibility_natural_vs_natural_AVX2() {
+
+    // Test that natural fy and natural fy AVX2 give the same permutation for a given input
+    uint16_t seed[SEED_BYTES / 2] = {0};
+    perm_t p1[N_PERMUTATIONS];
+    perm_t p2[N_PERMUTATIONS];
+
+    printf("Test natural fy vs natural fy AVX2 permutation sampling compatibiility ...       ");
+    for (int j = 0; j < 1; ++j) {
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
+            seed[0] = j;
+            perm_set_random_natural(p1[i], (uint8_t *) seed);
+        }
+
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
+            seed[0] = j;
+            perm_set_random_natural_avx2(p2[i], (uint8_t *) seed);
+        }
+
+        // check that the two methods give the same permutation
+        for (int i = 0; i < N_PERMUTATIONS; ++i) {
+            if (EXIT_SUCCESS != test_equality(p1[i], p2[i])) {
+                printf("FAILED\n");
+                return EXIT_FAILURE;
+            }
+        }
+
+    }
+    printf("PASSED\n");
+    return EXIT_SUCCESS;
+}
+
 int main() {
 
     printf("Start test compatibility among the methods.\n\n");fflush(stdout);
@@ -193,8 +227,9 @@ int main() {
     test_composition_compatibility();
     test_djbsort_composition();
     test_sampling_compatibility_fisher_yates_vs_sendrier();
-    test_sampling_compatibility_fisher_yates_vs_sendrier_AVX();
-    test_sampling_compatibility_djbsort_vs_djbsort_AVX();
+    test_sampling_compatibility_fisher_yates_vs_sendrier_AVX2();
+    test_sampling_compatibility_djbsort_vs_djbsort_AVX2();
+    test_sampling_compatibility_natural_vs_natural_AVX2();
 
     printf("\nDone\n");
 

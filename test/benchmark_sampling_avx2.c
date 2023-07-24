@@ -107,7 +107,7 @@ void bench_fisher_yates_natural_AVX2(){
 
         for (int i = 0; i < N_PERMUTATIONS; ++i) {
             seed[0] = i;
-            perm_set_random_fisher_yates_natural_avx2(pu[i], (uint8_t *) seed);
+            perm_set_random_natural_avx2(pu[i], (uint8_t *) seed);
         }
         cycles2 = cpucycles();
         end = (double)clock();
