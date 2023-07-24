@@ -41,3 +41,14 @@ int test_non_triviality_avx2(const permAVX_t p){
     }
     return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
+
+// return EXIT_SUCCESS if the permutations are equal, EXIT_FAILURE otherwise
+int test_equality_avx2(const perm_t p1, const permAVX_t p2) {
+
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (p1[i] != p2.i[i]){
+            return EXIT_FAILURE;
+        }
+    }
+    return EXIT_SUCCESS;
+}
