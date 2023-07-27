@@ -79,12 +79,16 @@ list(APPEND HWY_VQSORT_SOURCES
     src/lib/hwy-vqsort/sort/vqsort.h
     src/lib/hwy-vqsort/per_target.cc
     src/lib/hwy-vqsort/targets.cc
+        src/lib/hwy-vqsort_cwrapper.cpp
 )
+
+add_library(hwy_vqsort STATIC ${HWY_VQSORT_SOURCES})
+target_compile_options(hwy_vqsort PRIVATE ${HWY_FLAGS})
 # end vqsort
 
-add_executable(test_vqsort test/test_vqsort.cc)
-target_sources(test_vqsort PRIVATE ${HWY_VQSORT_SOURCES})
-target_compile_options(test_vqsort PRIVATE ${HWY_FLAGS})
+add_executable(test_vqsort test/test_vqsort.c)
+target_link_libraries(test_vqsort hwy_vqsort)
+set_target_properties(test_vqsort PROPERTIES LINKER_LANGUAGE C)
 
 # Benchmark for non-AVX2 permutation sampling
 add_executable(benchmark_sampling test/benchmark_sampling.c)
