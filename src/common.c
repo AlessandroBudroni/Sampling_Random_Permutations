@@ -3,10 +3,10 @@
 //
 
 #include "common.h"
-#include <fips202/fips202.h>
+#include <xkcp/SimpleFIPS202.h>
 
 void sample_random_chunk( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], uint8_t expanded_seed[SEED_BYTES + 2]){
-    shake128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
+    SHAKE128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
 }
 
 int set_random_with_bound_for_fisher_yates(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {

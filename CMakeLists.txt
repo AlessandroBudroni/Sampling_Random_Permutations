@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(random_permutation_sampling C CXX)
+project(random_permutation_sampling C CXX ASM)
 
 enable_testing()
 
@@ -28,10 +28,21 @@ log(CMAKE_C_FLAGS)
 
 set(CMAKE_C_STANDARD 11)
 
-add_library(test_perm_interface INTERFACE)
-target_include_directories(test_perm_interface INTERFACE src external)
-target_sources(test_perm_interface PUBLIC
-        external/fips202/fips202.c
+add_subdirectory(external/xkcp)
+
+add_library(test_interface INTERFACE)
+target_include_directories(test_interface INTERFACE src external)
+target_link_libraries(test_interface INTERFACE XKCP)
+target_sources(test_interface PUBLIC
+        test/test_utils.c
+        test/benchmark_utils.c)
+
+
+add_library(test_interface_avx2 INTERFACE)
+target_include_directories(test_interface_avx2 INTERFACE src external)
+target_link_libraries(test_interface_avx2 INTERFACE XKCP_AVX2)
+target_compile_options(test_interface_avx2 INTERFACE -mavx2)
+target_sources(test_interface_avx2 PUBLIC
         test/test_utils.c
         test/benchmark_utils.c)
 
@@ -77,108 +88,91 @@ set(FYN_AVX2
         src/inversion/inversion_substitution_ct.c
         src/composition/standard_composition_ct.c)
 
-# Benchmark for non-AVX2 permutation sampling
-#add_executable(benchmark_sampling test/benchmark_sampling.c)
-#target_sources(benchmark_sampling PRIVATE fips202/fips202.c djbsort/djbsort.c src/sampling/fisher_yates.c src/sampling/fisher_yates_sendrier.c src/sampling/fisher_yates_natural.c src/common.c test/test_permutation_utils.c src/sampling/djbsort_sample.c src/sampling/djbsort_sample.c test/test_utils.c)
-#
-## Benchmark for AVX2 permutation sampling
-#add_executable(benchmark_sampling_AVX test/benchmark_sampling_avx2.c)
-#target_sources(benchmark_sampling_AVX PRIVATE fips202/fips202.c djbsort/djbsort.c djbsort/djbsort_avx.c test/test_utils.c src/common.c test/test_permutation_utils.c test/test_permutation_utils_AVX2.c src/sampling/fisher_yates.c src/sampling/AVX2/fisher_yates_sendrier_AVX2.c src/sampling/AVX2/fisher_yates_natural_AVX2.c src/sampling/AVX2/djbsort_sample_AVX2.c)
-#set_target_properties(benchmark_sampling_AVX PROPERTIES COMPILE_FLAGS "-mavx2" )
-#
 
 #djbsort
 add_executable(test_api_djbsort test/test_api.c ${DJBSORT})
-target_link_libraries(test_api_djbsort PRIVATE test_perm_interface)
+target_link_libraries(test_api_djbsort PRIVATE test_interface)
 add_test(test_api_djbsort test_api_djbsort)
 set_tests_properties(test_api_djbsort PROPERTIES LABEL test)
 
 add_executable(benchmark_api_djbsort test/benchmark_api.c ${DJBSORT})
-target_link_libraries(benchmark_api_djbsort PRIVATE test_perm_interface)
+target_link_libraries(benchmark_api_djbsort PRIVATE test_interface)
 add_test(benchmark_api_djbsort benchmark_api_djbsort)
 set_tests_properties(benchmark_api_djbsort PROPERTIES LABEL benchmark)
 
 #djbsort-AVX2
 add_executable(test_api_djbsort_avx2 test/test_api.c ${DJBSORT_AVX2})
-target_link_libraries(test_api_djbsort_avx2 PRIVATE test_perm_interface)
-target_compile_options(test_api_djbsort_avx2 PRIVATE -mavx2)
+target_link_libraries(test_api_djbsort_avx2 PRIVATE test_interface_avx2)
 add_test(test_api_djbsort_avx2 test_api_djbsort_avx2)
 set_tests_properties(test_api_djbsort_avx2 PROPERTIES LABEL test)
 
 add_executable(benchmark_api_djbsort_avx2 test/benchmark_api.c ${DJBSORT_AVX2})
-target_link_libraries(benchmark_api_djbsort_avx2 PRIVATE test_perm_interface)
-target_compile_options(benchmark_api_djbsort_avx2 PRIVATE -mavx2)
+target_link_libraries(benchmark_api_djbsort_avx2 PRIVATE test_interface_avx2)
 add_test(benchmark_api_djbsort_avx2 benchmark_api_djbsort_avx2)
 set_tests_properties(benchmark_api_djbsort_avx2 PROPERTIES LABEL benchmark)
 
 # Fisher-Yates
 add_executable(test_api_fisher_yates test/test_api.c ${FY})
-target_link_libraries(test_api_fisher_yates PRIVATE test_perm_interface)
+target_link_libraries(test_api_fisher_yates PRIVATE test_interface)
 add_test(test_api_fisher_yates test_api_fisher_yates)
 set_tests_properties(test_api_fisher_yates PROPERTIES LABEL test)
 
 add_executable(benchmark_api_fisher_yates test/benchmark_api.c ${FY})
-target_link_libraries(benchmark_api_fisher_yates PRIVATE test_perm_interface)
+target_link_libraries(benchmark_api_fisher_yates PRIVATE test_interface)
 add_test(benchmark_api_fisher_yates benchmark_api_fisher_yates)
 set_tests_properties(benchmark_api_fisher_yates PROPERTIES LABEL benchmark)
 
 # Fisher-Yates-AVX2
 add_executable(test_api_fisher_yates_avx2 test/test_api.c ${FY})
-target_link_libraries(test_api_fisher_yates_avx2 PRIVATE test_perm_interface)
-target_compile_options(test_api_fisher_yates_avx2 PRIVATE -mavx2)
+target_link_libraries(test_api_fisher_yates_avx2 PRIVATE test_interface_avx2)
 add_test(test_api_fisher_yates_avx2 test_api_fisher_yates_avx2)
 set_tests_properties(test_api_fisher_yates_avx2 PROPERTIES LABEL test)
 
 add_executable(benchmark_api_fisher_yates_avx2 test/benchmark_api.c ${FY})
-target_link_libraries(benchmark_api_fisher_yates_avx2 PRIVATE test_perm_interface)
-target_compile_options(benchmark_api_fisher_yates_avx2 PRIVATE -mavx2)
+target_link_libraries(benchmark_api_fisher_yates_avx2 PRIVATE test_interface_avx2)
 add_test(benchmark_api_fisher_yates_avx2 benchmark_api_fisher_yates_avx2)
 set_tests_properties(benchmark_api_fisher_yates_avx2 PROPERTIES LABEL benchmark)
 
 # Fisher-Yates-Sandrier
 add_executable(test_api_fisher_yates_sandrier test/test_api.c ${FYS})
-target_link_libraries(test_api_fisher_yates_sandrier PRIVATE test_perm_interface)
+target_link_libraries(test_api_fisher_yates_sandrier PRIVATE test_interface)
 add_test(test_api_fisher_yates_sandrier test_api_fisher_yates_sandrier)
 set_tests_properties(test_api_fisher_yates_sandrier PROPERTIES LABEL test)
 
 add_executable(benchmark_api_fisher_yates_sandrier test/benchmark_api.c ${FYS})
-target_link_libraries(benchmark_api_fisher_yates_sandrier PRIVATE test_perm_interface)
+target_link_libraries(benchmark_api_fisher_yates_sandrier PRIVATE test_interface)
 add_test(benchmark_api_fisher_yates_sandrier benchmark_api_fisher_yates_sandrier)
 set_tests_properties(benchmark_api_fisher_yates_sandrier PROPERTIES LABEL benchmark)
 
 # Fisher-Yates-Sandrier-AVX2
 add_executable(test_api_fisher_yates_sandrier_avx2 test/test_api.c ${FYS_AVX2})
-target_link_libraries(test_api_fisher_yates_sandrier_avx2 PRIVATE test_perm_interface)
-target_compile_options(test_api_fisher_yates_sandrier_avx2 PRIVATE -mavx2)
+target_link_libraries(test_api_fisher_yates_sandrier_avx2 PRIVATE test_interface_avx2)
 add_test(test_api_fisher_yates_sandrier_avx2 test_api_fisher_yates_sandrier_avx2)
 set_tests_properties(test_api_fisher_yates_sandrier_avx2 PROPERTIES LABEL test)
 
 add_executable(benchmark_api_fisher_yates_sandrier_avx2 test/benchmark_api.c ${FYS_AVX2})
-target_link_libraries(benchmark_api_fisher_yates_sandrier_avx2 PRIVATE test_perm_interface)
-target_compile_options(benchmark_api_fisher_yates_sandrier_avx2 PRIVATE -mavx2)
+target_link_libraries(benchmark_api_fisher_yates_sandrier_avx2 PRIVATE test_interface_avx2)
 add_test(benchmark_api_fisher_yates_sandrier_avx2 benchmark_api_fisher_yates_sandrier_avx2)
 set_tests_properties(benchmark_api_fisher_yates_sandrier_avx2 PROPERTIES LABEL benchmark)
 
 # Fisher-Yates-natural
 add_executable(test_api_fisher_yates_natural test/test_api.c ${FYN})
-target_link_libraries(test_api_fisher_yates_natural PRIVATE test_perm_interface)
+target_link_libraries(test_api_fisher_yates_natural PRIVATE test_interface)
 add_test(test_api_fisher_yates_natural test_api_fisher_yates_natural)
 set_tests_properties(test_api_fisher_yates_natural PROPERTIES LABEL test)
 
 add_executable(benchmark_api_fisher_yates_natural test/benchmark_api.c ${FYN})
-target_link_libraries(benchmark_api_fisher_yates_natural PRIVATE test_perm_interface)
+target_link_libraries(benchmark_api_fisher_yates_natural PRIVATE test_interface)
 add_test(benchmark_api_fisher_yates_natural benchmark_api_fisher_yates_natural)
 set_tests_properties(benchmark_api_fisher_yates_natural PROPERTIES LABEL benchmark)
 
 # Fisher-Yates-natural-AVX2
 add_executable(test_api_fisher_yates_natural_avx2 test/test_api.c ${FYN_AVX2})
-target_link_libraries(test_api_fisher_yates_natural_avx2 PRIVATE test_perm_interface)
-target_compile_options(test_api_fisher_yates_natural_avx2 PRIVATE -mavx2)
+target_link_libraries(test_api_fisher_yates_natural_avx2 PRIVATE test_interface_avx2)
 add_test(test_api_fisher_yates_natural_avx2 test_api_fisher_yates_natural_avx2)
 set_tests_properties(test_api_fisher_yates_natural_avx2 PROPERTIES LABEL test)
 
 add_executable(benchmark_api_fisher_yates_natural_avx2 test/benchmark_api.c ${FYN_AVX2})
-target_link_libraries(benchmark_api_fisher_yates_natural_avx2 PRIVATE test_perm_interface)
-target_compile_options(benchmark_api_fisher_yates_natural_avx2 PRIVATE -mavx2)
+target_link_libraries(benchmark_api_fisher_yates_natural_avx2 PRIVATE test_interface_avx2)
 add_test(benchmark_api_fisher_yates_natural_avx2 benchmark_api_fisher_yates_natural_avx2)
 set_tests_properties(benchmark_api_fisher_yates_natural_avx2 PROPERTIES LABEL benchmark)

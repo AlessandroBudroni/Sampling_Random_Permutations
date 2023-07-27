@@ -5,7 +5,7 @@
 #include "../../api.h"
 #include "definitions_AVX2.h"
 
-#include <fips202/fips202.h>
+#include <xkcp/SimpleFIPS202.h>
 #include <immintrin.h>
 #include <string.h>
 
@@ -53,7 +53,7 @@ static int set_random_with_bound_for_permutation_avx2(permAVX_t *p, const uint16
 }
 
 static void sample_random_chunk_avx2( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], uint8_t expanded_seed[SEED_BYTES + 2]){
-    shake128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
+    SHAKE128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
 }
 
 static void perm_set_random_sendrier_avx2(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {

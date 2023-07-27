@@ -3,7 +3,7 @@
 //
 
 #include <djbsort/djbsort.h>
-#include <fips202/fips202.h>
+#include <xkcp/SimpleFIPS202.h>
 #include "../api.h"
 #include <string.h>
 
@@ -45,11 +45,11 @@ void perm_set_random(perm_t out, uint8_t seed[SEED_BYTES]) {
     memcpy(expanded_seed, seed, SEED_BYTES);
     expanded_seed[SEED_BYTES] = DOMAIN_SEPARATOR_PERM;
     expanded_seed[SEED_BYTES + 1] = 0;
-    shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
+    SHAKE128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
 
     while (djbsort_with_given_random_input(out, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
-        shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
+        SHAKE128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
 }
 
