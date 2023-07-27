@@ -3,6 +3,7 @@
 //
 
 #include "../../api.h"
+#include "../../common_fisher_yates.h"
 #include "definitions_AVX2.h"
 
 #include <immintrin.h>

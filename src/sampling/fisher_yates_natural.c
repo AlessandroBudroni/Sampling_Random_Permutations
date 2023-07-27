@@ -2,8 +2,9 @@
 // Created by Alessandro Budroni on 10/10/2022.
 //
 
-#include "../common.h"
+#include "../common_fisher_yates.h"
 #include "../api.h"
+
 #include <stdlib.h>
 #include <string.h>
 

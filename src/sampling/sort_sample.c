@@ -2,12 +2,14 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include <djbsort/djbsort.h>
-#include <xkcp/SimpleFIPS202.h>
+#include "../sorting/generic_sort.h"
 #include "../api.h"
-#include <string.h>
 
-static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
+#include <xkcp/SimpleFIPS202.h>
+#include <string.h>
+#include <stdlib.h>
+
+static int sort_with_given_random_input(perm_t p, uint32_t buffer[1024]) {
 
     // Use 21 bits for randomness
     for (int i = 0; i < PARAM_N; i++) {
@@ -16,7 +18,7 @@ static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
     }
 
     // sort
-    uint32_sort(buffer, PARAM_N);
+    common_sort_uint32(buffer, PARAM_N);
 
     // check that no double random values were produced
     for (int i = 1; i < PARAM_N; i++) {
@@ -27,7 +29,7 @@ static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
 
     // extract permutation from buffer
     for (int i = 0; i < PARAM_N; i++) {
-        p[i] = (uint16_t)(buffer[i] & BITS_PARAM_N_MASK);
+        p[i] = (uint16_t) (buffer[i] & BITS_PARAM_N_MASK);
     }
     return EXIT_SUCCESS;
 }
@@ -45,11 +47,11 @@ void perm_set_random(perm_t out, uint8_t seed[SEED_BYTES]) {
     memcpy(expanded_seed, seed, SEED_BYTES);
     expanded_seed[SEED_BYTES] = DOMAIN_SEPARATOR_PERM;
     expanded_seed[SEED_BYTES + 1] = 0;
-    SHAKE128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
+    SHAKE128((uint8_t *) rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
 
-    while (djbsort_with_given_random_input(out, rnd_buff) != EXIT_SUCCESS) {
+    while (sort_with_given_random_input(out, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
-        SHAKE128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
+        SHAKE128((uint8_t *) rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
 }
 

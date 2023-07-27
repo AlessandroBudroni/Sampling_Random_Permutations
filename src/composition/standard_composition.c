@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 08/07/2023.
 //
 
-#include "../common.h"
+#include "../common_fisher_yates.h"
 #include <string.h>
 
 void perm_compose(perm_t out, const perm_t in1, const perm_t in2){

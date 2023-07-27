@@ -3,7 +3,7 @@
 //
 
 #include "../definitions.h"
-#include "../common.h"
+#include "../common_fisher_yates.h"
 
 void perm_inverse(perm_t out, const perm_t in) {
 

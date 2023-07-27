@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <api.h>
 #include "test_utils.h"
+#include <stdlib.h>
 
 int main() {
 

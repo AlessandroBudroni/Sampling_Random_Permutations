@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 16/11/2022.
 //
 
-#include "../common.h"
+#include "../common_fisher_yates.h"
 
 #include <stdlib.h>
 #include <string.h>

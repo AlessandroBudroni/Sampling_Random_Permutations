@@ -2,8 +2,9 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "../common.h"
+#include "../common_fisher_yates.h"
 #include "../api.h"
+
 #include <string.h>
 
 static void fisher_yates_non_constant_time(perm_t p, const perm_t r) {

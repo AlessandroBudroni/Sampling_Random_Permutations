@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-void vqsort_avx2_i32_asc(int32_t* data, size_t len);
+extern void vqsort_avx2_i32_asc(int32_t* data, size_t len);
 
 int main()
 {

@@ -3,7 +3,7 @@
 //
 
 #include "../api.h"
-#include <djbsort/djbsort.h>
+#include "../sorting/generic_sort.h"
 
 void perm_compose(perm_t out, const perm_t in1, const perm_t in2) {
     uint32_t i;
@@ -19,7 +19,7 @@ void perm_compose(perm_t out, const perm_t in1, const perm_t in2) {
     }
 
     // sort
-    uint32_sort(buffer, PARAM_N);
+    common_sort_uint32(buffer, PARAM_N);
 
     // extract permutation from buffer
     for (i = 0; i < PARAM_N; i++) {
@@ -40,7 +40,7 @@ void perm_compose_with_inverse_djbsort(perm_t out, const perm_t in1, const perm_
     }
 
     // sort
-    uint32_sort(buffer, PARAM_N);
+    common_sort_uint32(buffer, PARAM_N);
 
     // extract permutation from buffer
     for (i = 0; i < PARAM_N; i++) {
