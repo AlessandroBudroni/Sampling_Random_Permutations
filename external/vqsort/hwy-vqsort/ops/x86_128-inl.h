@@ -18,7 +18,7 @@
 // External include guard in highway.h - see comment there.
 
 // Must come before HWY_DIAGNOSTICS and HWY_COMPILER_GCC_ACTUAL
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 
 // Avoid uninitialized warnings in GCC's emmintrin.h - see
 // https://github.com/google/highway/issues/710 and pull/902

@@ -19,13 +19,13 @@
 // Export does not seem to be recursive, so re-export these (also in base.h)
 #include <stddef.h>
 
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 // "IWYU pragma: keep" does not work for this include, so hide it from the IDE.
 #if !HWY_IDE
 #include <stdint.h>
 #endif
 
-#include "../detect_compiler_arch.h"
+#include "hwy-vqsort/detect_compiler_arch.h"
 
 // Separate header because foreach_target.h re-enables its include guard.
 #include "set_macros-inl.h"

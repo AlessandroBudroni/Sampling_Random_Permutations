@@ -20,7 +20,7 @@
 // particular, "Broadcast", pack and zip behavior may be surprising.
 
 // Must come before HWY_DIAGNOSTICS and HWY_COMPILER_CLANGCL
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 
 // Avoid uninitialized warnings in GCC's avx512fintrin.h - see
 // https://github.com/google/highway/issues/710)

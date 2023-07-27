@@ -27,7 +27,7 @@
 #ifndef HIGHWAY_HWY_CONTRIB_SORT_VQSORT_H_
 #define HIGHWAY_HWY_CONTRIB_SORT_VQSORT_H_
 
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 #include "order.h"  // SortAscending
 
 namespace hwy {

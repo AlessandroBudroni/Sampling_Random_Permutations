@@ -19,7 +19,7 @@
 #ifndef HIGHWAY_HWY_CONTRIB_SORT_SHARED_INL_H_
 #define HIGHWAY_HWY_CONTRIB_SORT_SHARED_INL_H_
 
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 
 namespace hwy {
 
@@ -121,7 +121,7 @@ static_assert(SortConstants::MaxBufBytes<2>(64) <= 1280, "Unexpectedly high");
 #define HIGHWAY_HWY_CONTRIB_SORT_SHARED_TOGGLE
 #endif
 
-#include "../highway.h"
+#include "hwy-vqsort/highway.h"
 
 // vqsort isn't available on HWY_SCALAR, and builds time out on MSVC opt and
 // Armv7 debug.

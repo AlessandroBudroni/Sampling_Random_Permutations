@@ -21,11 +21,11 @@
 #include <time.h>   // clock
 
 // IWYU pragma: begin_exports
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 #include "order.h"  // SortAscending
 // IWYU pragma: end_exports
 
-#include "../cache_control.h"  // Prefetch
+#include "hwy-vqsort/cache_control.h"  // Prefetch
 
 // If 1, VQSortStatic can be called without including vqsort.h, and we avoid
 // any DLLEXPORT. This simplifies integration into other build systems, but
@@ -58,13 +58,13 @@
 #include "../print-inl.h"
 #endif
 
-#include "../algo/copy-inl.h"
+#include "hwy-vqsort/algo/copy-inl.h"
 #include "shared-inl.h"
 #include "sorting_networks-inl.h"
 #include "traits-inl.h"
 #include "traits128-inl.h"
 // Placeholder for internal instrumentation. Do not remove.
-#include "../highway.h"
+#include "hwy-vqsort/highway.h"
 
 HWY_BEFORE_NAMESPACE();
 namespace hwy {

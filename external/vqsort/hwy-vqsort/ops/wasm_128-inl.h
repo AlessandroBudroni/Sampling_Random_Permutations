@@ -18,7 +18,7 @@
 
 #include <wasm_simd128.h>
 
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 #include "shared-inl.h"
 
 #ifdef HWY_WASM_OLD_NAMES

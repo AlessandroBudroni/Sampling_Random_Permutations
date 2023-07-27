@@ -402,7 +402,7 @@ FunctionCache<RetType, Args...> DeduceFunctionCache(RetType (*)(Args...)) {
 
 // These define ops inside namespace hwy::HWY_NAMESPACE.
 #if HWY_TARGET == HWY_SSE2 || HWY_TARGET == HWY_SSSE3 || HWY_TARGET == HWY_SSE4
-#include "ops/x86_128-inl.h"
+#include "hwy-vqsort/ops/x86_128-inl.h"
 #elif HWY_TARGET == HWY_AVX2
 #include "ops/x86_256-inl.h"
 #elif HWY_TARGET == HWY_AVX3 || HWY_TARGET == HWY_AVX3_DL || \
@@ -430,6 +430,6 @@ FunctionCache<RetType, Args...> DeduceFunctionCache(RetType (*)(Args...)) {
 #pragma message("HWY_TARGET does not match any known target")
 #endif  // HWY_TARGET
 
-#include "ops/generic_ops-inl.h"
+#include "hwy-vqsort/ops/generic_ops-inl.h"
 
 #endif  // HWY_HIGHWAY_PER_TARGET

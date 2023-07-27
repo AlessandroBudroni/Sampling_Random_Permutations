@@ -24,7 +24,7 @@
 
 #include "order.h"       // SortDescending
 #include "shared-inl.h"  // SortConstants
-#include "../highway.h"
+#include "hwy-vqsort/highway.h"
 
 HWY_BEFORE_NAMESPACE();
 namespace hwy {

@@ -20,7 +20,7 @@
 // If viewing this header standalone, define VFromD to avoid IDE warnings.
 // This is normally set by set_macros-inl.h before this header is included.
 #if !defined(HWY_NAMESPACE)
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 template <class D>
 using VFromD = int;
 #endif

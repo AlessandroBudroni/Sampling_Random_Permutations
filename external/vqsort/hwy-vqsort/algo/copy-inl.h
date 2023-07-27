@@ -21,7 +21,7 @@
 #define HIGHWAY_HWY_CONTRIB_ALGO_COPY_INL_H_
 #endif
 
-#include "../highway.h"
+#include "hwy-vqsort/highway.h"
 
 HWY_BEFORE_NAMESPACE();
 namespace hwy {

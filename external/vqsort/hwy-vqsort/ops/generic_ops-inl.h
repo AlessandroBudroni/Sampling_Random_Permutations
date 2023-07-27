@@ -15,7 +15,7 @@
 
 // Target-independent types/functions defined after target-specific ops.
 
-#include "../base.h"
+#include "hwy-vqsort/base.h"
 
 // Define detail::Shuffle1230 etc, but only when viewing the current header;
 // normally this is included via highway.h, which includes ops/*.h.
