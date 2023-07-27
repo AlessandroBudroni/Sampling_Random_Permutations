@@ -2,10 +2,10 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "../../../fips202/fips202.h"
-#include "fisher_yates_sendrier_AVX2.h"
-#include "../../common.h"
+#include "../../api.h"
+#include "definitions_AVX2.h"
 
+#include <fips202/fips202.h>
 #include <immintrin.h>
 #include <string.h>
 
@@ -56,7 +56,7 @@ static void sample_random_chunk_avx2( uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH], 
     shake128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, expanded_seed, SEED_BYTES + 2);
 }
 
-void perm_set_random_sendrier_avx2(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {
+static void perm_set_random_sendrier_avx2(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -75,3 +75,8 @@ void perm_set_random_sendrier_avx2(permAVX_t *p_out, uint8_t seed[SEED_BYTES]) {
     memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
+void perm_set_random(perm_t out, uint8_t seed[SEED_BYTES]) {
+    permAVX_t perm;
+    perm_set_random_sendrier_avx2(&perm, seed);
+    memcpy(out, perm.i, sizeof(perm.i));
+}

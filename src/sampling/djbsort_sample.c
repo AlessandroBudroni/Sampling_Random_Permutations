@@ -2,10 +2,9 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include "djbsort_sample.h"
-#include "../../djbsort/djbsort.h"
-#include "../../fips202/fips202.h"
-#include <stdint.h>
+#include <djbsort/djbsort.h>
+#include <fips202/fips202.h>
+#include "../api.h"
 #include <string.h>
 
 static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
@@ -34,13 +33,12 @@ static int djbsort_with_given_random_input(perm_t p, uint32_t buffer[PARAM_N]) {
 }
 
 /**
- * Apply fisher yates to sample permutation. This function should be called after
- * set_random_with_bound_for_permutation()
- * @param p permutation with random data already filled in
+ * Apply DjbSort to sample permutation.
+ * @param out permutation with random data already filled in
  * @param size of permutation
  * @return EXIT_SUCCESS for success, EXIT_FAILURE for failure in sampling
  */
-void perm_set_random_djbsort(perm_t p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random(perm_t out, uint8_t seed[SEED_BYTES]) {
     uint32_t rnd_buff[PARAM_N];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -49,10 +47,9 @@ void perm_set_random_djbsort(perm_t p, uint8_t seed[SEED_BYTES]) {
     expanded_seed[SEED_BYTES + 1] = 0;
     shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
 
-    while (djbsort_with_given_random_input(p, rnd_buff) != EXIT_SUCCESS) {
+    while (djbsort_with_given_random_input(out, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
         shake128((uint8_t *)rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
-    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 

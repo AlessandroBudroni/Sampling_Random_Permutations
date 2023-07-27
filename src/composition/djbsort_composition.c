@@ -2,16 +2,15 @@
 // Created by Alessandro Budroni on 08/07/2023.
 //
 
-#include "djbsort_composition.h"
-#include "../inversion/djbsort_inversion.h"
-#include "../../djbsort/djbsort.h"
+#include "../api.h"
+#include <djbsort/djbsort.h>
 
-void perm_compose_djbsort(perm_t out, const perm_t in1, const perm_t in2) {
+void perm_compose(perm_t out, const perm_t in1, const perm_t in2) {
     uint32_t i;
     uint32_t buffer[PARAM_N];
     perm_t tmp;
 
-    perm_inverse_djbsort(tmp, in2);
+    perm_inverse(tmp, in2);
     // set buffer as tmp[i] || i, for i=0...PARAM_N1
     for (i = 0; i < PARAM_N; i++) {
         buffer[i] = tmp[i];

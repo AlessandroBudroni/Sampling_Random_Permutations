@@ -881,7 +881,7 @@ __attribute__((noinline)) static void int32_sort_2power(int32_t *x, uint64_t n, 
     }
 }
 
-void int32_sort_avx(int32_t *input_output_array, uint64_t size_of_array) {
+void int32_sort(int32_t *input_output_array, uint64_t size_of_array) {
     uint64_t q, i, j;
 
     if (size_of_array <= 8) {
@@ -1186,9 +1186,9 @@ continue8:
     if (j + 2 <= size_of_array) int32_MINMAX(input_output_array[j], input_output_array[j + 1]);
 }
 
-void uint32_sort_avx(uint32_t *input_output_array, uint64_t size_of_array) {
+void uint32_sort(uint32_t *input_output_array, uint64_t size_of_array) {
     uint64_t j;
     for (j = 0; j < size_of_array; ++j) input_output_array[j] ^= 0x80000000;
-    int32_sort_avx((int32_t *)input_output_array, size_of_array);
+    int32_sort((int32_t *)input_output_array, size_of_array);
     for (j = 0; j < size_of_array; ++j) input_output_array[j] ^= 0x80000000;
 }

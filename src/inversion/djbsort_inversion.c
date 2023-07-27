@@ -2,10 +2,10 @@
 // Created by Alessandro Budroni on 20/07/2023.
 //
 
-#include "djbsort_inversion.h"
-#include "../../djbsort/djbsort.h"
+#include "../api.h"
+#include <djbsort/djbsort.h>
 
-void perm_inverse_djbsort(perm_t o, const perm_t p) {
+void perm_inverse(perm_t o, const perm_t p) {
     uint32_t i;
     uint32_t buffer[PARAM_N];
 

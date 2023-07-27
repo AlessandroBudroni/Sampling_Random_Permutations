@@ -5,7 +5,7 @@
 #ifndef RANDOM_PERMUTATION_SAMPLING_COMMON_H
 #define RANDOM_PERMUTATION_SAMPLING_COMMON_H
 
-#include "stdlib.h"
+#include <stdlib.h>
 #include "definitions.h"
 
 // Return 1 if n = 0, 0 otherwise - for uint16_t

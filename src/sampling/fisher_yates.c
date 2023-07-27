@@ -2,10 +2,8 @@
 // Created by Alessandro Budroni on 07/09/2022.
 //
 
-#include "fisher_yates.h"
-
-#include <stdint.h>
-#include <stdlib.h>
+#include "../common.h"
+#include "../api.h"
 #include <string.h>
 
 static void fisher_yates_non_constant_time(perm_t p, const perm_t r) {
@@ -20,7 +18,7 @@ static void fisher_yates_non_constant_time(perm_t p, const perm_t r) {
     }
 }
 
-void perm_set_random_fisher_yates_non_ct(perm_t p, uint8_t seed[SEED_BYTES]) {
+void perm_set_random(perm_t p, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
 
@@ -37,7 +35,6 @@ void perm_set_random_fisher_yates_non_ct(perm_t p, uint8_t seed[SEED_BYTES]) {
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_non_constant_time(p, rand);
-    memset(rand, 0, sizeof (perm_t));
 }
 
 

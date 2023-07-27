@@ -1,41 +1,52 @@
 //
-// Created by Alessandro Budroni on 07/09/2022.
+// Created by Alessandro Budroni on 06/07/2023.
 //
 
 #include "test_utils.h"
-#include "../src/definitions.h"
-#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-/* warm up cpu to avoid cpu throttling */
-double warm_up(){
+// return EXIT_SUCCESS if the permutation is valid, EXIT_FAILURE otherwise
+int validate_permutation(const perm_t p) {
 
-    double time_taken, start, end;
+    uint16_t verification[PARAM_N] = {0};
 
-    start = (double) clock();
-    volatile int k = 2, m = 3;
-    for (int i = 0; i < 10000; ++i) {
-        k *= k;
-        k = k % 0X800;
-        k = k+1;
-        for (int j = 0; j < 10000; ++j) {
-            m *= k;
-            m = m % 0X400;
-            m += 1;
+    //  check that the entries are all below PARAM_N
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (p[i] > PARAM_N){
+            printf("Verification failure with index %d and value %d\n", i, p[i]);
+            return EXIT_FAILURE;
+        }
+        verification[p[i]]++;
+    }
+
+    // check that there are no repetitions
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (verification[i] != 1) {
+            printf("Verification failure at %d rep %d\n", i, p[i]);
+            return EXIT_FAILURE;
         }
     }
-    end = (double) clock();
-
-    if(k == m && m == 0){
-        return 0;
-    }
-    time_taken = (end - start) / ((double) CLOCKS_PER_SEC);
-    return time_taken;
+    return EXIT_SUCCESS;
 }
 
-/* Access system counter for benchmarking */
-int64_t cpucycles(void)
-{
-    unsigned int hi, lo;
-    __asm__ volatile ("rdtsc\n\t" : "=a" (lo), "=d"(hi));
-    return ((int64_t)lo) | (((int64_t)hi) << 32);
+// return EXIT_SUCCESS if the permutation is not trivial, EXIT_FAILURE otherwise
+int test_non_triviality(const perm_t p){
+
+    int sum = 1;
+    for (int i = 0; i < PARAM_N; ++i) {
+        sum &= (p[i] == i);
+    }
+    return (sum == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+}
+
+// return EXIT_SUCCESS if the permutations are equal, EXIT_FAILURE otherwise
+int test_equality(const perm_t p1, const perm_t p2) {
+
+    for (int i = 0; i < PARAM_N; ++i) {
+        if (p1[i] != p2[i]){
+            return EXIT_FAILURE;
+        }
+    }
+    return EXIT_SUCCESS;
 }

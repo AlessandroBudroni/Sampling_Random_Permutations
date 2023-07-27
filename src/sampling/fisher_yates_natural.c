@@ -2,8 +2,8 @@
 // Created by Alessandro Budroni on 10/10/2022.
 //
 
-#include "fisher_yates_natural.h"
 #include "../common.h"
+#include "../api.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -43,7 +43,7 @@ static void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
     }
 }
 
-void perm_set_random_natural(perm_t p_out, uint8_t seed[SEED_BYTES]) {
+void perm_set_random(perm_t p_out, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
     perm_t p_rand;

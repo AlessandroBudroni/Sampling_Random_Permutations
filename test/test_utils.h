@@ -1,13 +1,14 @@
 //
-// Created by Alessandro Budroni on 07/09/2022.
+// Created by Alessandro Budroni on 06/07/2023.
 //
 
-#ifndef RANDOM_PERMUTATION_SAMPLING_TEST_UTILS_H
-#define RANDOM_PERMUTATION_SAMPLING_TEST_UTILS_H
+#ifndef RANDOM_PERMUTATION_SAMPLING_VERIFICATION_H
+#define RANDOM_PERMUTATION_SAMPLING_VERIFICATION_H
 
-#include <stdint.h>
+#endif //RANDOM_PERMUTATION_SAMPLING_VERIFICATION_H
 
-int64_t cpucycles(void);
-double warm_up();
+#include "../src/definitions.h"
 
-#endif //RANDOM_PERMUTATION_SAMPLING_TEST_UTILS_H
+int validate_permutation(const perm_t p);
+int test_non_triviality(const perm_t p);
+int test_equality(const perm_t p1, const perm_t p2);
