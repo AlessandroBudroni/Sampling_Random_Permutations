@@ -62,45 +62,29 @@ int16_t hsum_256_16_avx(__m256i v) {
     return pblck16[0];
 }
 
-static inline __m256i mask_natural_avx2(const __m256i pi, const __m256i pj, const __m256i avxone){ // unsigned is safer for bit operations
-    __m256i mask;
-    // mask = pj - pi - 1 (the -1 is done before the loop)
-    mask = _mm256_sub_epi16(pj, pi);
-    // mask >> 15
-    mask = _mm256_srai_epi16(mask, 15);
-    // mask & 1
-    mask = _mm256_and_si256(mask, avxone);
-
-    return mask;
-}
-
 void fisher_yates_shuffle_natural_avx2(perm_t p_out, permAVX_t *p_rand) {
 
-    uint16_t *pi, *pj, tmp;
-    uint16_t mask;
-    __m256i avxpi, *avxpj, avxmask, avxsum;
     __m256i avxone = _mm256_set1_epi16(1);
 
     for (int i = 0; i < PARAM_N; i++) {
-        pi = &p_out[i];
+        uint16_t *pi = &p_out[i];
         *pi = p_rand->i[i];
-        avxpi = _mm256_set1_epi16((int16_t)*pi);
+        __m256i avxpi = _mm256_set1_epi16((int16_t)*pi);
 
         // avx part
-        avxsum = _mm256_setzero_si256();
+        __m256i avxsum = _mm256_setzero_si256();
         for (int j = 0; j < div_nat[i]; j++) {
-            avxpj = &p_rand->avx[j];
-            avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(*avxpj, avxpi));
-//            avxmask = _mm256_srai_epi16(_mm256_cmpgt_epi16(*avxpj, avxpi), 15);
+            __m256i *avxpj = &p_rand->avx[j];
+            __m256i avxmask = _mm256_and_si256(avxone,_mm256_cmpgt_epi16(*avxpj, avxpi));
             avxsum = _mm256_add_epi16(avxsum, avxmask);
             *avxpj = _mm256_sub_epi16(*avxpj, avxmask);
         }
 
         // non avx part
-        tmp = i-hsum_256_16_avx(avxsum);
+        uint16_t tmp = i-hsum_256_16_avx(avxsum);
         for (int j = rem_str[i]; j < rem_end[i]; j++) {
-            pj = &p_rand->i[j];
-            mask = GT16(*pj, *pi);
+            uint16_t *pj = &p_rand->i[j];
+            uint16_t mask = GT16(*pj, *pi);
             tmp -= mask;
             *pj -= mask;
         }

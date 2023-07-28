@@ -92,13 +92,13 @@ set(SRC_FYN_AVX2
 
 #vqsort
 add_executable(test_api_vqsort test/test_api.c ${SRC_VQSORT})
-target_link_libraries(test_api_vqsort PRIVATE test_interface hwy_vqsort)
+target_link_libraries(test_api_vqsort PRIVATE test_interface_avx2 hwy_vqsort)
 add_test(test_api_vqsort test_api_vqsort)
 set_tests_properties(test_api_vqsort PROPERTIES LABEL test)
 set_target_properties(test_api_vqsort PROPERTIES LINKER_LANGUAGE C)
 
 add_executable(benchmark_api_vqsort test/benchmark_api.c ${SRC_VQSORT})
-target_link_libraries(benchmark_api_vqsort PRIVATE test_interface hwy_vqsort)
+target_link_libraries(benchmark_api_vqsort PRIVATE test_interface_avx2 hwy_vqsort)
 add_test(benchmark_api_vqsort benchmark_api_vqsort)
 set_tests_properties(benchmark_api_vqsort PROPERTIES LABEL benchmark)
 set_target_properties(benchmark_api_vqsort PROPERTIES LINKER_LANGUAGE C)
