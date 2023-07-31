@@ -39,19 +39,19 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     endif()
 endif()
 
-file(GLOB HWY_VQSORT_SOURCES "hwy-vqsort/sort/vqsort_*.cc")
+file(GLOB HWY_VQSORT_SOURCES "hwy/contrib/sort/vqsort_*.cc")
 list(APPEND HWY_VQSORT_SOURCES
-        hwy-vqsort/sort/order.h
-        hwy-vqsort/sort/shared-inl.h
-        hwy-vqsort/sort/sorting_networks-inl.h
-        hwy-vqsort/sort/traits-inl.h
-        hwy-vqsort/sort/traits128-inl.h
-        hwy-vqsort/sort/vqsort-inl.h
-        hwy-vqsort/sort/vqsort.cc
-        hwy-vqsort/sort/vqsort.h
-        hwy-vqsort/per_target.cc
-        hwy-vqsort/targets.cc
-        hwy-vqsort_cwrapper.cpp
+        hwy/contrib/sort/order.h
+        hwy/contrib/sort/shared-inl.h
+        hwy/contrib/sort/sorting_networks-inl.h
+        hwy/contrib/sort/traits-inl.h
+        hwy/contrib/sort/traits128-inl.h
+        hwy/contrib/sort/vqsort-inl.h
+        hwy/contrib/sort/vqsort.cc
+        hwy/contrib/sort/vqsort.h
+        hwy/per_target.cc
+        hwy/targets.cc
+        vqsort_cwrapper.cpp
         )
 
 add_library(hwy_vqsort STATIC ${HWY_VQSORT_SOURCES})
