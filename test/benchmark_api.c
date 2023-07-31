@@ -13,7 +13,7 @@ void bench_sample_api() {
     uint8_t seed[SEED_BYTES] = {0};
     uint64_t *b_seed = (uint64_t*)seed;
 
-    printf("Start benchmark. Sample %d permutations of length %d\n\n", N_PERMUTATIONS, PARAM_N);fflush(stdout);
+    printf("Start benchmark. Sample %d permutations of length %d\n\n", N_ITERATIONS, PARAM_N);fflush(stdout);
 
     perm_t p;
     cycles_tot = 0;
@@ -49,7 +49,7 @@ void bench_compose_api() {
     uint8_t seed[SEED_BYTES] = {0};
     uint64_t *b_seed = (uint64_t*)seed;
 
-    printf("Start benchmark. Compose %d permutations of length %d\n\n", N_PERMUTATIONS, PARAM_N);fflush(stdout);
+    printf("Start benchmark. Compose %d permutations of length %d\n\n", N_ITERATIONS, PARAM_N);fflush(stdout);
 
     perm_t p, prand;
 
@@ -94,7 +94,7 @@ void bench_inverse_api() {
     uint8_t seed[SEED_BYTES] = {0};
     uint64_t *b_seed = (uint64_t*)seed;
 
-    printf("Start benchmark. Invert %d permutations of length %d\n\n", N_PERMUTATIONS, PARAM_N);fflush(stdout);
+    printf("Start benchmark. Invert %d permutations of length %d\n\n", N_ITERATIONS, PARAM_N);fflush(stdout);
 
     perm_t p, pinv, id;
 

@@ -7,13 +7,13 @@
 
 #include <stdint.h>
 
-#define PARAM_N             64                      // permutation length
-#define BITS_PARAM_N        7                        // bithlength of PARAM_N
-#define BITS_PARAM_N_MASK   0x7F                     // integer with BITS_PARAM_N ones
+//#define PARAM_N             64                      // permutation length
+//#define BITS_PARAM_N        7                        // bithlength of PARAM_N
+//#define BITS_PARAM_N_MASK   0x7F                     // integer with BITS_PARAM_N ones
 
-//#define PARAM_N             2048                     // permutation length
-//#define BITS_PARAM_N        12                       // bithlength of PARAM_N
-//#define BITS_PARAM_N_MASK   0xFFF                    // integer with BITS_PARAM_N ones
+#define PARAM_N             2048                     // permutation length
+#define BITS_PARAM_N        12                       // bithlength of PARAM_N
+#define BITS_PARAM_N_MASK   0xFFF                    // integer with BITS_PARAM_N ones
 
 //#define PARAM_N             1024                     // permutation length
 //#define BITS_PARAM_N        11                       // bithlength of PARAM_N
@@ -26,7 +26,7 @@
 
 // TESTING
 #define N_PERMUTATIONS 100
-#define N_ITERATIONS 100000
+#define N_ITERATIONS 10000
 
 typedef uint16_t perm_t[PARAM_N];
 
