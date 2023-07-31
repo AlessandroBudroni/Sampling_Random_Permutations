@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-static int sort_with_given_random_input(perm_t p, uint32_t buffer[1024]) {
+static int sort_with_given_random_input(perm_t p, uint32_t *buffer) {
 
     // Use 21 bits for randomness
     for (int i = 0; i < PARAM_N; i++) {
