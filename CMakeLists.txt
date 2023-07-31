@@ -135,6 +135,11 @@ target_link_libraries(benchmark_api_djbsort_32 PRIVATE test_interface DJBSORT)
 add_test(benchmark_api_djbsort_32 benchmark_api_djbsort_32)
 set_tests_properties(benchmark_api_djbsort_32 PROPERTIES LABEL benchmark)
 
+add_executable(dudect_api_djbsort_32 test/dudect_api.c ${SRC_DJBSORT})
+target_link_libraries(dudect_api_djbsort_32 PRIVATE test_interface DJBSORT m)
+add_test(dudect_api_djbsort_32 dudect_api_djbsort_32)
+set_tests_properties(dudect_api_djbsort_32 PROPERTIES LABEL dudect)
+
 #djbsort-AVX2 32
 add_executable(test_api_djbsort_32_avx2 test/test_api.c ${SRC_DJBSORT})
 target_link_libraries(test_api_djbsort_32_avx2 PRIVATE test_interface_avx2 DJBSORT_AVX2)
@@ -145,6 +150,11 @@ add_executable(benchmark_api_djbsort_32_avx2 test/benchmark_api.c ${SRC_DJBSORT}
 target_link_libraries(benchmark_api_djbsort_32_avx2 PRIVATE test_interface_avx2 DJBSORT_AVX2)
 add_test(benchmark_api_djbsort_32_avx2 benchmark_api_djbsort_32_avx2)
 set_tests_properties(benchmark_api_djbsort_32_avx2 PROPERTIES LABEL benchmark)
+
+add_executable(dudect_api_djbsort_32_avx2 test/dudect_api.c ${SRC_DJBSORT})
+target_link_libraries(dudect_api_djbsort_32_avx2 PRIVATE test_interface_avx2 DJBSORT_AVX2 m)
+add_test(dudect_api_djbsort_32_avx2 dudect_api_djbsort_32_avx2)
+set_tests_properties(dudect_api_djbsort_32_avx2 PROPERTIES LABEL dudect)
 
 #djbsort 64
 add_executable(test_api_djbsort_64 test/test_api.c ${SRC_DJBSORT_64})
@@ -178,6 +188,11 @@ add_executable(benchmark_api_fisher_yates test/benchmark_api.c ${SRC_FY})
 target_link_libraries(benchmark_api_fisher_yates PRIVATE test_interface)
 add_test(benchmark_api_fisher_yates benchmark_api_fisher_yates)
 set_tests_properties(benchmark_api_fisher_yates PROPERTIES LABEL benchmark)
+
+add_executable(dudect_api_fisher_yates test/dudect_api.c ${SRC_FY})
+target_link_libraries(dudect_api_fisher_yates PRIVATE test_interface m)
+add_test(dudect_api_fisher_yates dudect_api_fisher_yates)
+set_tests_properties(dudect_api_fisher_yates PROPERTIES LABEL dudect)
 
 # Fisher-Yates-AVX2
 add_executable(test_api_fisher_yates_avx2 test/test_api.c ${SRC_FY})

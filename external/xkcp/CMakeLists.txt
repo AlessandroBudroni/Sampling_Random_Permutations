@@ -18,6 +18,7 @@ target_sources(XKCP_AVX2 PRIVATE
         avx2/KeccakP-1600-AVX2.s
         )
 target_include_directories(XKCP_AVX2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/opt64)
+target_link_options(XKCP_AVX2 PUBLIC -z noexecstack)
 
 target_compile_options(XKCP_AVX2 PRIVATE -mavx2)
 if (APPLE)

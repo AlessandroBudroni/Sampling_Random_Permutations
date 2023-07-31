@@ -11,13 +11,13 @@
 //#define BITS_PARAM_N        7                        // bithlength of PARAM_N
 //#define BITS_PARAM_N_MASK   0x7F                     // integer with BITS_PARAM_N ones
 
-#define PARAM_N             2048                     // permutation length
-#define BITS_PARAM_N        12                       // bithlength of PARAM_N
-#define BITS_PARAM_N_MASK   0xFFF                    // integer with BITS_PARAM_N ones
+//#define PARAM_N             2048                     // permutation length
+//#define BITS_PARAM_N        12                       // bithlength of PARAM_N
+//#define BITS_PARAM_N_MASK   0xFFF                    // integer with BITS_PARAM_N ones
 
-//#define PARAM_N             1024                     // permutation length
-//#define BITS_PARAM_N        11                       // bithlength of PARAM_N
-//#define BITS_PARAM_N_MASK   0x7FF                    // integer with BITS_PARAM_N ones
+#define PARAM_N             1024                     // permutation length
+#define BITS_PARAM_N        11                       // bithlength of PARAM_N
+#define BITS_PARAM_N_MASK   0x7FF                    // integer with BITS_PARAM_N ones
 
 #define CHUNK_RND_BYTES_LENGTH 5000
 #define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
