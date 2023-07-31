@@ -10,12 +10,13 @@ int main() {
     fflush(stdout);
 
     // Fisher Yates non-constant time
-    uint16_t seed[SEED_BYTES / 2] = {0};
+    uint8_t seed[SEED_BYTES] = {0};
+    uint64_t *b_seed = (uint64_t*)seed;
     perm_t p, pinv, id;
 
-    for (int i = 0; i < N_ITERATIONS; ++i) {
+    for (long long int i = 0; i < N_ITERATIONS; ++i) {
         // sample permutation
-        seed[0] = i;
+        *b_seed = (uint64_t)i;
         perm_set_random(p, (uint8_t *) seed);
         if (validate_permutation(p) != EXIT_SUCCESS) {
             printf("FAILED - Invalid permutation\n");
