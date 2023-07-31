@@ -27,6 +27,7 @@ log(CMAKE_C_COMPILER)
 log(CMAKE_C_FLAGS)
 
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(external/djbsort)
 add_subdirectory(external/vqsort)
