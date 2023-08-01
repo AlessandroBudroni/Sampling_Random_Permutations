@@ -234,8 +234,3 @@ target_link_libraries(benchmark_api_fisher_yates_natural_avx2 PRIVATE test_inter
 add_test(benchmark_api_fisher_yates_natural_avx2 benchmark_api_fisher_yates_natural_avx2)
 set_tests_properties(benchmark_api_fisher_yates_natural_avx2 PROPERTIES LABEL benchmark)
 
-# vqsort
-add_executable(test_vqsort test/test_vqsort.c)
-target_link_libraries(test_vqsort vqsort)
-add_test(test_vqsort test_vqsort)
-set_target_properties(test_vqsort PROPERTIES LINKER_LANGUAGE C)

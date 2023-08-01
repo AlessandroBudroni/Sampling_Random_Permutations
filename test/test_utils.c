@@ -6,6 +6,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <unistd.h>
+#include <fcntl.h>
+
+int get_seed()
+{
+    // get seed for RNG
+    int randomData = open("/dev/urandom", O_RDONLY);
+    if(randomData  < 0){
+        printf("Could not open /dev/urandom\n");
+        return EXIT_FAILURE;
+    }
+    int seed, ret;
+    ret = read(randomData, &seed, sizeof(int));
+    if(ret  < 0){
+        printf("Could not read from /dev/urandom\n");
+        return EXIT_FAILURE;
+    }
+    close(randomData);
+    return seed;
+}
+
+
 // return EXIT_SUCCESS if the permutation is valid, EXIT_FAILURE otherwise
 int validate_permutation(const perm_t p) {
 

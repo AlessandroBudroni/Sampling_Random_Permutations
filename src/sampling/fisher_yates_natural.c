@@ -8,16 +8,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int set_random_with_bound_for_permutation_natural(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
+static int set_random_with_bound_for_permutation(perm_t p, const uint16_t rnd_buff[CHUNK_RND_U16_LENGTH]) {
 
-    int size = PARAM_N;
     uint16_t rnd;
     int32_t index = 0;
     uint32_t max;
     int bound;
 
-    for (int i = 0; i < size; i++) {
-        bound = size - i;
+    for (int i = 0; i < PARAM_N; i++) {
+        bound = PARAM_N - i;
         max = ((0x10000 / bound ) * bound);// (2^16 / bound) * bound
         do {
             if (index >= CHUNK_RND_U16_LENGTH -1){
@@ -53,7 +52,7 @@ void perm_set_random(perm_t p_out, uint8_t seed[SEED_BYTES]) {
     expanded_seed[SEED_BYTES + 1] = 0;
     sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
 
-    while (set_random_with_bound_for_permutation_natural(p_rand, rnd_buff) != EXIT_SUCCESS) {
+    while (set_random_with_bound_for_permutation(p_rand, rnd_buff) != EXIT_SUCCESS) {
         expanded_seed[SEED_BYTES + 1] += 1;
         sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
     }
