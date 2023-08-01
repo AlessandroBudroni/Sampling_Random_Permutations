@@ -9,8 +9,8 @@
 
 static void fisher_yates_non_constant_time(perm_t p, perm_t r) {
     for (int i = PARAM_N - 1; i >= 0; --i){
-        r[i] = r[r[i]];
-        r[r[i]] = i;
+        p[i] = p[r[i]];
+        p[r[i]] = i;
     }
 }
 
