@@ -40,6 +40,7 @@ list(APPEND HWY_VQSORT_SOURCES
         hwy/contrib/sort/vqsort.cc
         hwy/contrib/sort/vqsort.h
         vqsort_cwrapper.cpp
+        vqsort_cwrapper.h
         )
 
 if (MSVC)
@@ -155,6 +156,25 @@ else()
 
 endif()  # !MSVC
 
+# Each highway target is a cluster of features. The corresponding cluster for
+# each target is defined by kGroup* in targets.cc. The compiler options to
+# enable them are defined by HWY_TARGET_STR* in set_macros-inl.
+
+set(HWY_AVX2_FLAGS
+        -msse2
+        -mssse3
+        -msse4.1
+        -msse4.2
+        -mpclmul
+        -maes
+        -mavx
+        -mavx2
+        -mbmi
+        -mbmi2
+        -mfma
+        -mf16c
+        )
+
 add_library(vqsort STATIC ${HWY_SOURCES} ${HWY_VQSORT_SOURCES})
 target_include_directories(vqsort PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_compile_options(vqsort PRIVATE ${HWY_FLAGS})
+target_compile_options(vqsort PRIVATE ${HWY_FLAGS} ${HWY_AVX2_FLAGS} -DHWY_COMPILE_ONLY_STATIC)
