@@ -7,15 +7,10 @@
 
 #include <string.h>
 
-static void fisher_yates_non_constant_time(perm_t p, const perm_t r) {
-    uint16_t tmp;
-    for (int i = 0; i < PARAM_N; ++i) {
-        p[i] = i;
-    }
-    for (int i = 0; i < PARAM_N; ++i){
-        tmp = p[i];
-        p[i] = p[r[i]];
-        p[r[i]] = tmp;
+static void fisher_yates_non_constant_time(perm_t p, perm_t r) {
+    for (int i = PARAM_N - 1; i >= 0; --i){
+        r[i] = r[r[i]];
+        r[r[i]] = i;
     }
 }
 
