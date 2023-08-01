@@ -8,9 +8,6 @@ macro(log var)
     message(STATUS "${var}: ${${var}}")
 endmacro()
 
-set(CC clang)
-set(CXX clang++)
-
 # Other not used flags: -fsanitize=address -Wformat -Wformat-security -Wall -Wextra
 
 execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
@@ -105,25 +102,25 @@ set(SRC_FYN_AVX2
 
 #vqsort-AVX2 32
 add_executable(test_api_vqsort_avx2 test/test_api.c ${SRC_VQSORT})
-target_link_libraries(test_api_vqsort_avx2 PRIVATE test_interface_avx2 hwy_vqsort)
+target_link_libraries(test_api_vqsort_avx2 PRIVATE test_interface_avx2 vqsort)
 add_test(test_api_vqsort_avx2 test_api_vqsort_avx2)
 set_tests_properties(test_api_vqsort_avx2 PROPERTIES LABEL test)
 set_target_properties(test_api_vqsort_avx2 PROPERTIES LINKER_LANGUAGE C)
 
 add_executable(benchmark_api_vqsort_32_avx2 test/benchmark_api.c ${SRC_VQSORT})
-target_link_libraries(benchmark_api_vqsort_32_avx2 PRIVATE test_interface_avx2 hwy_vqsort)
+target_link_libraries(benchmark_api_vqsort_32_avx2 PRIVATE test_interface_avx2 vqsort)
 add_test(benchmark_api_vqsort_32_avx2 benchmark_api_vqsort_32_avx2)
 set_tests_properties(benchmark_api_vqsort_32_avx2 PROPERTIES LABEL benchmark)
 set_target_properties(benchmark_api_vqsort_32_avx2 PROPERTIES LINKER_LANGUAGE C)
 
 #vqsort-AVX2 64
 add_executable(test_api_vqsort_64_avx2 test/test_api.c ${SRC_VQSORT_64})
-target_link_libraries(test_api_vqsort_64_avx2 PRIVATE test_interface_avx2 hwy_vqsort)
+target_link_libraries(test_api_vqsort_64_avx2 PRIVATE test_interface_avx2 vqsort)
 add_test(test_api_vqsort_64_avx2 test_api_vqsort_64_avx2)
 set_tests_properties(test_api_vqsort_64_avx2 PROPERTIES LABEL test)
 
 add_executable(benchmark_api_vqsort_64_avx2 test/benchmark_api.c ${SRC_VQSORT_64})
-target_link_libraries(benchmark_api_vqsort_64_avx2 PRIVATE test_interface_avx2 hwy_vqsort)
+target_link_libraries(benchmark_api_vqsort_64_avx2 PRIVATE test_interface_avx2 vqsort)
 add_test(benchmark_api_vqsort_64_avx2 benchmark_api_vqsort_64_avx2)
 set_tests_properties(benchmark_api_vqsort_64_avx2 PROPERTIES LABEL benchmark)
 
@@ -239,6 +236,6 @@ set_tests_properties(benchmark_api_fisher_yates_natural_avx2 PROPERTIES LABEL be
 
 # vqsort
 add_executable(test_vqsort test/test_vqsort.c)
-target_link_libraries(test_vqsort hwy_vqsort)
+target_link_libraries(test_vqsort vqsort)
 add_test(test_vqsort test_vqsort)
 set_target_properties(test_vqsort PROPERTIES LINKER_LANGUAGE C)
