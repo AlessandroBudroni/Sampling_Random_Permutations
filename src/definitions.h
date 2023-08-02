@@ -24,14 +24,9 @@
 #define DOMAIN_SEPARATOR_PERM 0x03
 #define SEED_BYTES          16
 
-#define SORT_SAMPLING_ABORT_DISABLED
-//#ifndef SORT_SAMPLING_ABORT_ENABLED
-//#define SORT_SAMPLING_ABORT_ENABLED 1
-//#endif
-
 // TESTING
 #define N_PERMUTATIONS 100
-#define N_ITERATIONS 10000
+#define N_ITERATIONS 1000
 
 typedef uint16_t perm_t[PARAM_N];
 

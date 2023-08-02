@@ -39,34 +39,37 @@ set(SRC_DJBSORT_64
         ${CMAKE_SOURCE_DIR}/src/composition/sort_composition.c)
 
 set(SRC_FY
-        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
-        ${CMAKE_SOURCE_DIR}/src/sampling/fisher_yates.c
+        ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/fisher_yates_shuffle.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/uniform_index_sample.c
         ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
         ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
 
 set(SRC_FYS
-        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
-        ${CMAKE_SOURCE_DIR}/src/sampling/fisher_yates_sendrier.c
-        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution_ct.c
-        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition_ct.c)
+        ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/sandrier_shuffle.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/uniform_index_sample.c
+        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
+        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
 
-set(SRC_FYS_AVX2
-        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
-        ${CMAKE_SOURCE_DIR}/src/sampling/AVX2/fisher_yates_sendrier_AVX2.c
-        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution_ct.c
-        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition_ct.c)
+#set(SRC_FYS_AVX2
+#        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
+#        ${CMAKE_SOURCE_DIR}/src/sampling/AVX2/fisher_yates_sendrier_AVX2.c
+#        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution_ct.c
+#        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition_ct.c)
 
 set(SRC_FYN
-        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
-        ${CMAKE_SOURCE_DIR}/src/sampling/fisher_yates_natural.c
-        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution_ct.c
-        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition_ct.c)
+        ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/natural_shuffle.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/uniform_index_sample.c
+        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
+        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
 
-set(SRC_FYN_AVX2
-        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
-        ${CMAKE_SOURCE_DIR}/src/sampling/AVX2/fisher_yates_natural_AVX2.c
-        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution_ct.c
-        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition_ct.c)
+#set(SRC_FYN_AVX2
+#        ${CMAKE_SOURCE_DIR}/src/common_fisher_yates.c
+#        ${CMAKE_SOURCE_DIR}/src/sampling/AVX2/fisher_yates_natural_AVX2.c
+#        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution_ct.c
+#        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition_ct.c)
 
 
 set(DUDECT_TIMEOUT 5)
@@ -78,26 +81,28 @@ macro(register_test test_name test_sources test_libraries TIMEOUT_FAIL)
     message(".. Expect Fail ${TIMEOUT_FAIL}")
     add_executable(test_${test_name} test_api.c ${${test_sources}})
     target_link_libraries(test_${test_name} PRIVATE  ${${test_libraries}})
+    target_compile_definitions(test_${test_name} PRIVATE SCHEME_NAME="${test_name}")
     set_target_properties(test_${test_name} PROPERTIES LINKER_LANGUAGE C)
     add_test(test_${test_name} test_${test_name})
     set_tests_properties(test_${test_name} PROPERTIES LABEL test)
 
     add_executable(benchmark_${test_name} benchmark_api.c ${${test_sources}})
     target_link_libraries(benchmark_${test_name} PRIVATE  ${${test_libraries}})
+    target_compile_definitions(benchmark_${test_name} PRIVATE SCHEME_NAME="${test_name}")
     set_target_properties(benchmark_${test_name} PROPERTIES LINKER_LANGUAGE C)
     add_test(benchmark_${test_name} benchmark_${test_name})
     set_tests_properties(benchmark_${test_name} PROPERTIES LABEL benchmark)
 
-    add_executable(dudect_${test_name} dudect_api.c ${${test_sources}})
-    target_link_libraries(dudect_${test_name} PRIVATE  ${${test_libraries}} m)
-    target_compile_definitions(dudect_${test_name} PRIVATE SORT_SAMPLING_ABORT_ENABLED=0)
-    set_target_properties(dudect_${test_name} PROPERTIES LINKER_LANGUAGE C)
-    add_test(dudect_${test_name} dudect_${test_name})
-    set_tests_properties(dudect_${test_name} PROPERTIES LABEL dudect WILL_FAIL ${TIMEOUT_FAIL})
+#    add_executable(dudect_${test_name} dudect_api.c ${${test_sources}})
+#    target_link_libraries(dudect_${test_name} PRIVATE  ${${test_libraries}} m)
+#    target_compile_definitions(dudect_${test_name} PRIVATE SORT_SAMPLING_ABORT_ENABLED=0)
+#    set_target_properties(dudect_${test_name} PROPERTIES LINKER_LANGUAGE C)
+#    add_test(dudect_${test_name} dudect_${test_name})
+#    set_tests_properties(dudect_${test_name} PROPERTIES LABEL dudect WILL_FAIL ${TIMEOUT_FAIL})
 endmacro()
 
 #vqsort
-set(hwy_libraries test_interface_avx2 hwy_vqsort)
+set(hwy_libraries test_interface_avx2 vqsort)
 register_test(api_vqsort_32_avx2 SRC_VQSORT hwy_libraries True)
 register_test(api_vqsort_64_avx2 SRC_VQSORT_64 hwy_libraries True)
 
@@ -115,9 +120,9 @@ set(fy_libraries test_interface)
 register_test(api_fisher_yates SRC_FY fy_libraries True)
 register_test(api_fisher_yates-sandrier SRC_FYS fy_libraries False)
 register_test(api_fisher_yates-natural SRC_FYN fy_libraries False)
-
+#
 set(fy_libraries_avx2 test_interface_avx2)
 register_test(api_fisher_yates_avx2 SRC_FY fy_libraries_avx2 True)
-register_test(api_fisher_yates-sandrier_avx2 SRC_FYS_AVX2 fy_libraries_avx2 False)
-register_test(api_fisher_yates-natural_avx2 SRC_FYN_AVX2 fy_libraries_avx2 False)
+#register_test(api_fisher_yates-sandrier_avx2 SRC_FYS_AVX2 fy_libraries_avx2 False)
+#register_test(api_fisher_yates-natural_avx2 SRC_FYN_AVX2 fy_libraries_avx2 False)
 

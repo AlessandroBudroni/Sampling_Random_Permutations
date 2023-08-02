@@ -3,7 +3,7 @@
 //
 
 #include "../api.h"
-#include "../sorting/generic_sort.h"
+#include "../sorting/common_sort.h"
 
 void perm_inverse(perm_t o, const perm_t p) {
     uint32_t i;

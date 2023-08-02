@@ -72,8 +72,6 @@ static void perm_set_random_sendrier_avx2(permAVX_t *p_out, uint8_t seed[SEED_BY
         sample_random_chunk_avx2((uint8_t *)rnd_buff, expanded_seed);
     }
     fisher_yates_shuffle_sendrier_avx2(p_out);
-
-    memset(rnd_buff, 0, sizeof(rnd_buff));
 }
 
 void perm_set_random(perm_t out, uint8_t seed[SEED_BYTES]) {

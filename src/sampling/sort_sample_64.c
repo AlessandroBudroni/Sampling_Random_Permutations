@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include "../sorting/generic_sort.h"
+#include "../sorting/common_sort.h"
 #include "../api.h"
 
 #include <xkcp/SimpleFIPS202.h>
@@ -11,7 +11,6 @@
 
 static int sort_with_given_random_input_64(perm_t p, uint64_t *buffer) {
 
-    // Use 21 bits for randomness
     for (int i = 0; i < PARAM_N; i++) {
         buffer[i] <<= BITS_PARAM_N;
         buffer[i] |= i;

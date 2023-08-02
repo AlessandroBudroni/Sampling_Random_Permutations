@@ -9,22 +9,21 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int get_seed()
+void get_seed(uint8_t seed[SEED_BYTES])
 {
     // get seed for RNG
     int randomData = open("/dev/urandom", O_RDONLY);
     if(randomData  < 0){
         printf("Could not open /dev/urandom\n");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
-    int seed, ret;
-    ret = read(randomData, &seed, sizeof(int));
+    int ret;
+    ret = read(randomData, seed, SEED_BYTES);
     if(ret  < 0){
         printf("Could not read from /dev/urandom\n");
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
     close(randomData);
-    return seed;
 }
 
 

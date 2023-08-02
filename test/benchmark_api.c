@@ -1,6 +1,8 @@
 
 #include "benchmark_utils.h"
 #include "test_utils.h"
+
+#include <xkcp/SimpleFIPS202.h>
 #include <api.h>
 #include <time.h>
 #include <stdio.h>
@@ -11,7 +13,6 @@ void bench_sample_api() {
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
     uint8_t seed[SEED_BYTES] = {0};
-    uint64_t *b_seed = (uint64_t*)seed;
 
     printf("Start benchmark. Sample %d permutations of length %d\n\n", N_ITERATIONS, PARAM_N);fflush(stdout);
 
@@ -19,8 +20,9 @@ void bench_sample_api() {
     cycles_tot = 0;
     double time_taken = 0;
 
-    for (int j = 0; j < N_ITERATIONS; ++j) {
-        *b_seed = j;
+    for (int i = 0; i < N_ITERATIONS; ++i) {
+        SHAKE128(seed, sizeof(seed), (uint8_t *)&i, sizeof(i));
+
         start = (double) clock();
         cycles1 = cpucycles();
 
@@ -36,7 +38,7 @@ void bench_sample_api() {
         }
     }
 
-    printf("<SCHEME NAME> time ..............................%10lld ", cycles_tot);
+    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -47,7 +49,6 @@ void bench_compose_api() {
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
     uint8_t seed[SEED_BYTES] = {0};
-    uint64_t *b_seed = (uint64_t*)seed;
 
     printf("Start benchmark. Compose %d permutations of length %d\n\n", N_ITERATIONS, PARAM_N);fflush(stdout);
 
@@ -56,12 +57,11 @@ void bench_compose_api() {
     cycles_tot = 0;
     double time_taken = 0;
 
-    *b_seed = -1;
     perm_set_random(p, seed);
 
-    for (int j = 0; j < N_ITERATIONS; ++j) {
+    for (int i = 0; i < N_ITERATIONS; ++i) {
 
-        *b_seed = j;
+        SHAKE128(seed, sizeof(seed), (uint8_t *)&i, sizeof(i));
         perm_set_random(prand, seed);
 
         start = (double) clock();
@@ -81,7 +81,7 @@ void bench_compose_api() {
         }
     }
 
-    printf("<SCHEME NAME> time ..............................%10lld ", cycles_tot);
+    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -92,7 +92,6 @@ void bench_inverse_api() {
     unsigned long long cycles_tot, cycles1, cycles2;
     double start, end;
     uint8_t seed[SEED_BYTES] = {0};
-    uint64_t *b_seed = (uint64_t*)seed;
 
     printf("Start benchmark. Invert %d permutations of length %d\n\n", N_ITERATIONS, PARAM_N);fflush(stdout);
 
@@ -101,9 +100,10 @@ void bench_inverse_api() {
     cycles_tot = 0;
     double time_taken = 0;
 
-    for (int j = 0; j < N_ITERATIONS; ++j) {
+    for (int i = 0; i < N_ITERATIONS; ++i) {
 
-        *b_seed = j;
+        SHAKE128(seed, sizeof(seed), (uint8_t *)&i, sizeof(i));
+
         perm_set_random(p, seed);
 
         start = (double) clock();
@@ -123,7 +123,7 @@ void bench_inverse_api() {
         }
     }
 
-    printf("<SCHEME NAME> time ..............................%10lld ", cycles_tot);
+    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);

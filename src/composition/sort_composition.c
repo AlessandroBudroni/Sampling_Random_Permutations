@@ -3,7 +3,7 @@
 //
 
 #include "../api.h"
-#include "../sorting/generic_sort.h"
+#include "../sorting/common_sort.h"
 
 void perm_compose(perm_t out, const perm_t in1, const perm_t in2) {
     uint32_t i;

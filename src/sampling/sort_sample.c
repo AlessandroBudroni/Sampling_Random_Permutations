@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 28/10/2022.
 //
 
-#include "../sorting/generic_sort.h"
+#include "../sorting/common_sort.h"
 #include "../api.h"
 
 #include <xkcp/SimpleFIPS202.h>
@@ -11,7 +11,6 @@
 
 static int sort_with_given_random_input(perm_t p, uint32_t *buffer) {
 
-    // Use 21 bits for randomness
     for (int i = 0; i < PARAM_N; i++) {
         buffer[i] <<= BITS_PARAM_N;
         buffer[i] |= i;
@@ -44,16 +43,15 @@ static int sort_with_given_random_input(perm_t p, uint32_t *buffer) {
  */
 void perm_set_random(perm_t out, uint8_t seed[SEED_BYTES]) {
     uint32_t rnd_buff[PARAM_N];
-    uint8_t expanded_seed[SEED_BYTES + 2];
+    uint8_t expanded_seed[SEED_BYTES + 1];
 
     memcpy(expanded_seed, seed, SEED_BYTES);
-    expanded_seed[SEED_BYTES] = DOMAIN_SEPARATOR_PERM;
-    expanded_seed[SEED_BYTES + 1] = 0;
+    expanded_seed[SEED_BYTES] = 0;
     SHAKE128((uint8_t *) rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
 
 #ifndef SORT_SAMPLING_ABORT_DISABLED
     while (sort_with_given_random_input(out, rnd_buff) != EXIT_SUCCESS) {
-        expanded_seed[SEED_BYTES + 1] += 1;
+        expanded_seed[SEED_BYTES] += 1;
         SHAKE128((uint8_t *) rnd_buff, sizeof(rnd_buff), expanded_seed, sizeof(expanded_seed));
     }
 #else
