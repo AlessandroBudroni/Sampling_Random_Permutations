@@ -1,10 +1,9 @@
 
-
-
 #include <api.h>
+#include <time.h>
 // define DUDECT implementation env before including dudect.h header library
 #define DUDECT_IMPLEMENTATION
-
+#define DUDECT_TIMEOUT 300
 #include <dudect/dudect.h>
 #include <xkcp/SimpleFIPS202.h>
 
@@ -29,11 +28,25 @@ void prepare_inputs(dudect_config_t *c, uint8_t *input_data, uint8_t *classes) {
     }
 }
 
+int exit_code(dudect_state_t *state) {
+    if ( (*state) == DUDECT_NO_LEAKAGE_EVIDENCE_YET) {
+        return EXIT_SUCCESS;
+    }
+    return EXIT_FAILURE;
+}
+
+void timeout(double start, double timeout, dudect_state_t *state) {
+    double elapsed_time = (clock() - start) / ((double) CLOCKS_PER_SEC);
+    if (elapsed_time > timeout) {
+        exit(exit_code(state));
+    }
+}
 
 int main(int argc, char **argv) {
 
     (void) argc;
     (void) argv;
+    double start_time;
 
 
     dudect_config_t config = {
@@ -47,11 +60,13 @@ int main(int argc, char **argv) {
 
     dudect_init(&ctx, &config);
 
+    start_time = clock();
     while (state == DUDECT_NO_LEAKAGE_EVIDENCE_YET) {
         state = dudect_main(&ctx);
+        timeout(start_time, DUDECT_TIMEOUT, &state);
     }
 
     dudect_free(&ctx);
 
-    return (int) state;
+    return exit_code(&state);
 }

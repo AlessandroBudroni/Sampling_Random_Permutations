@@ -46,10 +46,13 @@ static void fisher_yates_shuffle_natural(perm_t p_out, perm_t p_rand) {
 void perm_set_random(perm_t p_out, uint8_t seed[SEED_BYTES]) {
     uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     uint8_t expanded_seed[SEED_BYTES + 2];
+
     perm_t p_rand;
+
     memcpy(expanded_seed, seed, SEED_BYTES);
     expanded_seed[SEED_BYTES] = DOMAIN_SEPARATOR_PERM;
     expanded_seed[SEED_BYTES + 1] = 0;
+
     sample_random_chunk((uint8_t *)rnd_buff, expanded_seed);
 
     while (set_random_with_bound_for_permutation(p_rand, rnd_buff) != EXIT_SUCCESS) {
