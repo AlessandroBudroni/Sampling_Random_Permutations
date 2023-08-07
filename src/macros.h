@@ -17,6 +17,6 @@
 //#define ISNOTZERO(n) ((((n) | (~(n) + 1)) >> 15) & (uint8_t)0x1)
 
 // Return either a or b according to the mask
-#define MASKAPPLY(mask, a, b) ((a) ^ (mask & (a ^ b))) //(((mask) & (a)) | ((~(mask)) & (b)))
+#define MASKAPPLY(mask, a, b) ((a) ^ ((mask) & (a ^ b))) //(((mask) & (a)) | ((~(mask)) & (b)))
 
 #endif //RANDOM_PERMUTATION_SAMPLING_MACROS_H

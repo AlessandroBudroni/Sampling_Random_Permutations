@@ -3,7 +3,10 @@
 #include <time.h>
 // define DUDECT implementation env before including dudect.h header library
 #define DUDECT_IMPLEMENTATION
+#ifndef DUDECT_TIMEOUT
 #define DUDECT_TIMEOUT 300
+#endif
+
 #include <dudect/dudect.h>
 #include <xkcp/SimpleFIPS202.h>
 
@@ -21,7 +24,7 @@ void prepare_inputs(dudect_config_t *c, uint8_t *input_data, uint8_t *classes) {
     for (size_t i = 0; i < c->number_measurements; i++) {
         classes[i] = randombit();
         if (classes[i] == 0) {
-            memset(input_data + (size_t)i * c->chunk_size, 0x00, c->chunk_size);
+            memset(input_data + (size_t) i * c->chunk_size, 0x00, c->chunk_size);
         } else {
             // leave random
         }
@@ -29,7 +32,7 @@ void prepare_inputs(dudect_config_t *c, uint8_t *input_data, uint8_t *classes) {
 }
 
 int exit_code(dudect_state_t *state) {
-    if ( (*state) == DUDECT_NO_LEAKAGE_EVIDENCE_YET) {
+    if ((*state) == DUDECT_NO_LEAKAGE_EVIDENCE_YET) {
         return EXIT_SUCCESS;
     }
     return EXIT_FAILURE;

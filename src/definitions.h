@@ -28,6 +28,6 @@
 #define N_PERMUTATIONS 100
 #define N_ITERATIONS 1000
 
-typedef uint16_t perm_t[PARAM_N];
+typedef uint16_t perm_t[PARAM_N] __attribute__((aligned(32)));
 
 #endif //RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_H
