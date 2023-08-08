@@ -7,7 +7,7 @@ void common_shuffle(perm_t output, uniform_indexes_t input) {
         uint16_t pi = input[i];
         output[i] = input[i];
         for (int j = i + 1; j < PARAM_N; ++j) { // p[j] = (p[j] == p[i]) ? i : p[j];
-            int mask = ISZERO(output[j] - pi);
+            uint16_t mask = ISZERO(output[j] - pi);
             output[j] = MASKAPPLY(mask-1, i, output[j]);
         }
     }
