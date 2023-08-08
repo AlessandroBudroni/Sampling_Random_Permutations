@@ -10,7 +10,7 @@ int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t s
     uint32_t max;
     int bound;
 
-    uint8_t rnd_buff[CHUNK_RND_BYTES_LENGTH];
+    uint16_t rnd_buff[CHUNK_RND_U16_LENGTH];
     SHAKE128((uint8_t *)rnd_buff, CHUNK_RND_BYTES_LENGTH, seed, SEED_BYTES + 1);
 
     for (int i = 0; i < PARAM_N; i++) {

@@ -66,6 +66,7 @@ int main(int argc, char **argv) {
     start_time = clock();
     while (state == DUDECT_NO_LEAKAGE_EVIDENCE_YET) {
         state = dudect_main(&ctx);
+        fflush(stdout);
         timeout(start_time, DUDECT_TIMEOUT, &state);
     }
 
