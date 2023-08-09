@@ -1192,5 +1192,3 @@ void uint32_sort(uint32_t *input_output_array, uint64_t size_of_array) {
     int32_sort((int32_t *)input_output_array, size_of_array);
     for (j = 0; j < size_of_array; ++j) input_output_array[j] ^= 0x80000000;
 }
-
-void uint64_sort(uint64_t *input_output_array, uint64_t size_of_array) {}

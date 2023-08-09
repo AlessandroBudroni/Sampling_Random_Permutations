@@ -2,7 +2,7 @@
 // Created by perin on 7/27/23.
 //
 
-#include "generic_sort.h"
+#include "common_sort.h"
 
 #include <djbsort/djbsort.h>
 

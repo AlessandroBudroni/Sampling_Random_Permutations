@@ -9,8 +9,15 @@
 
 #include "../src/definitions.h"
 
-int get_seed();
+#ifndef SCHEME_NAME
+#define SCHEME_NAME "generic"
+#endif
 
+static inline char *scheme_name() {
+    return SCHEME_NAME;
+}
+
+void get_seed(uint8_t seed[SEED_BYTES]);
 int validate_permutation(const perm_t p);
 int test_non_triviality(const perm_t p);
 int test_equality(const perm_t p1, const perm_t p2);
