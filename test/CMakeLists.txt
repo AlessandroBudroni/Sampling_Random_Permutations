@@ -149,9 +149,30 @@ register_test(api_fisher_yates_natural_avx2 SRC_FYN_AVX2 fy_libraries_avx2 False
 
 # Test sorting
 
-add_executable(test_sorting test_sort_api.c)
-target_link_libraries(test_sorting PRIVATE test_interface_avx2 DJBSORT vqsort)
-target_compile_definitions(test_sorting PRIVATE SCHEME_NAME="sorting")
-set_target_properties(test_sorting PROPERTIES LINKER_LANGUAGE C)
-add_test(test_sorting test_sorting)
-set_tests_properties(test_sorting PROPERTIES LABEL test)
+add_executable(test_sort_u32 test_sort_u32.c)
+target_link_libraries(test_sort_u32 PRIVATE test_interface_avx2 DJBSORT vqsort_avx2)
+target_compile_definitions(test_sort_u32 PRIVATE SCHEME_NAME="sorting_u32")
+set_target_properties(test_sort_u32 PROPERTIES LINKER_LANGUAGE C)
+add_test(test_sort_u32 test_sort_u32)
+set_tests_properties(test_sort_u32 PROPERTIES LABEL test)
+
+add_executable(test_sort_u32_mceliece test_sort_u32.c)
+target_link_libraries(test_sort_u32_mceliece PRIVATE test_interface_avx2 DJBSORT_MCELIECE vqsort_avx2)
+target_compile_definitions(test_sort_u32_mceliece PRIVATE SCHEME_NAME="sorting_u32_mceliece")
+set_target_properties(test_sort_u32_mceliece PROPERTIES LINKER_LANGUAGE C)
+add_test(test_sort_u32_mceliece test_sort_u32_mceliece)
+set_tests_properties(test_sort_u32_mceliece PROPERTIES LABEL test)
+
+add_executable(test_sort_u64 test_sort_u64.c)
+target_link_libraries(test_sort_u64 PRIVATE test_interface_avx2 DJBSORT vqsort_avx2)
+target_compile_definitions(test_sort_u64 PRIVATE SCHEME_NAME="sorting_u64" )
+set_target_properties(test_sort_u64 PROPERTIES LINKER_LANGUAGE C)
+add_test(test_sort_u64 test_sort_u64)
+set_tests_properties(test_sort_u64 PROPERTIES LABEL test)
+
+add_executable(test_sort_u64_mceliece test_sort_u64.c)
+target_link_libraries(test_sort_u64_mceliece PRIVATE test_interface_avx2 DJBSORT_MCELIECE vqsort_avx2)
+target_compile_definitions(test_sort_u64_mceliece PRIVATE SCHEME_NAME="sorting_u64_mceliece")
+set_target_properties(test_sort_u64_mceliece PROPERTIES LINKER_LANGUAGE C)
+add_test(test_sort_u64_mceliece test_sort_u64_mceliece)
+set_tests_properties(test_sort_u64_mceliece PROPERTIES LABEL test)
