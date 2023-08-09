@@ -7,17 +7,55 @@
 
 #include <stdint.h>
 
-//#define PARAM_N             64                      // permutation length
-//#define BITS_PARAM_N        7                        // bithlength of PARAM_N
-//#define BITS_PARAM_N_MASK   0x7F                     // integer with BITS_PARAM_N ones
+#if !defined(PARAM_N) //|| !defined(BITS_PARAM_N) || !defined(BITS_PARAM_N_MASK)
 
-//#define PARAM_N             2048                     // permutation length
-//#define BITS_PARAM_N        12                       // bithlength of PARAM_N
-//#define BITS_PARAM_N_MASK   0xFFF                    // integer with BITS_PARAM_N ones
+#define PARAM_N             128                      // permutation length
+#define BITS_PARAM_N        8                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0xFF                     // integer with BITS_PARAM_N ones
 
-#define PARAM_N             1024                     // permutation length
-#define BITS_PARAM_N        11                       // bithlength of PARAM_N
+#elif (PARAM_N == 32)
+
+#define BITS_PARAM_N        6                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0x3F                     // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 64)
+
+#define BITS_PARAM_N        7                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0x7F                     // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 128)
+
+#define BITS_PARAM_N        8                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0xFF                     // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 256)
+
+#define BITS_PARAM_N        9                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0x1FF                     // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 512)
+
+#define BITS_PARAM_N        10                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0x3FF                     // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 1024)
+
+#define BITS_PARAM_N        11                       // bitlength of PARAM_N
 #define BITS_PARAM_N_MASK   0x7FF                    // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 2048)
+
+#define BITS_PARAM_N        12                       // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0xFFF                    // integer with BITS_PARAM_N ones
+
+#elif (PARAM_N == 4096)
+
+#define BITS_PARAM_N        13                        // bitlength of PARAM_N
+#define BITS_PARAM_N_MASK   0x1FFF                    // integer with BITS_PARAM_N ones
+
+#endif
+
+
 
 #define CHUNK_RND_BYTES_LENGTH 5000
 #define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
