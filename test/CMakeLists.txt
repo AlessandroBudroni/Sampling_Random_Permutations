@@ -14,7 +14,7 @@ target_sources(test_interface_avx2 PUBLIC
         test_utils.c
         benchmark_utils.c)
 
-set(SRC_VQSORT
+set(SRC_VQSORT_32
         ${CMAKE_SOURCE_DIR}/src/sorting/vqsort_wrapper.c
         ${CMAKE_SOURCE_DIR}/src/sampling/sort_sample.c
         ${CMAKE_SOURCE_DIR}/src/inversion/sort_inversion.c
@@ -26,7 +26,7 @@ set(SRC_VQSORT_64
         ${CMAKE_SOURCE_DIR}/src/inversion/sort_inversion.c
         ${CMAKE_SOURCE_DIR}/src/composition/sort_composition.c)
 
-set(SRC_DJBSORT
+set(SRC_DJBSORT_32
         ${CMAKE_SOURCE_DIR}/src/sorting/djbsort_wrapper.c
         ${CMAKE_SOURCE_DIR}/src/sampling/sort_sample.c
         ${CMAKE_SOURCE_DIR}/src/inversion/sort_inversion.c
@@ -111,18 +111,30 @@ macro(register_test test_name test_sources test_libraries TIMEOUT_FAIL)
 endmacro()
 
 #vqsort
-set(hwy_libraries test_interface_avx2 vqsort)
-register_test(api_vqsort_32_avx2 SRC_VQSORT hwy_libraries True)
-register_test(api_vqsort_64_avx2 SRC_VQSORT_64 hwy_libraries True)
+set(hwy_libraries test_interface vqsort)
+register_test(api_vqsort_32 SRC_VQSORT_32 hwy_libraries True)
+register_test(api_vqsort_64 SRC_VQSORT_64 hwy_libraries True)
+
+set(hwy_libraries_avx2 test_interface_avx2 vqsort_avx2)
+register_test(api_vqsort_32_avx2 SRC_VQSORT_32 hwy_libraries_avx2 True)
+register_test(api_vqsort_64_avx2 SRC_VQSORT_64 hwy_libraries_avx2 True)
 
 #djbsort
 set(djb_libraries test_interface DJBSORT)
-register_test(api_djbsort_32 SRC_DJBSORT djb_libraries False)
+register_test(api_djbsort_32 SRC_DJBSORT_32 djb_libraries False)
 register_test(api_djbsort_64 SRC_DJBSORT_64 djb_libraries False)
-
+#
 set(djb_libraries_avx2 test_interface_avx2 DJBSORT_AVX2)
-register_test(api_djbsort_32_avx2 SRC_DJBSORT djb_libraries_avx2 False)
+register_test(api_djbsort_32_avx2 SRC_DJBSORT_32 djb_libraries_avx2 False)
 register_test(api_djbsort_64_avx2 SRC_DJBSORT_64 djb_libraries_avx2 False)
+#
+set(djb_mceliece_libraries test_interface DJBSORT_MCELIECE)
+register_test(api_djbsort_32_mceliece SRC_DJBSORT_32 djb_mceliece_libraries False)
+register_test(api_djbsort_64_mceliece SRC_DJBSORT_64 djb_mceliece_libraries False)
+#
+set(djb_mceliece_libraries_avx2 test_interface_avx2 DJBSORT_MCELIECE)
+register_test(api_djbsort_32_mceliece_avx2 SRC_DJBSORT_32 djb_mceliece_libraries_avx2 False)
+register_test(api_djbsort_64_mceliece_avx2 SRC_DJBSORT_64 djb_mceliece_libraries_avx2 False)
 
 #fisher-yates
 set(fy_libraries test_interface)
@@ -135,3 +147,11 @@ register_test(api_fisher_yates_avx2 SRC_FY fy_libraries_avx2 True)
 register_test(api_fisher_yates_sendrier_avx2 SRC_FYS_AVX2 fy_libraries_avx2 False)
 register_test(api_fisher_yates_natural_avx2 SRC_FYN_AVX2 fy_libraries_avx2 False)
 
+# Test sorting
+
+add_executable(test_sorting test_sort_api.c)
+target_link_libraries(test_sorting PRIVATE test_interface_avx2 DJBSORT vqsort)
+target_compile_definitions(test_sorting PRIVATE SCHEME_NAME="sorting")
+set_target_properties(test_sorting PROPERTIES LINKER_LANGUAGE C)
+add_test(test_sorting test_sorting)
+set_tests_properties(test_sorting PROPERTIES LABEL test)

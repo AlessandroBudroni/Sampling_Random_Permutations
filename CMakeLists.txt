@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.21)
 project(random_permutation_sampling C CXX ASM)
 
-enable_testing()
+set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1) # Remove ctest auto targets
+include(CTest)
 
 # help macro
 macro(log var)
