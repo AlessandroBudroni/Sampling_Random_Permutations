@@ -11,7 +11,7 @@ target_sources(XKCP PRIVATE
         ${XKCP_COMMON}
         opt64/KeccakP-1600-opt64.c
         )
-target_include_directories(XKCP PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/opt64)
+target_include_directories(XKCP PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/opt64)
 
 
 # XKCP AVX2
@@ -20,7 +20,7 @@ target_sources(XKCP_AVX2 PRIVATE
         ${XKCP_COMMON}
         avx2/KeccakP-1600-AVX2.s
         )
-target_include_directories(XKCP_AVX2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/avx2)
+target_include_directories(XKCP_AVX2 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/avx2)
 target_link_options(XKCP_AVX2 PUBLIC -z noexecstack)
 target_compile_options(XKCP_AVX2 PRIVATE -mavx2)
 
