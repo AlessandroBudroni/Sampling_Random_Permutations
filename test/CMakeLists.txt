@@ -97,7 +97,7 @@ set(SRC_FYN_CT
 set(SRC_FYN_AVX2_CT
         ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
         ${CMAKE_SOURCE_DIR}/src/shuffling/natural_shuffle_avx2.c
-        ${CMAKE_SOURCE_DIR}/src/shuffling/natural_uniform_index_sample_ct.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/natural_uniform_index_sample_avx2_ct.c
         ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
         ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
 

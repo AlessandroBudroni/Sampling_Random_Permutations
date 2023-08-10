@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 
+#define PARAM_N 1024
+
 #if !defined(PARAM_N) //|| !defined(BITS_PARAM_N) || !defined(BITS_PARAM_N_MASK)
 
 #define PARAM_N             128                      // permutation length

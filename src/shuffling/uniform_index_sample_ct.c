@@ -5,6 +5,7 @@
 #include <xkcp/KeccakHash.h>
 #include <xkcp/SimpleFIPS202.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define INDEX_SAMPLE_BUFFER_LENGTH 32 // (1/2)^64 chance to fail.
 
