@@ -44,7 +44,7 @@ int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t s
         if (bound > BITMASKS[bitmask_index]) {
             bitmask_index++;
         }
-        output[i] = sample_single_index(rnd_buff, bound, BITMASKS[bitmask_index]);
+        output[i] = i + sample_single_index(rnd_buff, bound, BITMASKS[bitmask_index]);
     }
     return EXIT_SUCCESS;
 }

@@ -59,6 +59,20 @@ set(SRC_FYS_AVX2
         ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
         ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
 
+set(SRC_FYS_CT
+        ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/sendrier_shuffle.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/uniform_index_sample_ct.c
+        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
+        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
+
+set(SRC_FYS_AVX2_CT
+        ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/sendrier_shuffle_avx2.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/uniform_index_sample_avx2_ct.c
+        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
+        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
+
 set(SRC_FYN
         ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
         ${CMAKE_SOURCE_DIR}/src/shuffling/natural_shuffle.c
@@ -76,6 +90,13 @@ set(SRC_FYN_AVX2
 set(SRC_FYN_CT
         ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
         ${CMAKE_SOURCE_DIR}/src/shuffling/natural_shuffle.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/natural_uniform_index_sample_ct.c
+        ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
+        ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
+
+set(SRC_FYN_AVX2_CT
+        ${CMAKE_SOURCE_DIR}/src/sampling/shuffle_sample.c
+        ${CMAKE_SOURCE_DIR}/src/shuffling/natural_shuffle_avx2.c
         ${CMAKE_SOURCE_DIR}/src/shuffling/natural_uniform_index_sample_ct.c
         ${CMAKE_SOURCE_DIR}/src/inversion/inversion_substitution.c
         ${CMAKE_SOURCE_DIR}/src/composition/standard_composition.c)
@@ -146,13 +167,16 @@ register_test(api_djbsort_64_mceliece_avx2 SRC_DJBSORT_64 djb_mceliece_libraries
 set(fy_libraries test_interface)
 register_test(api_fisher_yates SRC_FY fy_libraries True)
 register_test(api_fisher_yates_sendrier SRC_FYS fy_libraries False)
+register_test(api_fisher_yates_sendrier_ct SRC_FYS_CT fy_libraries False)
 register_test(api_fisher_yates_natural SRC_FYN fy_libraries False)
 register_test(api_fisher_yates_natural_ct SRC_FYN_CT fy_libraries False)
 #
 set(fy_libraries_avx2 test_interface_avx2)
 register_test(api_fisher_yates_avx2 SRC_FY fy_libraries_avx2 True)
-register_test(api_fisher_yates_sendrier_avx2 SRC_FYS_AVX2 fy_libraries_avx2 False)
-register_test(api_fisher_yates_natural_avx2 SRC_FYN_AVX2 fy_libraries_avx2 False)
+register_test(api_fisher_yates_sendrier_avx2 SRC_FYS_AVX2 fy_libraries_avx2 True)
+register_test(api_fisher_yates_sendrier_avx2_ct SRC_FYS_AVX2_CT fy_libraries_avx2 False)
+register_test(api_fisher_yates_natural_avx2 SRC_FYN_AVX2 fy_libraries_avx2 True)
+register_test(api_fisher_yates_natural_avx2_ct SRC_FYN_AVX2_CT fy_libraries_avx2 False)
 
 # Test sorting
 
