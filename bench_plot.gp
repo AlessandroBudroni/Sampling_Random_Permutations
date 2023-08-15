@@ -2,19 +2,26 @@
 # Usage: gnuplot -c bench_plot.gp datafile
 #
 
-set dataf sep ","
-set key autotitle columnhead
-
 datafile = ARG1
 
-set terminal epslatex
+set terminal epslatex size 12cm,9cm
 set output sprintf("%s.tex", datafile)
 
-# Number of columns on file
+set dataf sep ","
+
+set key top left autotitle columnhead
+
+set xlabel "N"
+set ylabel "Time (clock cycles)"
+
+set log x 2
+set format x " 2^{%L}"
+
+# Number of columns in the data file
 N = system(sprintf("awk -F ',' 'NR==1{print NF}' %s", datafile))
 
-# Plot all series (schemes)
-plot for [i=2:N] datafile using 1:i with linespoints
+# Plot all series (columns)
+plot for [i=2:N] datafile using 1:i with linespoints lw 2 ps 1.5
 
 set output
 set terminal pop
