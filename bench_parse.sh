@@ -44,15 +44,15 @@ avx2)
 esac
 
 # Data file
-file="$BENCH_DIR_MAIN/benchmark_api$variant.dat"
+file="$BENCH_DIR_MAIN/benchmark_api_$op$variant.dat"
 # Data file - header
 line="n"
 prefix="benchmark_api_"
 for scheme in $schemes; do
 	# Replace '_' for ' '
-	line="$line,$(echo ${scheme#"$prefix"} | tr '_' ' ')"
+	line="$line,$(echo "${scheme#"$prefix"}" | tr '_' ' ')"
 done
-printf "%s\n" "$line" > $file
+printf "%s\n" "$line" > "$file"
 # Data file - data
 for n in $PARAM_N; do
 	line="$n"
@@ -61,5 +61,5 @@ for n in $PARAM_N; do
 		time=$(parseBenchmarkOutput "$op" "$bench_file")
 		line="$line,$time"
 	done
-	printf "%s\n" "$line" >> $file
+	printf "%s\n" "$line" >> "$file"
 done
