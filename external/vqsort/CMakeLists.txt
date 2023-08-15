@@ -175,6 +175,12 @@ set(HWY_AVX2_FLAGS
         -mf16c
         )
 
+add_library(vqsort_avx2 STATIC ${HWY_SOURCES} ${HWY_VQSORT_SOURCES})
+target_include_directories(vqsort_avx2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_options(vqsort_avx2 PRIVATE ${HWY_FLAGS} ${HWY_AVX2_FLAGS})
+target_compile_definitions(vqsort_avx2 PRIVATE HWY_COMPILE_ONLY_STATIC)
+
 add_library(vqsort STATIC ${HWY_SOURCES} ${HWY_VQSORT_SOURCES})
 target_include_directories(vqsort PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_compile_options(vqsort PRIVATE ${HWY_FLAGS} ${HWY_AVX2_FLAGS} -DHWY_COMPILE_ONLY_STATIC)
+target_compile_options(vqsort PRIVATE ${HWY_FLAGS})
+target_compile_definitions(vqsort PRIVATE HWY_COMPILE_ONLY_EMU128)

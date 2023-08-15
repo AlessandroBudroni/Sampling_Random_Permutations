@@ -2,7 +2,7 @@
 // Created by Alessandro Budroni on 20/07/2023.
 //
 
-#include "../api.h"
+#include "../definitions.h"
 #include "../sorting/common_sort.h"
 
 void perm_inverse(perm_t o, const perm_t p) {

@@ -1,5 +1,6 @@
 
 #include "../shuffling/common_shuffle.h"
+#include "../uniform_sampling/common_uniform_index_sample.h"
 #include "../api.h"
 
 #include <string.h>

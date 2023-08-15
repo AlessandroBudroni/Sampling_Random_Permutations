@@ -1,8 +1,5 @@
-//
-// Created by perin on 7/27/23.
-//
 
-#include "../common_fisher_yates.h"
+#include "../definitions.h"
 #include "../macros.h"
 
 #include <string.h>

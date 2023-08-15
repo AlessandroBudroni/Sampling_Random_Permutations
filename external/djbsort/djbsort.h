@@ -4,10 +4,12 @@
 
 #include <stdint.h>
 
-void int32_sort(int32_t *input_output_array, uint64_t size_of_array);
+void int32_sort(int32_t *x, uint64_t n);
 
-void uint32_sort(uint32_t *input_output_array, uint64_t size_of_array);
+void uint32_sort(uint32_t *x, uint64_t n);
 
-void uint64_sort(uint64_t *input_output_array, uint64_t size_of_array);
+void int64_sort(int64_t *x, uint64_t n);
+
+void uint64_sort(uint64_t *x, uint64_t n);
 
 #endif
