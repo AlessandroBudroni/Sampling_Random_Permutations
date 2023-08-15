@@ -17,6 +17,8 @@ set ylabel "Time (clock cycles)"
 set log x 2
 set format x " 2^{%L}"
 
+set log y 10
+
 # Number of columns in the data file
 N = system(sprintf("awk -F ',' 'NR==1{print NF}' %s", datafile))
 

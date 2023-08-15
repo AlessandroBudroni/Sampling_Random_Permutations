@@ -38,7 +38,7 @@ void bench_sample_api() {
         }
     }
 
-    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
+    printf("Scheme %s time %10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -81,7 +81,7 @@ void bench_compose_api() {
         }
     }
 
-    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
+    printf("Scheme %s time %10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -123,7 +123,7 @@ void bench_inverse_api() {
         }
     }
 
-    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
+    printf("Scheme %s time %10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -132,10 +132,10 @@ void bench_inverse_api() {
 
 int main(){
 
-    printf("\nWarming up... ");fflush(stdout);
-    double time_taken = warm_up();
-    printf("Done\n");
-    printf("Time taken %lf\n\n", time_taken);
+//    printf("\nWarming up... ");fflush(stdout);
+//    double time_taken = warm_up();
+//    printf("Done\n");
+//    printf("Time taken %lf\n\n", time_taken);
 
     bench_sample_api();
     bench_compose_api();

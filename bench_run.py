@@ -4,7 +4,7 @@ import os, sys
 cmake_compilers = '-D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++'
 
 
-param_n = [32,64,128,256,512,1024,2048,4096]
+param_n = [32,64,128,256,512,1024,2048]
 # bits_n = 7
 # bits_n_mask = 0x7F
 

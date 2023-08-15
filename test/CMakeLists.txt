@@ -111,28 +111,41 @@ endmacro()
 
 #vqsort
 set(hwy_libraries test_interface vqsort)
-register_test(api_vqsort_32 SRC_VQSORT_32 hwy_libraries True)
+
+if (NOT PARAM_N EQUAL 4096)
+    register_test(api_vqsort_32 SRC_VQSORT_32 hwy_libraries True)
+endif ()
 register_test(api_vqsort_64 SRC_VQSORT_64 hwy_libraries True)
 
 set(hwy_libraries_avx2 test_interface_avx2 vqsort_avx2)
-register_test(api_vqsort_32_avx2 SRC_VQSORT_32 hwy_libraries_avx2 True)
+if (NOT PARAM_N EQUAL 4096)
+    register_test(api_vqsort_32_avx2 SRC_VQSORT_32 hwy_libraries_avx2 True)
+endif ()
 register_test(api_vqsort_64_avx2 SRC_VQSORT_64 hwy_libraries_avx2 True)
 
 #djbsort
 set(djb_libraries test_interface DJBSORT)
-register_test(api_djbsort_32 SRC_DJBSORT_32 djb_libraries False)
+if (NOT PARAM_N EQUAL 4096)
+    register_test(api_djbsort_32 SRC_DJBSORT_32 djb_libraries False)
+endif ()
 register_test(api_djbsort_64 SRC_DJBSORT_64 djb_libraries False)
 #
 set(djb_libraries_avx2 test_interface_avx2 DJBSORT_AVX2)
-register_test(api_djbsort_32_avx2 SRC_DJBSORT_32 djb_libraries_avx2 False)
+if (NOT PARAM_N EQUAL 4096)
+    register_test(api_djbsort_32_avx2 SRC_DJBSORT_32 djb_libraries_avx2 False)
+endif ()
 register_test(api_djbsort_64_avx2 SRC_DJBSORT_64 djb_libraries_avx2 False)
 #
 set(djb_mceliece_libraries test_interface DJBSORT_MCELIECE)
-register_test(api_djbsort_32_mceliece SRC_DJBSORT_32 djb_mceliece_libraries False)
+if (NOT PARAM_N EQUAL 4096)
+    register_test(api_djbsort_32_mceliece SRC_DJBSORT_32 djb_mceliece_libraries False)
+endif ()
 register_test(api_djbsort_64_mceliece SRC_DJBSORT_64 djb_mceliece_libraries False)
 #
 set(djb_mceliece_libraries_avx2 test_interface_avx2 DJBSORT_MCELIECE)
-register_test(api_djbsort_32_mceliece_avx2 SRC_DJBSORT_32 djb_mceliece_libraries_avx2 False)
+if (NOT PARAM_N EQUAL 4096)
+    register_test(api_djbsort_32_mceliece_avx2 SRC_DJBSORT_32 djb_mceliece_libraries_avx2 False)
+endif ()
 register_test(api_djbsort_64_mceliece_avx2 SRC_DJBSORT_64 djb_mceliece_libraries_avx2 False)
 
 #fisher-yates
@@ -149,19 +162,21 @@ register_test(api_fisher_yates_natural_avx2_ct SRC_FYN_AVX2_CT fy_libraries_avx2
 
 # Test sorting
 
-add_executable(test_sort_u32 test_sort_u32.c)
-target_link_libraries(test_sort_u32 PRIVATE test_interface_avx2 DJBSORT vqsort_avx2)
-target_compile_definitions(test_sort_u32 PRIVATE SCHEME_NAME="sorting_u32")
-set_target_properties(test_sort_u32 PROPERTIES LINKER_LANGUAGE C)
-add_test(test_sort_u32 test_sort_u32)
-set_tests_properties(test_sort_u32 PROPERTIES LABEL test)
+if (NOT PARAM_N EQUAL 4096)
+    add_executable(test_sort_u32 test_sort_u32.c)
+    target_link_libraries(test_sort_u32 PRIVATE test_interface_avx2 DJBSORT vqsort_avx2)
+    target_compile_definitions(test_sort_u32 PRIVATE SCHEME_NAME="sorting_u32")
+    set_target_properties(test_sort_u32 PROPERTIES LINKER_LANGUAGE C)
+    add_test(test_sort_u32 test_sort_u32)
+    set_tests_properties(test_sort_u32 PROPERTIES LABEL test)
 
-add_executable(test_sort_u32_mceliece test_sort_u32.c)
-target_link_libraries(test_sort_u32_mceliece PRIVATE test_interface_avx2 DJBSORT_MCELIECE vqsort_avx2)
-target_compile_definitions(test_sort_u32_mceliece PRIVATE SCHEME_NAME="sorting_u32_mceliece")
-set_target_properties(test_sort_u32_mceliece PROPERTIES LINKER_LANGUAGE C)
-add_test(test_sort_u32_mceliece test_sort_u32_mceliece)
-set_tests_properties(test_sort_u32_mceliece PROPERTIES LABEL test)
+    add_executable(test_sort_u32_mceliece test_sort_u32.c)
+    target_link_libraries(test_sort_u32_mceliece PRIVATE test_interface_avx2 DJBSORT_MCELIECE vqsort_avx2)
+    target_compile_definitions(test_sort_u32_mceliece PRIVATE SCHEME_NAME="sorting_u32_mceliece")
+    set_target_properties(test_sort_u32_mceliece PROPERTIES LINKER_LANGUAGE C)
+    add_test(test_sort_u32_mceliece test_sort_u32_mceliece)
+    set_tests_properties(test_sort_u32_mceliece PROPERTIES LABEL test)
+endif ()
 
 add_executable(test_sort_u64 test_sort_u64.c)
 target_link_libraries(test_sort_u64 PRIVATE test_interface_avx2 DJBSORT vqsort_avx2)
