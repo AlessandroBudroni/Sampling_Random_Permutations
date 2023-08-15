@@ -34,7 +34,7 @@ void bench_sample_random_uniform() {
         cycles_tot+= cycles2 - cycles1;
     }
 
-    printf("Scheme %s time ..............................%10lld ", scheme_name(), cycles_tot);
+    printf("Scheme %s time %10lld ", scheme_name(), cycles_tot);
     printf("cycles");
     printf("\n");
     printf("Time taken %lf\n\n", time_taken);
@@ -42,10 +42,10 @@ void bench_sample_random_uniform() {
 
 int main(){
 
-    printf("\nWarming up... ");fflush(stdout);
-    double time_taken = warm_up();
-    printf("Done\n");
-    printf("Time taken %lf\n\n", time_taken);
+//    printf("\nWarming up... ");fflush(stdout);
+//    double time_taken = warm_up();
+//    printf("Done\n");
+//    printf("Time taken %lf\n\n", time_taken);
 
     bench_sample_random_uniform();
 

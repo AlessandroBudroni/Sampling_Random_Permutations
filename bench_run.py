@@ -30,6 +30,9 @@ for n in param_n:
     print(command)
     os.system(command)
 
+    command = f"for scheme in $(ctest --test-dir ./{dir} -N | awk '/benchmark_uniform/ {{print $3}}'); do echo $scheme; ./{dir}/test/$scheme -R $scheme > {main_dir}/param_{n}_$scheme; done"
+    print(command)
+    os.system(command)
 
 
 
