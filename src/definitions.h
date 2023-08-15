@@ -7,8 +7,6 @@
 
 #include <stdint.h>
 
-#define PARAM_N 1024
-
 #if !defined(PARAM_N) //|| !defined(BITS_PARAM_N) || !defined(BITS_PARAM_N_MASK)
 
 #define PARAM_N             128                      // permutation length
@@ -69,5 +67,6 @@
 #define N_ITERATIONS 1000
 
 typedef uint16_t perm_t[PARAM_N] __attribute__((aligned(32)));
+typedef uint16_t uniform_indexes_t[PARAM_N] __attribute__((aligned(32)));
 
 #endif //RANDOM_PERMUTATION_SAMPLING_DEFINITIONS_H

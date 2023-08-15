@@ -4,7 +4,7 @@
 // define DUDECT implementation env before including dudect.h header library
 #define DUDECT_IMPLEMENTATION
 #ifndef DUDECT_TIMEOUT
-#define DUDECT_TIMEOUT 600
+#define DUDECT_TIMEOUT 300
 #endif
 
 #include <dudect/dudect.h>
