@@ -2,6 +2,7 @@
 #include "common_uniform_index_sample.h"
 #include "../macros.h"
 
+#include <xkcp/KeccakHash.h>
 #include <xkcp/SimpleFIPS202.h>
 #include <stdlib.h>
 
@@ -28,16 +29,20 @@ static inline uint16_t sample_single_index(uint16_t rand[LEMIRE_INDEX_SAMPLE_BUF
 int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t seed[SEED_BYTES + 1]) {
     int bound;
 
-    uint16_t rnd_buff[PARAM_N][LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH];
-    SHAKE128((uint8_t *) rnd_buff, sizeof(rnd_buff), seed, SEED_BYTES + 1);
+    uint16_t rnd_buff[LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH];
+    Keccak_HashInstance ctx;
+    Keccak_HashInitialize_SHAKE128(&ctx);
+    Keccak_HashUpdate(&ctx, seed, (SEED_BYTES + 1) * 8);
+    Keccak_HashFinal(&ctx, NULL);
     uint16_t bitmask_index = 0;
 
     for (int i = PARAM_N - 1; i >= 0; --i) {
         bound = PARAM_N - i -1;
+        Keccak_HashSqueeze(&ctx, (uint8_t *)rnd_buff, sizeof(rnd_buff) * 8);
         if (bound > BITMASKS[bitmask_index]) {
             bitmask_index++;
         }
-        output[i] = sample_single_index(rnd_buff[i], bound, BITMASKS[bitmask_index]);
+        output[i] = sample_single_index(rnd_buff, bound, BITMASKS[bitmask_index]);
     }
     return EXIT_SUCCESS;
 }

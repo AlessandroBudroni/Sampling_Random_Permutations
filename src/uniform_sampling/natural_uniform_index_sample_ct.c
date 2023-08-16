@@ -13,13 +13,14 @@ uint16_t BITMASKS[] = {0x1, 0x3, 0x7, 0xF, 0x1F, 0x3F, 0x7F, 0xFF, 0x1FF, 0x3FF,
  * Index should be smaller or equal to bound.
  * mas is used to guarantee at least 50% chance of success per iteration.
  */
-static inline uint16_t sample_single_index(uint16_t rand[LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH], uint16_t bound, uint16_t mask) {
+static inline uint16_t sample_single_index(Keccak_HashInstance *ctx, uint16_t bound, uint16_t mask) {
     uint16_t ret = 0;
     uint16_t tmp;
     uint16_t condition;
     // Must guarantee (statistically) that at least once tmp is assigned to ret.
     for (int i = 0; i < LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH; i++) {
-        tmp = rand[i] & mask; // tmp <- rand(0, 2^l)
+        Keccak_HashSqueeze(ctx, (uint8_t *)&tmp, sizeof(tmp) * 8);
+        tmp &= mask; // tmp <- rand(0, 2^l)
         condition = GT16(bound, tmp);
         ret = MASKAPPLY(condition - 1, tmp, ret);
     }
@@ -29,7 +30,6 @@ static inline uint16_t sample_single_index(uint16_t rand[LEMIRE_INDEX_SAMPLE_BUF
 int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t seed[SEED_BYTES + 1]) {
     int bound;
 
-    uint16_t rnd_buff[LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH];
     Keccak_HashInstance ctx;
     Keccak_HashInitialize_SHAKE128(&ctx);
     Keccak_HashUpdate(&ctx, seed, (SEED_BYTES + 1) * 8);
@@ -38,11 +38,10 @@ int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t s
 
     for (int i = PARAM_N - 1; i >= 0; --i) {
         bound = PARAM_N - i -1;
-        Keccak_HashSqueeze(&ctx, (uint8_t *)rnd_buff, sizeof(rnd_buff) * 8);
         if (bound > BITMASKS[bitmask_index]) {
             bitmask_index++;
         }
-        output[i] = sample_single_index(rnd_buff, bound, BITMASKS[bitmask_index]);
+        output[i] = sample_single_index(&ctx, bound, BITMASKS[bitmask_index]);
     }
     return EXIT_SUCCESS;
 }

@@ -8,7 +8,7 @@
  * Buffered version of Lemire interval rejection sample.
  * url:  https://arxiv.org/pdf/1805.10941.pdf
  */
-int lemire_sample(uint16_t *out, uint16_t s, uint16_t rand[CHUNK_RND_U16_LENGTH], int *rand_index) {
+int lemire_sample(uint16_t *out, uint16_t s, uint16_t const rand[CHUNK_RND_U16_LENGTH], int *rand_index) {
     if (*rand_index >= CHUNK_RND_U16_LENGTH) {
         return EXIT_FAILURE;
     }

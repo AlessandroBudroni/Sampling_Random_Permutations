@@ -12,7 +12,7 @@ uint16_t BITMASKS[] = {0x1, 0x3, 0x7, 0xF, 0x1F, 0x3F, 0x7F, 0xFF, 0x1FF, 0x3FF,
  * Index should be smaller or equal to bound.
  * mas is used to guarantee at least 50% chance of success per iteration.
  */
-static inline uint16_t sample_single_index(uint16_t rand[LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH], uint16_t bound, uint16_t mask) {
+static inline uint16_t sample_single_index(uint16_t const rand[LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH], uint16_t bound, uint16_t mask) {
     uint16_t ret = 0;
     uint16_t tmp;
     uint16_t condition;

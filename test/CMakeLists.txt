@@ -210,15 +210,15 @@ add_test(benchmark_uniform_sampling_buffered_lemire benchmark_uniform_sampling_b
 set_tests_properties(benchmark_uniform_sampling_buffered_lemire PROPERTIES LABEL benchmark)
 
 add_executable(benchmark_uniform_sampling_ct benchmark_uniform_sampling.c
-        ${CMAKE_SOURCE_DIR}/src/uniform_sampling/natural_buffered_uniform_index_sample_ct.c)
+        ${CMAKE_SOURCE_DIR}/src/uniform_sampling/natural_uniform_index_sample_ct.c)
 target_link_libraries(benchmark_uniform_sampling_ct PRIVATE test_interface_avx2)
 target_compile_definitions(benchmark_uniform_sampling_ct PRIVATE SCHEME_NAME="Constant time sampling")
 add_test(benchmark_uniform_sampling_ct benchmark_uniform_sampling_ct)
 set_tests_properties(benchmark_uniform_sampling_ct PROPERTIES LABEL benchmark)
 
 add_executable(benchmark_uniform_sampling_buffered_ct benchmark_uniform_sampling.c
-        ${CMAKE_SOURCE_DIR}/src/uniform_sampling/natural_uniform_index_sample_ct.c)
+        ${CMAKE_SOURCE_DIR}/src/uniform_sampling/natural_buffered_uniform_index_sample_ct.c)
 target_link_libraries(benchmark_uniform_sampling_buffered_ct PRIVATE test_interface_avx2)
-target_compile_definitions(benchmark_uniform_sampling_buffered_ct PRIVATE SCHEME_NAME="Constant time sampling")
+target_compile_definitions(benchmark_uniform_sampling_buffered_ct PRIVATE SCHEME_NAME="Buffered constant time sampling")
 add_test(benchmark_uniform_sampling_buffered_ct benchmark_uniform_sampling_buffered_ct)
 set_tests_properties(benchmark_uniform_sampling_buffered_ct PROPERTIES LABEL benchmark)
