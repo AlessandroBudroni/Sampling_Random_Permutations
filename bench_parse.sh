@@ -17,7 +17,11 @@ BENCH_DIR_MAIN="bench_dir"
 # operation: Sample, Compose or Invert
 parseBenchmarkOutput()
 {
-	awk -v op="$1" '$0 ~ op {flag=1; next} /cycles/ {if (flag==1) {print $(NF-1); exit}}' "$2"
+	if [ -e "$2" ]; then
+		awk -v op="$1" '$0 ~ op {flag=1; next} /cycles/ {if (flag==1) {print $(NF-1); exit}}' "$2"
+	else
+		echo ""
+	fi
 }
 
 showUsage(){
