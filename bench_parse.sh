@@ -8,7 +8,7 @@
 #              ip  = invert permutations,
 #              sui = sample uniform integers
 
-PARAM_N="32 64 128 256 512 1024 2048"
+PARAM_N="32 64 128 256 512 1024 2048 4096"
 BENCH_DIR_MAIN="bench_dir"
 
 # parseBenchmarkOutput operation file
@@ -17,7 +17,11 @@ BENCH_DIR_MAIN="bench_dir"
 # operation: Sample, Compose or Invert
 parseBenchmarkOutput()
 {
-	awk -v op="$1" '$0 ~ op {flag=1; next} /cycles/ {if (flag==1) {print $(NF-1); exit}}' "$2"
+	if [ -e "$2" ]; then
+		awk -v op="$1" '$0 ~ op {flag=1; next} /cycles/ {if (flag==1) {print $(NF-1); exit}}' "$2"
+	else
+		echo ""
+	fi
 }
 
 showUsage(){

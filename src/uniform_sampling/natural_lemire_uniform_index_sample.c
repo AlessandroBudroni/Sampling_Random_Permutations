@@ -28,7 +28,7 @@ int lemire_sample(uint16_t *out, uint16_t s, Keccak_HashInstance *ctx) {
 }
 
 int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t seed[SEED_BYTES + 1]) {
-    int32_t rnd_index = 0;
+//    int32_t rnd_index = 0;
     uint16_t bound;
 
     Keccak_HashInstance ctx;

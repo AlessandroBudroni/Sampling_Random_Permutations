@@ -25,5 +25,6 @@ N = system(sprintf("awk -F ',' 'NR==1{print NF}' %s", datafile))
 # Plot all series (columns)
 plot for [i=2:N] datafile using 1:i with linespoints lw 2 ps 1.5
 
+#pause -1
 set output
 set terminal pop
