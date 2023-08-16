@@ -8,7 +8,7 @@
 #              ip  = invert permutations,
 #              sui = sample uniform integers
 
-PARAM_N="32 64 128 256 512 1024 2048"
+PARAM_N="32 64 128 256 512 1024 2048 4096"
 BENCH_DIR_MAIN="bench_dir"
 
 # parseBenchmarkOutput operation file
