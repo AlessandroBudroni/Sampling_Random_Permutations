@@ -4,7 +4,7 @@
 
 datafile = ARG1
 
-set terminal epslatex size 12cm,9cm
+set terminal tikz size 16cm,11cm
 set output sprintf("%s.tex", datafile)
 
 set dataf sep ","
@@ -15,7 +15,7 @@ set xlabel "N"
 set ylabel "Time (clock cycles)"
 
 set log x 2
-set format x " 2^{%L}"
+set format x "$2^{%L}$"
 
 set log y 10
 
