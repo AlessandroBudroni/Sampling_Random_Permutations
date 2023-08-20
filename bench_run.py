@@ -4,9 +4,7 @@ import os, sys
 cmake_compilers = '-D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++'
 
 
-param_n = [32,64,128,256,512,1024,2048,4096]
-# bits_n = 7
-# bits_n_mask = 0x7F
+param_n = [32,64,128,256,512,1024,2048,4096,8192]
 
 main_dir = 'bench_dir'
 
@@ -18,7 +16,7 @@ for n in param_n:
     os.system(command)
 
     command = 'cmake -DCMAKE_BUILD_TYPE=Release -B ' + dir + ' ' + cmake_compilers
-    command = command + ' -D PARAM_N=' + str(n) #+ ' -D BITS_PARAM_N=' + str(bits_n) + ' -D BITS_PARAM_N_MASK=' + str(0x3F)
+    command = command + ' -D PARAM_N=' + str(n)
     print(command)
     os.system(command)
 
