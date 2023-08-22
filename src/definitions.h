@@ -29,7 +29,7 @@
 
 #if !defined(PARAM_N) //|| !defined(BITS_PARAM_N) || !defined(BITS_PARAM_N_MASK)
 
-#define PARAM_N             4096                       // permutation length
+#define PARAM_N             1024                       // permutation length
 #define BITS_PARAM_N        12                         // bitlength of PARAM_N
 
 #elif (PARAM_N == 32)
