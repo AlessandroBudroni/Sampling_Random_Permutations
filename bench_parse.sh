@@ -79,8 +79,14 @@ sp|cp|ip)
 	prefix="benchmark_api_"
 	;;
 sui)
-	schemes=$(ctest --test-dir "$dir" -N | awk '/benchmark_uniform_sampling/ {print $3}')
-	file="$BENCH_DIR_MAIN/benchmark_uniform_sampling.dat"
+	if [ "$2" = "avx2" ]; then
+	    schemes=$(ctest --test-dir "$dir" -N | awk '/benchmark_uniform_sampling/ && /avx2/ {print $3}')
+		variant="_$2"
+	else
+	    schemes=$(ctest --test-dir "$dir" -N | awk '/benchmark_uniform_sampling/ && !/avx2/ {print $3}')
+		variant=""
+	fi
+	file="$BENCH_DIR_MAIN/benchmark_uniform_sampling$variant.dat"
 	prefix="benchmark_uniform_sampling_"
 	;;
 esac
