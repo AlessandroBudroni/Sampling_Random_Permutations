@@ -28,11 +28,10 @@
 #include <stdint.h>
 
 #if !defined(PARAM_N) //|| !defined(BITS_PARAM_N) || !defined(BITS_PARAM_N_MASK)
-
 #define PARAM_N             1024                       // permutation length
-#define BITS_PARAM_N        12                         // bitlength of PARAM_N
+#endif
 
-#elif (PARAM_N == 32)
+#if (PARAM_N == 32)
 
 #define BITS_PARAM_N        5                        // bitlength of PARAM_N
 

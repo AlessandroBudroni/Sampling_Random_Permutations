@@ -24,8 +24,6 @@ endif()
 # Set manually variables
 if(DEFINED PARAM_N)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DPARAM_N=${PARAM_N}")
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DBITS_PARAM_N=${BITS_PARAM_N}")
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DBITS_PARAM_N_MASK=${BITS_PARAM_N_MASK}")
 endif()
 
 log(CMAKE_C_COMPILER)
