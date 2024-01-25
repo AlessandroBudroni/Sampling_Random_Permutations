@@ -23,6 +23,7 @@
  */
 
 #include "common_uniform_index_sample.h"
+#include "lemire_constants.h"
 
 #include <xkcp/SimpleFIPS202.h>
 #include <xkcp/KeccakHash.h>
@@ -33,18 +34,15 @@
  * url:  https://arxiv.org/pdf/1805.10941.pdf
  */
 int lemire_sample(uint16_t *out, uint16_t s, Keccak_HashInstance *ctx) {
-    uint32_t x = 0;
-    Keccak_HashSqueeze(ctx, (uint8_t *)&x, sizeof(x) * 8);
-    uint32_t m = x * (uint32_t) s;
+    uint16_t x = 0;
+    Keccak_HashSqueeze(ctx, (uint8_t *) &x, sizeof(x) * 8);
+    uint32_t m = (uint32_t) x * (uint32_t) s;
     uint16_t l = (uint16_t) m; // m mod 2*^16
-    if (l < s) {
-        uint16_t t = -s % s;
-        while (l < t) {
-            Keccak_HashSqueeze(ctx, (uint8_t *)&x, sizeof(x) * 8);
-            m = x * (uint32_t) s;
-            l = (uint16_t) m; // m mod 2*^16
-            l = (uint16_t) m; // m mod 2*^16
-        }
+    while (l < lemire_table[s]) {
+        Keccak_HashSqueeze(ctx, (uint8_t *) &x, sizeof(x) * 8);
+        m = x * (uint32_t) s;
+        l = (uint16_t) m; // m mod 2*^16
+        l = (uint16_t) m; // m mod 2*^16
     }
     *out = m >> 16;
     return EXIT_SUCCESS;
@@ -56,7 +54,7 @@ int common_sample_uniform_index_buffer(uniform_indexes_t output, const uint8_t s
 
     Keccak_HashInstance ctx;
     Keccak_HashInitialize_SHAKE128(&ctx);
-    Keccak_HashUpdate(&ctx, seed, (SEED_BYTES +1)* 8);
+    Keccak_HashUpdate(&ctx, seed, (SEED_BYTES + 1) * 8);
     Keccak_HashFinal(&ctx, NULL);
 
     for (int i = 0; i < PARAM_N; i++) {
