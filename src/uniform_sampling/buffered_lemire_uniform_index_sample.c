@@ -23,6 +23,7 @@
  */
 
 #include "common_uniform_index_sample.h"
+#include "lemire_constants.h"
 
 #include "xkcp/SimpleFIPS202.h"
 #include <stdlib.h>
@@ -35,19 +36,16 @@ int lemire_sample(uint16_t *out, uint16_t s, uint16_t const rand[CHUNK_RND_U16_L
     if (*rand_index >= CHUNK_RND_U16_LENGTH) {
         return EXIT_FAILURE;
     }
-    uint32_t x = (uint32_t)rand[(*rand_index)++];
-    uint32_t m = x * (uint32_t) s;
+    uint16_t x = rand[(*rand_index)++];
+    uint32_t m = (uint32_t) x * (uint32_t) s;
     uint16_t l = (uint16_t) m; // m mod 2^16
-    if (l < s) {
-        uint16_t t = -s % s;
-        while (l < t) {
-            if (*rand_index >= CHUNK_RND_U16_LENGTH) {
-                return EXIT_FAILURE;
-            }
-            x = (uint32_t)rand[(*rand_index)++];
-            m = x * (uint32_t) s;
-            l = (uint16_t) m; // m mod 2*^16
+    while (l < lemire_table[s]) {
+        if (*rand_index >= CHUNK_RND_U16_LENGTH) {
+            return EXIT_FAILURE;
         }
+        x = rand[(*rand_index)++];
+        m = (uint32_t) x * (uint32_t) s;
+        l = (uint16_t) m; // m mod 2*^16
     }
     *out = m >> 16;
     return EXIT_SUCCESS;

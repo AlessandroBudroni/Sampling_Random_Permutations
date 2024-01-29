@@ -72,7 +72,7 @@
 
 #define BITS_PARAM_N_MASK ((1 << BITS_PARAM_N) -1)   // integer with BITS_PARAM_N ones
 #define LEMIRE_INDEX_SAMPLE_BUFFER_LENGTH 32 // (1/2)^32 chance to fail.
-#define CHUNK_RND_BYTES_LENGTH (PARAM_N*2) // P(rejection) = 0.5
+#define CHUNK_RND_BYTES_LENGTH (PARAM_N*4) // P(rejection) = 0.5
 #define CHUNK_RND_U16_LENGTH (CHUNK_RND_BYTES_LENGTH/2)
 #define DOMAIN_SEPARATOR_PERM 0x03
 #define SEED_BYTES          16
